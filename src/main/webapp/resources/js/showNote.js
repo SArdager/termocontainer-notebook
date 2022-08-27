@@ -28,7 +28,7 @@ window.addEventListener("load", function(){
         $('#inputBetweenNote').val("");
         if(validNumber.test(noteId)){
             $.ajax({
-                url: '/user/load-data/note',
+                url: '../user/load-data/note',
                 method: 'POST',
                 dataType: 'json',
                 data: {noteId: noteId},
@@ -125,7 +125,7 @@ window.addEventListener("load", function(){
         var show_points = document.getElementById("show_points");
         if(validNumber.test(noteId)){
             $.ajax({
-                url: '/user/load-data/note',
+                url: '../user/load-data/note',
                 method: 'POST',
                 dataType: 'json',
                 data: {noteId: noteId},
@@ -162,7 +162,7 @@ window.addEventListener("load", function(){
         var show_route_points = document.getElementById("show_route_points");
         if(validNumber.test(noteId)){
             $.ajax({
-                url: '/user/load-data/note',
+                url: '../user/load-data/note',
                 method: 'POST',
                 dataType: 'json',
                 data: {noteId: noteId},
@@ -210,7 +210,7 @@ window.addEventListener("load", function(){
             departmentId = $('#select_department').val();
         }
         $.ajax({
-            url: '/user/load-data/journal-notes',
+            url: '../user/load-data/journal-notes',
             method: 'POST',
             dataType: 'json',
             data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(),
@@ -322,7 +322,7 @@ window.addEventListener("load", function(){
             departmentId = $('#select_department').val();
         }
         $.ajax({
-            url: '/control/payment/report-notes',
+            url: '../control/payment/report-notes',
             method: 'POST',
             dataType: 'json',
             data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(), pageNumber: pageNumber,
@@ -368,7 +368,7 @@ window.addEventListener("load", function(){
             departmentId = $('#select_department').val();
         }
         $.ajax({
-            url: '/control/delay/report-notes',
+            url: '../control/delay/report-notes',
             method: 'POST',
             dataType: 'json',
             data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(), pageNumber: pageNumber,
@@ -409,7 +409,7 @@ window.addEventListener("load", function(){
         var pageNumber = getPageNumber(totalNotes, pageSize, cellContent, totalPages);
         var containerId = $('#select_container').val();
         $.ajax({
-            url: '/control/route/report-notes',
+            url: '../control/route/report-notes',
             method: 'POST',
             dataType: 'json',
             data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(),

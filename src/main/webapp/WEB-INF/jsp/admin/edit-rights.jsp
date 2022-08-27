@@ -6,10 +6,10 @@
 <head>
   <meta charset="utf-8">
   <title>User rights changer page</title>
-  <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/style.css">
-    <script type="text/javascript" src="${contextPath}/resources/js/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="${contextPath}/resources/js/userRightsEditor.js"></script>
-    <script type="text/javascript" src="${contextPath}/resources/js/selectDepartment.js"></script>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css">
+    <script type="text/javascript" src="../resources/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="../resources/js/userRightsEditor.js"></script>
+    <script type="text/javascript" src="../resources/js/selectDepartment.js"></script>
 
 </head>
 
@@ -17,12 +17,12 @@
   <section>
      <div class="container">
         <div class="user_title">
-            <a style="margin-top: 4px;" href="/logout">Выйти</a>
+            <a style="margin-top: 4px;" href="../logout">Выйти</a>
         </div>
         <hr>
         <h1>Изменение прав пользователя</h1>
         <br>
-        <a href="/admin">Вернуться</a>
+        <a href="../admin">Вернуться</a>
         <br>
         <h2><div id="result_line"></div></h2>
         <div class="main_block">
@@ -31,6 +31,7 @@
                     <input type="text" id="user_name" size="40" placeholder="Первые три буквы фамилии" required/>
                 </div>
                 <input type="hidden" id="user_id" name="userId" value="0"/>
+                <input type="hidden" id="username"  value=""/>
                 <div class="field" id="show_select" style="display: none; ">
                     <label style="color: blue;" >Кликните пользователя</label>
                     <select id="select_user">
@@ -63,8 +64,12 @@
                 </div>
                 <u>Права доступа</u>
                 <div class="field">
+                    <label>Убрать права</label>
+                    <input type="checkbox" id="resetId" checked />
+                </div>
+                <div class="field">
                     <label>Просмотр записей</label>
-                    <input type="checkbox" id="readerId" checked />
+                    <input type="checkbox" id="readerId"/>
                 </div>
                 <div class="field">
                     <label>Внесение записей</label>
@@ -74,7 +79,11 @@
                     <label>Учет термоконтейнеров</label>
                     <input type="checkbox" id="accountId" />
                 </div>
-                <input type="hidden" id="user_rights" name="rights" value="reader" />
+                <div class="field">
+                    <label>Контроль качества</label>
+                    <input type="checkbox" id="qualityId" />
+                </div>
+                <input type="hidden" id="user_rights" name="rights" value="" />
                 <br>
                 <div class="field">
                     <label>Дать/снять права администратора</label>

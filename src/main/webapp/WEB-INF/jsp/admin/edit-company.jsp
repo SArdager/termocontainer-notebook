@@ -7,9 +7,9 @@
 <head>
   <meta charset="utf-8">
   <title>Company editor page</title>
-  <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/style.css">
-    <script type="text/javascript" src="${contextPath}/resources/js/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="${contextPath}/resources/js/companyEditor.js"></script>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css">
+    <script type="text/javascript" src="../resources/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="../resources/js/companyEditor.js"></script>
 
 </head>
 
@@ -17,16 +17,16 @@
   <section>
      <div class="container">
         <div class="user_title">
-            <a style="margin-top: 4px;" href="/logout">Выйти</a>
+            <a style="margin-top: 4px;" href="../logout">Выйти</a>
         </div>
         <hr>
         <h1>Изменение структуры компании</h1>
         <br>
-        <a href="/admin">Вернуться</a>
+        <a href="../admin">Вернуться</a>
         <br>
         <h2><div id="result_line"></div></h2>
         <div class="main_block">
-            <form:form modelAttribute="companyForm" id="change_company" method="post" action="/admin/change-company/company">
+            <form:form modelAttribute="companyForm" id="change_company" method="post" action="../admin/change-company/company">
                 <div class="field">
                     <label>Предприятие</label>
                     <select id="select_company" name="id" >
@@ -40,9 +40,9 @@
                     <label>Новое название</label>
                     <input type="text" id="companyName" name="companyName" size="40" required/>
                 </div>
-            <div class="title_row" style="margin-left: 90px">
-                <input type="button" id="btn_company" style="width: 110px; margin-left: 40px" value="Создать" />
-                <input type="hidden" id="btn_del_company" style="width: 110px; margin-left: 40px" value="Удалить" />
+            <div class="title_row" style="margin-left: 20%">
+                <input type="button" class ="two_in_line" id="btn_company" value="Создать" />
+                <input type="hidden" class ="two_in_line" id="btn_del_company" value="Удалить" />
             </div>
             </form:form>
             <br>
@@ -60,9 +60,9 @@
                     <label>Новое название</label>
                     <input type="text" id="branchName" name="branchName" size="40" required/>
                 </div>
-            <div class="title_row" style="margin-left: 90px">
-                <input type="hidden" id="btn_branch" style="width: 110px; margin-left: 40px" value="Создать" />
-                <input type="hidden" id="btn_del_branch" style="width: 110px; margin-left: 40px" value="Удалить" />
+            <div class="title_row" style="margin-left: 20%">
+                <input type="hidden" class ="two_in_line" id="btn_branch" value="Создать" />
+                <input type="hidden" class ="two_in_line" id="btn_del_branch" value="Удалить" />
             </div>
             <br>
             <br>
@@ -79,9 +79,9 @@
                     <label>Новое название</label>
                     <input type="text" id="departmentName" name="departmentName" size="40" required/>
                 </div>
-            <div class="title_row" style="margin-left: 90px">
-                <input type="hidden" id="btn_department" style="width: 110px; margin-left: 40px" value="Создать" />
-                <input type="hidden" id="btn_del_department" style="width: 110px; margin-left: 40px" value="Удалить" />
+            <div class="title_row" style="margin-left: 20%">
+                <input type="hidden" class ="two_in_line" id="btn_department" value="Создать" />
+                <input type="hidden" class ="two_in_line" id="btn_del_department" value="Удалить" />
             </div>
         </div>
 

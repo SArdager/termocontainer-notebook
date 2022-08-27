@@ -7,9 +7,9 @@
 <head>
   <meta charset="utf-8">
   <title>User rights changer page</title>
-  <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/style.css">
-    <script type="text/javascript" src="${contextPath}/resources/js/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="${contextPath}/resources/js/userRightsEditor.js"></script>
+  <link rel="stylesheet" type="text/css" href="../resources/css/style.css">
+    <script type="text/javascript" src="../resources/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="../resources/js/userRightsEditor.js"></script>
 
 </head>
 
@@ -17,12 +17,12 @@
   <section>
      <div class="container">
         <div class="user_title">
-            <a style="margin-top: 4px;" href="/logout">Выйти</a>
+            <a style="margin-top: 4px;" href="../logout">Выйти</a>
         </div>
         <hr>
         <h1>Редактирование групп оповещения</h1>
         <br>
-        <a href="/admin">Вернуться</a>
+        <a href="../admin">Вернуться</a>
         <br>
         <h2><div id="result_line"></div></h2>
         <div class="main_block">
@@ -39,9 +39,9 @@
                 <label>Новое название</label>
                 <input type="text" id="alarmGroupName" size="40" required/>
             </div>
-            <div class="title_row" style="margin-left: 120px">
-                <input type="button" id="btn_alarm" style="width: 110px; margin-left: 40px" value="Создать" />
-                <input type="hidden" id="btn_del_alarm" style="width: 110px; margin-left: 40px" value="Удалить" />
+            <div class="title_row" style="margin-left: 20%">
+                <input type="button" class ="two_in_line" id="btn_alarm" value="Создать" />
+                <input type="hidden" class ="two_in_line" id="btn_del_alarm" value="Удалить" />
             </div>
             <br>
 
@@ -56,15 +56,15 @@
                 </select>
             </div>
             <br>
-                <div class="title_row" style="margin-left: 120px">
-                    <input type="button" id="btn_add_user" style="width: 110px; margin-left: 40px" value="Добавить" />
-                    <input type="button" id="btn_remove_user" style="width: 110px; margin-left: 40px" value="Убрать" />
+                <div class="title_row" style="margin-left: 20%">
+                    <input type="button" class ="two_in_line" id="btn_add_user" value="Добавить" />
+                    <input type="button" class ="two_in_line" id="btn_remove_user" value="Убрать" />
                 </div>
         </div>
 
         <p>
         <br>
-        <button id="btn_alarm_users" style="margin-left: 120px" >Вывести список</button>
+        <button id="btn_alarm_users" style="margin-left: 140px" >Вывести список</button>
         </p>
         <div id="show_alarm_table" style="display:none;">
             <div class="cut_line" id="line_cut_alarm" >Скрыть список оповещения</div>

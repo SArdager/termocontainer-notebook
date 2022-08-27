@@ -9,15 +9,16 @@ $(document).ready(function(){
         let posDep = userFullName.indexOf("-");
         let posRole = userFullName.indexOf("*");
         var userName = userFullName.substring(0, posName);
-        var login = userFullName.substring(posName+1, posDep);
-        var department = userFullName.substring(posDep+1, posRole);
+        var login = userFullName.substring(posName+1, posDep).trim();
+        var departmentIdString = userFullName.substring(posDep+1, posRole);
         var role = userFullName.substring(posRole+1);
-        var departmentId = Number(department.trim());
+        var departmentId = Number(departmentIdString.trim());
         $('#user_id').val(userId);
         $('#user_name').val(userName);
+        $('#username').val(login);
         show_select.style.display = "none";
         $.ajax({
-            url : '/user/load-data/department',
+            url : '../user/load-data/department',
             method: 'POST',
             dataType: 'json',
             data : {departmentId: departmentId},
@@ -28,7 +29,7 @@ $(document).ready(function(){
                 $('#select_branch').empty();
                 $('#select_department').empty();
                 $.ajax({
-                    url: '/user/change-department/select-company',
+                    url: '../user/change-department/select-company',
                     method: 'POST',
                     dataType: 'json',
                     data: {companyId: companyId},
@@ -37,10 +38,26 @@ $(document).ready(function(){
                            $('#select_branch').append('<option value="' + branch.id + '">' + branch.branchName + '</option');
                        });
                         $('#select_branch').val(branchId);
-                        $('#select_branch').trigger("change");
+                        $.ajax({
+                            url: '../user/change-department/select-branch',
+                            method: 'POST',
+                            dataType: 'json',
+                            data: {branchId: branchId},
+                            success: function(departments) {
+                                $('#select_department').empty();
+                                $.each(departments, function(key, department){
+                                    $('#select_department').append('<option value="' + department.id + '">' + department.departmentName + '</option');
+                                });
+                                $('#select_department').val(departmentId);
+                                $('#select_department').trigger('change');
+                            },
+                            error:  function(response) {
+                                $('#result_line').html("Ошибка обращения в базу данных. Повторите.");
+                            }
+                        });
                     },
                     error:  function(response) {
-                       alert("Ошибка обращения в базу данных. Повторите.");
+                       $('#result_line').html("Ошибка обращения в базу данных. Повторите.");
                     }
                 });
             },
@@ -52,7 +69,6 @@ $(document).ready(function(){
         } else {
             document.getElementById("roleId").checked = false;
         }
-        $('#select_department').val(departmentId);
     });
 
     user_name.oninput = function(){
@@ -61,7 +77,7 @@ $(document).ready(function(){
         if(textValue.length>2){
             $('#user_name').readOnly = true;
             $.ajax({
-                url : '/admin/search-user',
+                url : '../admin/search-user',
                 method: 'POST',
                 dataType: 'json',
                 data : {text: textValue},
@@ -94,25 +110,9 @@ $(document).ready(function(){
         } else {
             role = "ADMIN";
         }
-        function checkRights(){
-            if($("#user_rights").val() == ""){
-                $('#result_line').html("Выберите предоставляемые права пользователя");
-                return false;
-            } else {
-                return true;
-            }
-        }
-        function checkUser(){
-            if(userId > 0){
-                return true;
-            } else {
-                $('#result_line').html("Выберите пользователя из списка");
-                return false;
-            }
-        }
-        if(checkUser() && checkRights()){
+        if(userId > 0){
             $.ajax({
-                url: '/admin/edit-rights/rights',
+                url: '../admin/edit-rights/rights',
                 method: 'POST',
                 dataType: 'text',
                 data: {id: $('#user_id').val(), role: role, departmentId: $('#select_department').val(),
@@ -121,7 +121,48 @@ $(document).ready(function(){
                     $('#result_line').html(message);
                 },
                 error:  function(response) {
-                    alert("Ошибка обращения в базу данных. Повторите.");
+                    $('#result_line').html("Ошибка обращения в базу данных. Повторите.");
+                }
+            });
+        } else {
+            $('#result_line').html("Выберите пользователя из списка");
+        }
+    });
+
+    $('#select_department').on('change', function(){
+        if($('#user_id').val()>0){
+            $.ajax({
+                url: '../user/load-data/user-rights',
+                method: 'POST',
+                dataType: 'json',
+                data: {userId: $('#user_id').val(), username: $('#username').val()},
+                success: function(userRightsList) {
+                    var currentDepartmentId = $('#select_department').val();
+                    var userRole = "";
+                    $.each(userRightsList, function(key, userRights){
+                        if(userRights.departmentId == currentDepartmentId){
+                            userRole = userRights.rights;
+                        }
+                    });
+                    if(userRole==="reader"){
+                        document.getElementById("readerId").checked = true;
+                        $('#readerId').trigger('change');
+                    } else if(userRole==="editor"){
+                        document.getElementById("editorId").checked = true;
+                        $('#editorId').trigger('change');
+                    } else if(userRole==="account"){
+                        document.getElementById("accountId").checked = true;
+                        $('#accountId').trigger('change');
+                    } else if(userRole==="quality"){
+                        document.getElementById("qualityId").checked = true;
+                        $('#qualityId').trigger('change');
+                    } else {
+                        document.getElementById("resetId").checked = true;
+                        $('#resetId').trigger('change');
+                    }
+                },
+                error:  function(response) {
+                    $('#result_line').html("Ошибка обращения в базу данных. Повторите.");
                 }
             });
         }
@@ -146,13 +187,13 @@ $(document).ready(function(){
         var alarmGroupName = $('#alarmGroupName').val();
         if(alarmGroupName.length>1){
             $.ajax({
-                url: '/admin/edit-alarm-group/change-group',
+                url: '../admin/edit-alarm-group/change-group',
                 method: 'POST',
                 dataType: 'text',
                 data: {id: $('#select_alarm_group').val(), alarmGroupName: alarmGroupName},
                 success: function(message) {
                     $('#result_line').html(message);
-                    document.location.href = '/admin/alarm-groups';
+                setTimeout(() => { document.location.href = '../admin/alarm-groups';}, 800);
                 },
                 error:  function(response) {
                     $('#result_line').html("Ошибка обращения в базу данных. Повторите.");
@@ -165,13 +206,13 @@ $(document).ready(function(){
 
     $('#btn_del_alarm').on('click', function(){
         $.ajax({
-            url: '/admin/edit-alarm-group/delete-group',
+            url: '../admin/edit-alarm-group/delete-group',
             method: 'POST',
             dataType: 'text',
             data: {id: $('#select_alarm_group').val()},
             success: function(message) {
                 $('#result_line').html(message);
-                document.location.href = '/admin/alarm-groups';
+                setTimeout(() => { document.location.href = '../admin/alarm-groups';}, 800);
             },
             error:  function(response) {
                 $('#result_line').html("Ошибка обращения в базу данных. Повторите.");
@@ -183,7 +224,7 @@ $(document).ready(function(){
         if($('#select_alarm_group').val()>0){
             if($('#select_user').val()>0){
                $.ajax({
-                    url: '/admin/edit-alarm-group/add-user',
+                    url: '../admin/edit-alarm-group/add-user',
                     method: 'POST',
                     dataType: 'text',
                     data: {userId: $('#select_user').val(), alarmGroupId: $('#select_alarm_group').val()},
@@ -208,7 +249,7 @@ $(document).ready(function(){
         if($('#select_alarm_group').val()>0){
             if($('#select_user').val()>0){
                 $.ajax({
-                    url: '/admin/edit-alarm-group/remove-user',
+                    url: '../admin/edit-alarm-group/remove-user',
                     method: 'POST',
                     dataType: 'text',
                     data: {userId: $('#select_user').val(), alarmGroupId: $('#select_alarm_group').val()},
@@ -232,7 +273,7 @@ $(document).ready(function(){
 
     $('#btn_alarm_users').on('click', function(){
         $.ajax({
-            url: '/admin/edit-alarm-group/get-user-group',
+            url: '../admin/edit-alarm-group/get-user-group',
             method: 'POST',
             dataType: 'json',
             data: {alarmGroupId: $('#select_alarm_group').val()},

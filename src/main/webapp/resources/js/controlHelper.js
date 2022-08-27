@@ -12,7 +12,7 @@ $(document).ready(function(){
         var totalNotes;
         var totalPages;
         $.ajax({
-            url: '/control/payment/report-totalNotes',
+            url: '../control/payment/report-totalNotes',
             method: 'POST',
             dataType: 'json',
             data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(), departmentId: departmentId},
@@ -30,7 +30,7 @@ $(document).ready(function(){
                         totalPages = parseInt(totalNotes/pageSize);
                     }
                     $.ajax({
-                        url: '/control/payment/report-notes',
+                        url: '../control/payment/report-notes',
                         method: 'POST',
                         dataType: 'json',
                         data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(),
@@ -79,7 +79,7 @@ $(document).ready(function(){
         var totalNotes;
         var totalPages;
         $.ajax({
-            url: '/control/delay/report-totalNotes',
+            url: '../control/delay/report-totalNotes',
             method: 'POST',
             dataType: 'json',
             data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(),
@@ -98,7 +98,7 @@ $(document).ready(function(){
                         totalPages = parseInt(totalNotes/pageSize);
                     }
                     $.ajax({
-                        url: '/control/delay/report-notes',
+                        url: '../control/delay/report-notes',
                         method: 'POST',
                         dataType: 'json',
                         data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(), pageNumber: pageNumber,
@@ -132,12 +132,40 @@ $(document).ready(function(){
         });
     });
 
+    $('#btn_export_pay').on('click', function(){
+        var departmentId = $('#department_id').val();
+        if(departmentId==1){
+            if($('#department_checkbox').is(':checked')==false && $('#select_department').val()!=null){
+                departmentId = $('#select_department').val();
+            }
+        }
+        $('#paymentDepartmentId').val(departmentId);
+        $('#export_pay').submit();
+    });
+
+    $('#btn_export_delay').on('click', function(){
+        var departmentId = $('#department_id').val();
+        if(departmentId==1){
+            if($('#department_checkbox').is(':checked')==false && $('#select_department').val()!=null){
+                departmentId = $('#select_department').val();
+            }
+        }
+        $('#exportDepartmentId').val(departmentId);
+        $('#export_delay').submit();
+    });
+
+    $('#btn_export_route').on('click', function(){
+        var containerId = $('#select_container').val();
+        $('#container_id').val(containerId);
+        $('#export_route').submit();
+    });
+
     $('#select_container').on('change', function(){
         $('#route_table_body').html('');
         var show_route_points = document.getElementById("show_route_points");
         show_route_points.style.display = "none";
         $.ajax({
-            url: '/user/load-data/container',
+            url: '../user/load-data/container',
             method: 'POST',
             dataType: 'json',
             data: {containerId: $('#select_container').val()},
@@ -161,7 +189,7 @@ $(document).ready(function(){
         var totalNotes;
         var totalPages;
         $.ajax({
-            url: '/control/route/report-totalNotes',
+            url: '../control/route/report-totalNotes',
             method: 'POST',
             dataType: 'json',
             data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(), containerId: $('#select_container').val()},
@@ -179,7 +207,7 @@ $(document).ready(function(){
                         totalPages = parseInt(totalNotes/pageSize);
                     }
                     $.ajax({
-                        url: '/control/route/report-notes',
+                        url: '../control/route/report-notes',
                         method: 'POST',
                         dataType: 'json',
                         data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(), pageNumber: pageNumber,
