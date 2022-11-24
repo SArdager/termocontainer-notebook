@@ -43,6 +43,7 @@ $(document).ready(function(){
             }
         });
     });
+
     $('#select_second_branch').on('change', function(){
         $.ajax({
             url: '../user/change-department/select-branch',
@@ -61,9 +62,11 @@ $(document).ready(function(){
             }
         });
     });
+
     $('#select_first_department').on('change', function(){
         checkAllParameters();
     });
+
     $('#select_second_department').on('change', function(){
         checkAllParameters();
     });

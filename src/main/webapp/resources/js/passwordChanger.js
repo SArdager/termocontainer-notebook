@@ -57,6 +57,7 @@ $(document).ready(function(){
            return nCount;
        }
     });
+
     $('#btn_forget_password').on('click', function(){
         var login = $('#login').val();
         if(login.length>0){

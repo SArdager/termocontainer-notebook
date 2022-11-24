@@ -50,7 +50,6 @@
         <br>
         <h4><a href="user/check-container" id="account_line" style="display: none">Учет термоконтейнеров</a></h4>
         <h4><a href="control/start-page" id="control_line" style="display: none">Отчеты по термоконтейнерам</a></h4>
-        <h4><a href="user/check-quality" id="quality_line" style="display: none">Редактирование сроков доставки</a></h4>
         <br>
         <sec:authorize access="hasRole('ADMIN')">
             <h4><a href="admin">Администрирование системы</a></h4>
@@ -69,9 +68,6 @@
             }
             if(rights.indexOf("СМОТР")>0){
                 control_line.style.display = "block";
-            }
-            if(rights.indexOf("КАЧЕСТВА")>0){
-                quality_line.style.display = "block";
             }
        });
     </script>

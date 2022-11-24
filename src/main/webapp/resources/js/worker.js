@@ -151,88 +151,6 @@ $(document).ready(function(){
         });
     });
 
-    $('#reload_journal').on('click', function(){
-        var departmentId = $('#department_id').val();
-        if(departmentId==1){
-            if($('#department_checkbox').is(':checked')==false && $('#select_department').val()!=null){
-                departmentId = $('#select_department').val();
-            }
-        }
-        $('#line_cut_note').click();
-        var pageNumber = 0;
-        var pageSize = $('#pageSize').val();
-        var totalNotes;
-        var totalPages;
-        if(departmentId>0){
-            $.ajax({
-                url: '../user/load-data/journal-totalNotes',
-                method: 'POST',
-                dataType: 'json',
-                data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(), departmentId: departmentId},
-                success: function(totalElements) {
-                    totalNotes = parseInt(totalElements);
-                    if(totalNotes>0){
-                        $('#totalNotes').val(totalNotes);
-                        if(totalNotes%pageSize>0){
-                            totalPages = parseInt(totalNotes/pageSize) + 1;
-                        } else{
-                            totalPages = parseInt(totalNotes/pageSize);
-                        }
-                        $.ajax({
-                            url: '../user/load-data/journal-notes',
-                            method: 'POST',
-                            dataType: 'json',
-                            data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(),
-                                    departmentId: departmentId, pageNumber: pageNumber, pageSize: pageSize},
-                            success: function(notes) {
-                                var pages_html = "";
-                                var notes_html = "";
-                                var pages_journal_title = $('#pages_journal_title');
-                                var notes_table_body = $('#notes_table_body');
-                                pages_journal_title.html('');
-                                notes_table_body.html('');
-                                pages_html = "<tr>";
-                                if(pageNumber>2){
-                                    pages_html+="<td class='pages'> ( . . . )  </td>";
-                                }
-                                for(let i=0; i<totalPages-1; i++){
-                                    if(i - pageNumber<3 && pageNumber - i<3){
-                                        if(i - pageNumber==0){
-                                            pages_html+="<td class='pages'><b> (" + (Number(i*pageSize)+1) + "..." + (i+1)*pageSize + ")  </b></td>";
-                                        } else {
-                                            pages_html+="<td class='pages'> (" + (Number(i*pageSize)+1) + "..." + (i+1)*pageSize + ")  </td>";
-                                        }
-                                    }
-                                }
-                                if(totalPages-pageNumber>4){
-                                    pages_html+="<td class='pages'> ( . . . )  </td>";
-                                }
-                                if(pageNumber==totalPages-1){
-                                    pages_html += "<td class='pages'><b> (" + (Number((totalPages-1)*pageSize)+1) + "..." + totalNotes + ")  </b></td></tr>";
-                                } else {
-                                    pages_html += "<td class='pages'> (" + (Number((totalPages-1)*pageSize)+1) + "..." + totalNotes + ")  </td></tr>";
-                                }
-                                pages_journal_title.prepend(pages_html);
-                                $.each(notes, function(key, note){
-                                    notes_html += "<tr><td style='color: blue; text-decoration: underline'>" + note.id + "</td><td>" +
-                                    note.sendTime + "</td><td>" + note.arriveTime + "</td><td>" + note.outDepartment  + "</td><td>" +
-                                    note.toDepartment  + "</td><td>" + note.status + "</td></tr>";
-                                });
-                                notes_table_body.prepend(notes_html);
-                            },
-                            error:  function(response) {
-                                alert("Ошибка обращения в базу данных2. Повторите.");
-                            }
-                        });
-                    }
-                },
-                error:  function(response) {
-                    alert("Ошибка обращения в базу данных1. Повторите.");
-                }
-            });
-        }
-    });
-
     $('#btn_export_excel').on('click', function(){
         var departmentId = $('#department_id').val();
         if(departmentId==1){
@@ -302,11 +220,16 @@ $(document).ready(function(){
         });
     }
 
-    $('#btn_scan_out').on('click', function(){
-        $('#number_outcome').val("");
-
-        var dateValue = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().slice(0, -3);
-
+    $('#department_checkbox').on('click', function(){
+        if($('#department_checkbox').is(':checked')==true){
+            $('#select_branch').val(0);
+            $('#select_department').empty();
+        }
     });
 
+    $('#select_branch').on('click', function(){
+        if($('#select_branch').val()>0){
+            $('#department_checkbox').prop('checked', false);
+        }
+    });
 });

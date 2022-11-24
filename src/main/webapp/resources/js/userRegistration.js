@@ -38,7 +38,7 @@ $(document).ready(function(){
 
         if(checkLogin() && checkRights()){
             $.ajax({
-                url : '../admin/add-user/save-user',
+                url : 'add-user/save-user',
                 method: 'POST',
                 dataType: 'text',
                 data : {userSurname: $('#surname').val(), userFirstname: $('#firstname').val(), position: $('#position').val(),

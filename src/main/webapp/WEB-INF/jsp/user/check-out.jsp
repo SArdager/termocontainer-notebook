@@ -69,12 +69,7 @@
             </tr>
             <tr>
                 <td class="table_title">Сканирование номера</td>
-                <td><input type="text" id="number_outcome" />
-                </td>
-            </tr>
-            <tr id="scan_field" style="display: none">
-                <td class="table_title"></td>
-                <td><button id="btn_scan_out" style="background-color: blue; color: white; ">Сканировать</button>
+                <td><input type="text" id="number_outcome" maxlength="12"/>
                 </td>
             </tr>
             <tr>
@@ -111,9 +106,7 @@
             $("h1").css("color", "blue");
             $("h2").css("color", "red");
             var scan_field = document.getElementById("scan_field");
-            if (Number(window.innerHeight)>Number(window.innerWidth)) {
-              scan_field.style.display = "table-row";
-            }
+            $('#select_branch').val(${department.branch.id});
             $('#select_branch').trigger("change");
             document.getElementById("number_outcome").focus();
             var rights = $('#userRights').html();

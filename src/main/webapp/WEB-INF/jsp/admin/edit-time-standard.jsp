@@ -31,20 +31,9 @@
         <hr>
         <h1>Редактирование времени доставки термоконтейнеров</h1>
         <br>
-        <a class="link_line" href="../work-starter">Вернуться</a>
+        <a class="link_line" href="../admin">Вернуться</a>
         <br>
         <h2><div id="result_line"></div></h2>
-        <p>
-            <div class="title_row">
-                <div class="title_name">Наименование объекта:</div>
-                <div class="color_text"> ${department.departmentName},  ${department.branch.branchName}</div>
-            </div>
-            <div class="title_row">
-                <div class="title_name">Права пользователя</div>
-                <div id="userRights" class="color_text">${userRights.rights}</div>
-            </div>
-        </p>
-        <br>
         <p>
         <div class="main_block">
             <div class="field">

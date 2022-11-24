@@ -30,6 +30,7 @@
         <br>
         <h2>Выбор операции</h2>
         <h4><a href="admin/edit-company">Редактировать структуру предприятия</a></h4>
+        <h4><a href="admin/edit-time-standard">Редактирование сроков доставки</a></h4>
         <h4><a href="admin/alarm-groups">Редактирование групп оповещения</a></h4>
         <h4><a href="admin/add-user">Добавить пользователя</a></h4>
         <h4><a href="admin/edit-rights">Изменение прав пользователя</a></h4>

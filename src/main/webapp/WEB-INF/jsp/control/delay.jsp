@@ -46,7 +46,7 @@
             </div>
         </p>
         <form id="export_delay" action="delay/report-exportExcel" method="post">
-            <div class="title_row" style="margin-left: 40px">
+            <div class="title_row" >
                 <span class="date_line">Вывести за период:</span>
                 <input type="date" id="startDate" name="startDate"/>
                 <input type="date" id="endDate" name="endDate"/>
@@ -62,13 +62,11 @@
                     <input type="checkbox" id="department_checkbox" style="margin: 0px;"/>
                     <span class="text_line">- все объекты</span>
                 </div>
-                <div id="chose_branch" style="display: none">
-                    <select id="select_branch" class="select_in_line">
-                        <c:forEach var="branch" items="${branches}">
-                            <option value=${branch.id}>${branch.branchName}</option>
-                        </c:forEach>
-                    </select>
-                </div>
+                <select id="select_branch" class="select_in_line" style="display: none">
+                    <c:forEach var="branch" items="${branches}">
+                        <option value=${branch.id}>${branch.branchName}</option>
+                    </c:forEach>
+                </select>
                 <select id="select_department" class="select_in_line">
                 </select>
             </div>
@@ -134,10 +132,10 @@
             $("h1").css("color", "blue");
             $("h2").css("color", "red");
             var chose_checkbox = document.getElementById("chose_checkbox");
-            var chose_branch = document.getElementById("chose_branch");
+            var select_branch = document.getElementById("select_branch");
             if(${department.id}==1){
                 chose_checkbox.style.display = "block";
-                chose_branch.style.display = "block";
+                select_branch.style.display = "block";
                 $('#select_branch').trigger("change");
             } else {
                 $('#select_branch').val(${department.branch.id});

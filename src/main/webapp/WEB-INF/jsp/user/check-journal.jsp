@@ -69,6 +69,7 @@
             <input type="checkbox" id="department_checkbox" style="margin-left: 14px; "/>
             <span class="text_line" >- все объекты</span>
             <select id="select_branch" class="select_in_line">
+                <option value="0">Выберите филиал</option>
                 <c:forEach var="branch" items="${branches}">
                     <option value=${branch.id}>${branch.branchName}</option>
                 </c:forEach>
@@ -77,7 +78,7 @@
             </select>
         </div>
         <div class="title_row" style="justify-content: space-between;">
-            <div class="title_row" style="width: 50%; justify-content: space-between; margin-right: 0.5em">
+            <div class="title_row" style="width: 40%; justify-content: space-between; margin-right: 0.5em">
                 <span id="reload_journal" class ="reload_line" >Обновить</span>
                 <img src="../resources/images/export_excel_48.png" id="btn_export_excel" width="24" height="24" align = "top" alt="">
             </div>
@@ -251,3 +252,4 @@
 
 </body>
 </html>
+

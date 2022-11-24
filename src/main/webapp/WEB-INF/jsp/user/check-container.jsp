@@ -42,6 +42,7 @@
             <div class="title_row">
                 <div class="title_name">Права пользователя</div>
                 <div id="userRights" class="color_text">${userRights.rights}</div>
+                <input type="hidden" id="userId" value=${user.id} />
             </div>
         </p>
         <br>
@@ -53,7 +54,7 @@
             </tr>
             <tr>
                 <td class="table_title">Сканирование номера</td>
-                <td><input type="text" id="new_number" maxlength="13"/></td>
+                <td><input type="text" id="new_number" maxlength="12"/></td>
             </tr>
             <tr>
                 <td class="table_title"></td>
@@ -172,7 +173,7 @@
             </tr>
             <tr>
                 <td class="table_title">Номер термоконтейнера</td>
-                <td><input type="text" id="find_number" maxlength="13"/>
+                <td><input type="text" id="find_number" maxlength="12"/>
                 </td>
             </tr>
             <tr>
@@ -228,26 +229,25 @@
         </div>
         </p>
         <p>
-        <h3 id="print_container"><u>Печать штрих-кодов термоконтейнеров</u></h3>
+        <h3 id="print_container"><u>Создание штрих-кодов термоконтейнеров</u></h3>
         <table id="print_area" style="display: none">
             <tr>
                 <td colspan='2' class="cut_line" id="clean_print">Скрыть поле печати штрих-кодов</td>
             </tr>
             <tr>
+                <td colspan='2'>Рисунки штрих-кодов будут направлены на почтовый адрес</td>
+            </tr>
+            <tr>
                 <td class="table_title">Начать с номера</td>
-                <td><input type="text" id="start_number" maxlength="12"/></td>
+                <td><input type="text" id="start_number" maxlength="11"/></td>
             </tr>
             <tr>
                 <td class="table_title">До номера (включительно)</td>
-                <td><input type="text" id="end_number" maxlength="12"/></td>
-            </tr>
-            <tr>
-                <td class="table_title">Путь к папке</td>
-                <td><input type="text" id="path_barcode" /></td>
+                <td><input type="text" id="end_number" maxlength="11"/></td>
             </tr>
             <tr>
                 <td class="table_title"></td>
-                <td><br><button id="btn_print" >Вывести</button><br></td>
+                <td><br><button id="btn_print" >Создать</button></td>
             </tr>
         </table>
         </p>

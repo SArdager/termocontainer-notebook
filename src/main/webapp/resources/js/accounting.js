@@ -274,15 +274,13 @@ $(document).ready(function(){
 
     $('#btn_print').on('click', function(){
         var validNumber = /^[0-9]+$/;
-        var pathBarcode = $('#path_barcode').val();
         if(validNumber.test($('#start_number').val()) && validNumber.test($('#end_number').val())){
             if($('#end_number').val()>=$('#start_number').val()){
-              if(pathBarcode.length>0){
                 $.ajax({
                     url: '../user/check-container/print-code',
                     method: 'POST',
                     dataType: 'text',
-                    data: {startNumber: $('#start_number').val(), endNumber: $('#end_number').val(), pathBarcode: pathBarcode},
+                    data: {startNumber: $('#start_number').val(), endNumber: $('#end_number').val(), userId: $('#userId').val()},
                     success: function(message) {
                         $('#result_line').html(message);
                     },
@@ -290,9 +288,6 @@ $(document).ready(function(){
                         $('#result_line').html("Ошибка регистрации термоконтейнера. Повторите.");
                     }
                 });
-              } else {
-                $('#result_line').html("Укажите путь к папке записи рисунков штрих-кодов");
-              }
             } else {
                 $('#result_line').html("Второй номер должен быть равен или больше начального номера");
             }

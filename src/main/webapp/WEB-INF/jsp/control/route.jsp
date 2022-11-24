@@ -73,11 +73,11 @@
             </div>
         </form>
         <div class="title_row" style="justify-content: space-between;">
-            <div class="title_row" style="width: 50%; justify-content: space-between; margin-right: 0.5em">
+            <div class="title_row" style="width: 40%; justify-content: space-between; margin-right: 0.5em">
                 <span id="reload_route" class ="reload_line">Показать</span>
                 <img src="../resources/images/export_excel_48.png" id="btn_export_route" width="24" height="24" alt="">
             </div>
-            <div id="pages_route_title" ></div>
+            <div id="pages_title" ></div>
         </div>
         <div class = "scroll_table">
            <table>

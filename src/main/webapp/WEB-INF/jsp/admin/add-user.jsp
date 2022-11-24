@@ -88,10 +88,6 @@
                <label>Учет термоконтейнеров</label>
                <input type="checkbox" id="accountId" />
            </div>
-           <div class="field">
-               <label>Контроль качества</label>
-               <input type="checkbox" id="qualityId" />
-           </div>
            <input type="hidden" id="user_rights" name="rights" value="" />
            <br>
            <div class="field">

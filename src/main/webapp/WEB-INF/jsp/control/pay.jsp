@@ -60,22 +60,20 @@
         <div class="title_row">
             <span class="date_line">Вывести по объекту:</span>
             <div class="checkbox_margin" id="chose_checkbox" style="margin-left: 14px; display: none">
-                <input type="checkbox" id="department_checkbox" style="margin: 0px;"/>
+                <input type="checkbox" id="department_checkbox" style="margin: 0px; padding: 0px"/>
                 <span class="text_line">- все объекты</span>
             </div>
-            <div id="chose_branch" style="display: none">
-                <select id="select_branch" class="select_in_line">
-                    <c:forEach var="branch" items="${branches}">
-                        <option value=${branch.id}>${branch.branchName}</option>
-                    </c:forEach>
-                </select>
-            </div>
+            <select id="select_branch" class="select_in_line" style="display: none">
+                <c:forEach var="branch" items="${branches}">
+                    <option value=${branch.id}>${branch.branchName}</option>
+                </c:forEach>
+            </select>
             <select id="select_department" class="select_in_line">
             </select>
         </div>
 
         <div class="title_row" style="justify-content: space-between;">
-            <div class="title_row" style="width: 50%; justify-content: space-between; margin-right: 0.5em"">
+            <div class="title_row" style="width: 40%; justify-content: space-between; margin-right: 0.5em"">
                 <span id="reload_payment" class ="reload_line">Показать</span>
                 <img src="../resources/images/export_excel_48.png" id="btn_export_pay" width="24" height="24" alt="">
             </div>
@@ -107,10 +105,10 @@
             $("h1").css("color", "blue");
             $("h2").css("color", "red");
             var chose_checkbox = document.getElementById("chose_checkbox");
-            var chose_branch = document.getElementById("chose_branch");
+            var select_branch = document.getElementById("select_branch");
             if(${department.id}==1){
                 chose_checkbox.style.display = "block";
-                chose_branch.style.display = "block";
+                select_branch.style.display = "block";
                 $('#select_branch').trigger("change");
             } else {
                 $('#select_branch').val(${department.branch.id});

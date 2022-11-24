@@ -34,6 +34,15 @@
                <label>Поиск по имени</label>
                <input type="text" id="search_firstname" size="40" placeholder="Любые буквы имени" required/>
            </div>
+           <div class="field">
+               <label>Поиск по филиалу</label>
+               <select id="select_branch">
+                    <option value="1">По всем филиалам</option>
+                    <c:forEach var="branch" items="${branches}">
+                        <option value=${branch.id}>${branch.branchName}</option>
+                    </c:forEach>
+                </select>
+           </div>
         <br>
            <div class="field">
                <label></label>
@@ -83,7 +92,6 @@
         $(document).ready(function(){
             $("h1").css("color", "blue");
             $("h2").css("color", "red");
-            $('#select_company').trigger("change");
             var resultLineValue;
             var clickNumber = 0;
             window.addEventListener("click", function(){
@@ -96,43 +104,11 @@
                     clickNumber = -1;
                 }
             });
-       });
-        var line_cut_table = document.getElementById("line_cut_table");
-        var show_table = document.getElementById("show_table");
-        $('#line_cut_table').on('click', function(){
-           show_table.style.display = "none";
-        });
-        var line_cut_rights = document.getElementById("line_cut_rights");
-        var show_rights = document.getElementById("show_rights");
-        $('#line_cut_rights').on('click', function(){
-           show_rights.style.display = "none";
-        });
-        $('#btn_find_user').on('click', function(event){
-            $.ajax({
-                url: '../admin/find-user',
-                method: 'POST',
-                dataType: 'json',
-                data: {surname: $('#search_surname').val(), firstname: $('#search_firstname').val()},
-                success: function(users) {
-                    var new_lines_html ='';
-                    var body = $('#users_table_body');
-                    body.html('');
-                    show_table.style.display = "block";
-                    $.each(users, function(key, user){
-                        if(!$.isArray(users)|| !users.length){
-                            $('#result_line').html("Указанный в запросе пользователь отсутствует в базе.");
-                        } else {
-                            new_lines_html+="<tr><td style='color: blue; text-decoration: underline'>"+ user.username + "</td><td>" +
-                                user.userSurname + " " + user.userFirstname + "</td><td>" +
-                                user.position + "</td><td>" + user.email + "</td><td>" +
-                                user.isEnabled + "</td><td>" + user.role + "</td></tr>";
-                        }
-                    });
-                    body.prepend(new_lines_html);
-                },
-                error:  function(response) {
-                    $('#result_line').html("Для получения информации о правах пользователя кликните по ячейке с логином.");
-                }
+            $('#line_cut_table').on('click', function(){
+               document.getElementById("show_table").style.display = "none";
+            });
+            $('#line_cut_rights').on('click', function(){
+               document.getElementById("show_rights").style.display = "none";
             });
         });
     </script>

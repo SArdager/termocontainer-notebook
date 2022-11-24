@@ -21,7 +21,7 @@ $(document).ready(function(){
                 var notes_html = "";
                 var payment_table_body = $('#payment_table_body');
                 var pages_html = "";
-                var pages_payment_title = $('#pages_payment_title');
+                var pages_title = $('#pages_title');
                 if(totalNotes>0){
                     $('#totalPaymentNotes').val(totalNotes);
                     if(totalNotes%pageSize>0){
@@ -36,10 +36,10 @@ $(document).ready(function(){
                         data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(),
                                 departmentId: departmentId, pageNumber: pageNumber, pageSize: pageSize},
                         success: function(notes) {
-                            pages_payment_title.html('');
+                            pages_title.html('');
                             payment_table_body.html('');
                             pages_html = getPagesHtml(pageNumber, totalPages, pageSize, totalNotes);
-                            pages_payment_title.prepend(pages_html);
+                            pages_title.prepend(pages_html);
                             var sumPayment = 0;
                             $.each(notes, function(key, note){
                                 notes_html += "<tr><td>" + note.id + "</td><td>" +
@@ -56,7 +56,7 @@ $(document).ready(function(){
                     });
                 } else {
                     payment_table_body.html('');
-                    pages_payment_title.html('');
+                    pages_title.html('');
                     notes_html = "<tr><td colspan='6'>Отсутствуют данные по оплате перевозки на объекте за выбранный период</td></tr>";
                     payment_table_body.prepend(notes_html);
                 }
@@ -89,7 +89,7 @@ $(document).ready(function(){
                 var notes_html = "";
                 var delay_table_body = $('#delay_table_body');
                 var pages_delay_html = "";
-                var pages_delay_title = $('#pages_delay_title');
+                var pages_title = $('#pages_title');
                 if(totalNotes>0){
                     $('#totalDelayNotes').val(totalNotes);
                     if(totalNotes%pageSize>0){
@@ -104,10 +104,10 @@ $(document).ready(function(){
                         data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(), pageNumber: pageNumber,
                                 departmentId: departmentId, pageSize: pageSize, delayLimit: $('#delay_limit').val()},
                         success: function(notes) {
-                            pages_delay_title.html('');
+                            pages_title.html('');
                             delay_table_body.html('');
                             pages_delay_html = getPagesHtml(pageNumber, totalPages, pageSize, totalNotes);
-                            pages_delay_title.prepend(pages_delay_html);
+                            pages_title.prepend(pages_delay_html);
                             $.each(notes, function(key, note){
                                 notes_html += "<tr><td style='color: blue; text-decoration: underline'>" + note.id + "</td><td>" +
                                 note.containerNumber + "</td><td>" + note.outDepartment + "</td><td>" + note.sendTime + "</td><td>" + note.toDepartment  + "</td><td>" +
@@ -121,7 +121,7 @@ $(document).ready(function(){
                     });
                 } else {
                     delay_table_body.html('');
-                    pages_delay_title.html('');
+                    pages_title.html('');
                     notes_html = "<tr><td colspan='9'>Отсутствуют данные по опозданиям прибытия за выбранный период</td></tr>";
                     delay_table_body.prepend(notes_html);
                 }
@@ -198,7 +198,7 @@ $(document).ready(function(){
                 var notes_html = "";
                 var route_table_body = $('#route_table_body');
                 var pages_route_html = "";
-                var pages_route_title = $('#pages_route_title');
+                var pages_title = $('#pages_title');
                 if(totalNotes>0){
                     $('#totalRouteNotes').val(totalNotes);
                     if(totalNotes%pageSize>0){
@@ -213,10 +213,10 @@ $(document).ready(function(){
                         data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(), pageNumber: pageNumber,
                                 containerId: $('#select_container').val(), pageSize: pageSize},
                         success: function(notes) {
-                            pages_route_title.html('');
+                            pages_title.html('');
                             route_table_body.html('');
                             pages_route_html = getPagesHtml(pageNumber, totalPages, pageSize, totalNotes);
-                            pages_route_title.prepend(pages_route_html);
+                            pages_title.prepend(pages_route_html);
                             $.each(notes, function(key, note){
                                 notes_html += "<tr><td style='color: blue; text-decoration: underline'>" + note.id + "</td><td>" +
                                 note.sendDate + "</td><td>" + note.outDepartment + "</td><td>" + note.arriveDate + "</td><td>" + note.toDepartment  + "</td><td>" +
@@ -230,7 +230,7 @@ $(document).ready(function(){
                     });
                 } else {
                     route_table_body.html('');
-                    pages_route_title.html('');
+                    pages_title.html('');
                     notes_html = "<tr><td colspan='8'>Отсутствуют данные по перемещениям термоконтейнера за выбранный период</td></tr>";
                     route_table_body.prepend(notes_html);
                 }
@@ -268,3 +268,5 @@ $(document).ready(function(){
 
 
 });
+
+

@@ -57,66 +57,54 @@ $(document).ready(function(){
             }
         });
     });
+
     var checkbox_reset = document.getElementById("resetId");
     var checkbox_reader = document.getElementById("readerId");
     var checkbox_editor = document.getElementById("editorId");
     var checkbox_account = document.getElementById("accountId");
-    var checkbox_quality = document.getElementById("qualityId");
+
     $('#resetId').change ( function(){
         if($('#resetId').is(':checked')==true){
             checkbox_reader.checked = false;
             checkbox_editor.checked = false;
             checkbox_account.checked = false;
-            checkbox_quality.checked = false;
             $('#user_rights').val("");
         } else {
             checkbox_reader.checked = true;
             $('#user_rights').val("reader");
         }
     });
+
     $('#readerId').change ( function(){
         if($('#readerId').is(':checked')==true){
             checkbox_reset.checked = false;
             checkbox_editor.checked = false;
             checkbox_account.checked = false;
-            checkbox_quality.checked = false;
             $('#user_rights').val("reader");
         } else {
             checkbox_reset.checked = true;
             $('#user_rights').val("");
         }
     });
+
     $('#editorId').change ( function(){
         if($('#editorId').is(':checked')==true){
             checkbox_reset.checked = false;
             checkbox_reader.checked = false;
             checkbox_account.checked = false;
-            checkbox_quality.checked = false;
             $('#user_rights').val("editor");
         } else {
             checkbox_reset.checked = true;
             $('#user_rights').val("");
         }
     });
+
     $('#accountId').change ( function(){
         if($('#accountId').is(':checked')==true){
             checkbox_reset.checked = false;
             checkbox_reader.checked = false;
             checkbox_editor.checked = false;
-            checkbox_quality.checked = false;
             $('#user_rights').val("account");
-        } else {
-            checkbox_reset.checked = true;
-            $('#user_rights').val("");
-        }
-    });
-    $('#qualityId').change ( function(){
-        if($('#qualityId').is(':checked')==true){
-            checkbox_reset.checked = false;
-            checkbox_reader.checked = false;
-            checkbox_editor.checked = false;
-            checkbox_account.checked = false;
-            $('#user_rights').val("quality");
         } else {
             checkbox_reset.checked = true;
             $('#user_rights').val("");

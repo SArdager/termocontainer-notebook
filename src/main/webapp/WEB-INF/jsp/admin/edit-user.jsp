@@ -32,7 +32,7 @@
            </div>
            <input type="hidden" id="user_id" value="0"/>
            <div class="field" id="show_select" style="display: none; ">
-               <label style="color: blue;" >Кликните пользователя</label>
+               <label></label>
                <select id="select_user">
                </select>
            </div>

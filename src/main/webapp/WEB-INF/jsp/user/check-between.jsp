@@ -51,7 +51,7 @@
         <table id="checking_view" style="display: none">
             <tr>
                 <td class="table_title">Сканирование номера</td>
-                <td><input type="text" id="number_check" /></td>
+                <td><input type="text" id="number_check" maxlength="12"/></td>
             </tr>
             <tr>
                 <td class="table_title"></td>
