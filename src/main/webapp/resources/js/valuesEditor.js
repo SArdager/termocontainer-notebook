@@ -5,7 +5,7 @@ $(document).ready(function(){
             var validTime = /^[0-9]+$/;
             if(validTime.test($('#time_standard').val()) && $('#time_standard').val()>0){
                 $.ajax({
-                    url: '../admin/edit-values/edit-standard',
+                    url: '../user/load-data/edit-standard',
                     method: 'POST',
                     dataType: 'text',
                     data: {standardId: $('#standard_id').val(), firstPointId: $('#select_first_department').val(),
@@ -14,7 +14,8 @@ $(document).ready(function(){
                         $('#result_line').html(message);
                     },
                     error:  function(response) {
-                        alert("Ошибка обращения в базу данных. Повторите.");
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
                 });
             } else {
@@ -39,7 +40,8 @@ $(document).ready(function(){
                 checkAllParameters();
             },
             error:  function(response) {
-                alert("Ошибка обращения в базу данных. Повторите.");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
             }
         });
     });
@@ -58,7 +60,8 @@ $(document).ready(function(){
                 checkAllParameters();
             },
             error:  function(response) {
-                alert("Ошибка обращения в базу данных. Повторите.");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
             }
         });
     });
@@ -88,11 +91,12 @@ $(document).ready(function(){
                     }
                 },
                 error:  function(response) {
-                    alert("Ошибка обращения в базу данных. Повторите.");
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                 }
             });
         }
     }
 
-
 });
+

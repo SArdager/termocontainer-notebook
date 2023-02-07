@@ -49,7 +49,7 @@
                     <label>Новое название</label>
                     <input type="text" id="alarmGroupName" />
                 </div>
-                <input type="hidden" id="alarm_department" value="1" />
+                <input type="hidden" id="alarm_branch" value="1" />
                 <div class="title_row" style="margin-left: 120px">
                     <input type="button" class ="two_in_line" id="btn_alarm" value="Создать" />
                     <input type="hidden" class ="two_in_line" id="btn_del_alarm" value="Удалить" />
@@ -62,6 +62,12 @@
                     <input type="text" id="alarm_user_name" size="40" placeholder="Первые три буквы фамилии" required/>
                 </div>
                 <input type="hidden" id="user_id" name="userId" value="0"/>
+                <br>
+                <div class="title_row" style="margin-left: 120px">
+                    <input type="button" class ="two_in_line" id="btn_clean_user" value="Очистить" />
+                    <input type="button" class ="two_in_line" id="btn_all_user" value="Обновить список" />
+                </div>
+                <br>
                 <div class="field" id="show_select" style="display: none; ">
                     <label></label>
                     <select id="select_alarm_user">
@@ -82,7 +88,7 @@
         <div id="show_alarm_table" style="display:none;">
             <div class="cut_line" id="line_cut_alarm" >Скрыть список оповещения</div>
             <table border ="1">
-                <caption><strong>Список лиц оповещения</strong></caption>
+                <caption>Список лиц оповещения</caption>
                 <thead>
                     <th>Фамилия, имя</th>
                     <th>Должность</th>
@@ -93,6 +99,7 @@
             </table>
         </div>
      </div>
+     <div class="buffer" style = "height: 5em;"></div>
   </section>
 
     <script>

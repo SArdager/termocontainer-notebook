@@ -72,8 +72,8 @@
         <br>
         <button id="btn_edit_user" style="margin-left: 130px" >Внести изменения</button>
         </p>
-
      </div>
+     <div class="buffer" style = "height: 5em;"></div>
   </section>
 
     <script>

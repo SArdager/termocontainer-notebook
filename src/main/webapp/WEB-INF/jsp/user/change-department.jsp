@@ -26,8 +26,8 @@
   <section>
      <div class="container">
         <div class="user_title">
-            <strong style="margin-top: 4px; margin-right: 20px">Пользователь: ${user.userFirstname} ${user.userSurname}</strong>
-            <a style="margin-top: 4px;" href="../logout">Выйти</a>
+            <span id="user_name"></span>
+            <a href="../logout">Выйти</a>
         </div>
         <hr>
         <h1>ВЫБОР НОВОГО ОБЪЕКТА</h1>
@@ -82,6 +82,8 @@
         $(document).ready(function(){
             $("h1").css("color", "blue");
             $("h2").css("color", "red");
+            let name = "${user.userFirstname}";
+            document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
             $('#select_company').trigger("change");
             var resultLineValue;
             var clickNumber = 0;

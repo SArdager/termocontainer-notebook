@@ -16,7 +16,6 @@
         $('head').append('<link rel="stylesheet" type="text/css" href="../resources/css/style.css">');
       }
   </script>
-  <script type="text/javascript" src="../resources/js/controlHelper.js"></script>
   <script type="text/javascript" src="../resources/js/showNote.js"></script>
   <script type="text/javascript" src="../resources/js/selectDepartment.js"></script>
 </head>
@@ -25,8 +24,8 @@
   <section>
      <div class="container">
         <div class="user_title">
-            <strong style="margin-top: 4px; margin-right: 20px">Пользователь: ${user.userFirstname} ${user.userSurname}</strong>
-            <a style="margin-top: 4px;" href="../logout">Выйти</a>
+            <span id="user_name"></span>
+            <a href="../logout">Выйти</a>
         </div>
         <hr>
         <h1>Отчет по задержкам транспортировки</h1>
@@ -51,14 +50,14 @@
                 <input type="date" id="startDate" name="startDate"/>
                 <input type="date" id="endDate" name="endDate"/>
                 <span class="text_line">по</span>
-                <input type="number" id="delayPageSize" min="2" value="10"/>
-                <span class="text_line">записей</span>
-                <input type="hidden" id="totalDelayNotes" value="0"/>
-                <input type="hidden" id="exportDepartmentId" name="departmentId" value="1" />
+                <input type="number" id="pageSize" min="5" step="10" value="30"/>
+                <span class="text_line">строк</span>
             </div>
+            <input type="hidden" id="totalNotes" value="0"/>
+            <input type="hidden" id="exportDepartmentId" name="departmentId" value="1" />
             <div class="title_row">
                 <span class="date_line">Вывести по объекту:</span>
-                <div class="checkbox_margin" id="chose_checkbox" style="margin-left: 14px; display: none">
+                <div class="checkbox_margin" id="chose_checkbox" style="display: none">
                     <input type="checkbox" id="department_checkbox" style="margin: 0px;"/>
                     <span class="text_line">- все объекты</span>
                 </div>
@@ -69,15 +68,19 @@
                 </select>
                 <select id="select_department" class="select_in_line">
                 </select>
+                <input type="radio" name="way" value="out" checked="checked"/>
+                <span class="text_line" >- отправитель</span>
+                <input type="radio" name="way" value="to"/>
+                <span class="text_line" >- получатель</span>
             </div>
-            <div class="title_row" style="justify-content: space-between;">
-                <div class="title_row" style="width: 50%; justify-content: space-between; margin-right: 0.5em">
-                    <span id="reload_delay" class ="reload_line">Показать опоздание более</span>
+            <div class="title_row">
+                <div class="title_left">
+                    <span id="reload_delay" class ="reload_line">Показать опоздания более</span>
                     <input type="number" id="delay_limit" min="0" value="0" name="delayLimit"/>
                     <span class="text_line">часов</span>
-                    <img src="../resources/images/export_excel_48.png" id="btn_export_delay" width="24" height="24" alt="">
+                    <img src="../resources/images/export_excel_48.png" id="btn_export_delay" alt="">
                 </div>
-                <div id="pages_delay_title"></div>
+                <div id="delay_pages_title"></div>
             </div>
         </form>
         <div class = "scroll_table">
@@ -131,8 +134,10 @@
         $(document).ready(function(){
             $("h1").css("color", "blue");
             $("h2").css("color", "red");
-            var chose_checkbox = document.getElementById("chose_checkbox");
-            var select_branch = document.getElementById("select_branch");
+            let name = "${user.userFirstname}";
+            document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
+            let chose_checkbox = document.getElementById("chose_checkbox");
+            let select_branch = document.getElementById("select_branch");
             if(${department.id}==1){
                 chose_checkbox.style.display = "block";
                 select_branch.style.display = "block";
@@ -142,7 +147,7 @@
                 $('#select_branch').trigger("change");
             }
 
-            var resultLineValue;
+            let resultLineValue;
             window.addEventListener("click", function(){
                 resultLineValue = $('#result_line').text();
                 if(resultLineValue.length>0){

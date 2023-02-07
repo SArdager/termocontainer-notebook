@@ -25,7 +25,8 @@ $(document).ready(function(){
                                     $('#new_number').focus();
                                 },
                                 error:  function(response) {
-                                    $('#result_line').html("Ошибка редактирования термоконтейнера. Повторите.");
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    $('#result_line').html("Ошибка редактирования термоконтейнера. Перегрузите страницу.");
                                 }
                             });
                         }
@@ -36,7 +37,8 @@ $(document).ready(function(){
                     }
                 },
                 error:  function(response) {
-                    $('#result_line').html("Ошибка регистрации термоконтейнера. Повторите.");
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    $('#result_line').html("Ошибка регистрации термоконтейнера. Перегрузите страницу.");
                     $('#new_number').val("");
                     $('#new_number').focus();
                 }
@@ -60,7 +62,8 @@ $(document).ready(function(){
                     setTimeout(() => { document.location.href = '../user/check-container';}, 800);
                },
                 error:  function(response) {
-                    alert("Ошибка обращения в базу данных. Повторите.");
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                 }
             });
         } else {
@@ -80,7 +83,8 @@ $(document).ready(function(){
                 setTimeout(() => { document.location.href = '../user/check-container';}, 1000);
             },
             error:  function(response) {
-                alert("Ошибка обращения в базу данных. Повторите.");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
             }
         });
     });
@@ -113,7 +117,8 @@ $(document).ready(function(){
                     $('#write_off_number').focus();
                 },
                 error:  function(response) {
-                    $('#result_line').html("Ошибка списания термоконтейнера. Повторите.");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                    $('#result_line').html("Ошибка списания термоконтейнера. Перегрузите страницу.");
                     $('#write_off_number').val("");
                     $('#write_off_number').focus();
                 }
@@ -153,7 +158,8 @@ $(document).ready(function(){
                                         $('#send_number').focus();
                                         },
                                     error:  function(response) {
-                                        $('#result_line').html("Ошибка регистрации отгрузки термоконтейнера. Повторите.");
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                        $('#result_line').html("Ошибка регистрации отгрузки термоконтейнера. Перегрузите страницу.");
                                         $('#send_number').val("");
                                         $('#send_number').focus();
                                     }
@@ -166,7 +172,8 @@ $(document).ready(function(){
                         }
                     },
                     error:  function(response) {
-                        $('#result_line').html("Ошибка регистрации отгрузки термоконтейнера. Повторите.");
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('#result_line').html("Ошибка регистрации отгрузки термоконтейнера. Перегрузите страницу.");
                         $('#send_number').val("");
                         $('#send_number').focus();
                     }
@@ -207,7 +214,8 @@ $(document).ready(function(){
                     $("tr[tabindex=2]").focus();
                 },
                 error:  function(response) {
-                    $('#result_line').html("Ошибка поиска по базе. Повторите.");
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    $('#result_line').html("Ошибка поиска по базе. Перегрузите страницу.");
                 }
             });
         } else {
@@ -267,7 +275,8 @@ $(document).ready(function(){
                 $("tr[tabindex=3]").focus();
             },
             error:  function(response) {
-                $('#result_line').html("Ошибка поиска по базе. Повторите.");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('#result_line').html("Ошибка поиска по базе. Перегрузите страницу.");
             }
         });
     });
@@ -280,12 +289,13 @@ $(document).ready(function(){
                     url: '../user/check-container/print-code',
                     method: 'POST',
                     dataType: 'text',
-                    data: {startNumber: $('#start_number').val(), endNumber: $('#end_number').val(), userId: $('#userId').val()},
+                    data: {startNumber: $('#start_number').val(), endNumber: $('#end_number').val()},
                     success: function(message) {
                         $('#result_line').html(message);
                     },
                     error:  function(response) {
-                        $('#result_line').html("Ошибка регистрации термоконтейнера. Повторите.");
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('#result_line').html("Ошибка формирования штрих-кода термоконтейнера. Перегрузите страницу.");
                     }
                 });
             } else {
@@ -392,7 +402,8 @@ $(document).ready(function(){
                 $('#send_number').focus();
             },
             error:  function(response) {
-                alert("Ошибка обращения в базу данных. Повторите.");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
             }
         });
     });

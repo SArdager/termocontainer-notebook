@@ -16,7 +16,8 @@ $(document).ready(function(){
            if(strPassword === strConfirmPassword){
                 return true;
             } else {
-                $('#result_line').html("Значения пароля НЕ СОВПАДАЮТ !!! Повторите ввод!!!");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('#result_line').html("Значения пароля НЕ СОВПАДАЮТ !!! Перегрузите страницу ввод!!!");
                 return false;
             }
         }

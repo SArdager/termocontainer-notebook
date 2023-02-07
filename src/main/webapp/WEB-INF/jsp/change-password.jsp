@@ -34,7 +34,7 @@
                 <td><input type="password" id="password" name="password" size="40" autofocus="true" required/></td>
             </tr>
             <tr>
-                <td class="table_title">Повторите пароль</td>
+                <td class="table_title">Перегрузите страницу пароль</td>
                 <td><input type="password" id="confirm_password" size="40" autofocus="true" required/></td>
             </tr>
             <tr>

@@ -1,4 +1,3 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 
@@ -26,25 +25,27 @@
         <br>
         <h2><div id="result_line"></div></h2>
         <div class="main_block">
-            <form:form modelAttribute="companyForm" id="change_company" method="post" action="../admin/change-company/company">
-                <div class="field">
-                    <label>Предприятие</label>
-                    <select id="select_company" name="id" >
-                        <option value=-1>Создать новое предприятие</option>
-                        <c:forEach var="company" items="${companies}">
-                            <option value=${company.id}>${company.companyName}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Новое название</label>
-                    <input type="text" id="companyName" name="companyName" size="40" required/>
-                </div>
+            <div class="field">
+                <label>Предприятие</label>
+                <select id="select_company" name="id" >
+                    <option value=-1>Создать новое предприятие</option>
+                    <c:forEach var="company" items="${companies}">
+                        <option value=${company.id}>${company.companyName}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="field">
+                <label>Новое название</label>
+                <input type="text" id="companyName" name="companyName" size="40" required/>
+            </div>
+            <div class="field">
+                <label>Наличие лаборатории</label>
+                <input type="checkbox" id="isLabor" />
+            </div>
             <div class="title_row" style="margin-left: 20%">
                 <input type="button" class ="two_in_line" id="btn_company" value="Создать" />
                 <input type="hidden" class ="two_in_line" id="btn_del_company" value="Удалить" />
             </div>
-            </form:form>
             <br>
             <br>
                 <div class="field">
@@ -86,6 +87,7 @@
         </div>
 
      </div>
+     <div class="buffer" style = "height: 5em;"></div>
   </section>
 
     <script>

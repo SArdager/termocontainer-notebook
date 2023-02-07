@@ -71,9 +71,9 @@
                 <div class="cut_line" id="line_cut_rights" >Скрыть права пользователя</div>
                 <table border ="1">
                 <caption>
-                    <div class="title_row" style="font-weight: bold; margin-left: 5%">
+                    <div class="title_row" style="font-weight: bold; margin-left: 20px;">
                         Права пользователя:
-                        <div class="color_name" id="userLogin" ></div>
+                        <div class="color_name" id="userLogin" style="margin-left: 20px;"></div>
                     </div>
                 </caption>
                     <thead tabindex="0">
@@ -86,6 +86,7 @@
             </div>
         </div>
      </div>
+     <div class="buffer" style = "height: 5em;"></div>
   </section>
 
     <script>

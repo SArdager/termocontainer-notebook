@@ -1,29 +1,34 @@
 $(document).ready(function(){
 
     $('#select_user').on('change', function(){
-        var userId = $('#select_user').val();
+        let userId = $('#select_user').val();
         if(userId>0){
-            var userFullName = $('#select_user option:selected').text();
+            let userFullName = $('#select_user option:selected').text();
             let posName = userFullName.indexOf(";");
             let posDep = userFullName.indexOf("-");
             let posRole = userFullName.indexOf("*");
-            var userName = userFullName.substring(0, posName);
-            var login = userFullName.substring(posName+1, posDep).trim();
-            var departmentIdString = userFullName.substring(posDep+1, posRole);
-            var role = userFullName.substring(posRole+1);
-            var departmentId = Number(departmentIdString.trim());
+            let userName = userFullName.substring(0, posName);
+            let login = userFullName.substring(posName+1, posDep).trim();
+            let departmentIdString = userFullName.substring(posDep+1, posRole);
+            let role = userFullName.substring(posRole+1);
+            let departmentId = Number(departmentIdString.trim());
             $('#user_id').val(userId);
             $('#user_name').val(userName);
             $('#username').val(login);
             document.getElementById("show_select").style.display = "none";
+            if(role.indexOf("ADMIN")!=-1){
+                document.getElementById("roleId").checked = true;
+            } else {
+                document.getElementById("roleId").checked = false;
+            }
             $.ajax({
                 url : '../user/load-data/department',
                 method: 'POST',
                 dataType: 'json',
                 data : {departmentId: departmentId},
                 success : function(branch) {
-                    var branchId = branch.id;
-                    var companyId = branch.companyId;
+                    let branchId = branch.id;
+                    let companyId = branch.companyId;
                     $('#select_company').val(companyId);
                     $('#select_branch').empty();
                     $('#select_department').empty();
@@ -33,9 +38,9 @@ $(document).ready(function(){
                         dataType: 'json',
                         data: {companyId: companyId},
                         success: function(branches) {
-                           $.each(branches, function(key, branch){
+                            $.each(branches, function(key, branch){
                                $('#select_branch').append('<option value="' + branch.id + '">' + branch.branchName + '</option>');
-                           });
+                            });
                             $('#select_branch').val(branchId);
                             $.ajax({
                                 url: '../user/change-department/select-branch',
@@ -51,31 +56,30 @@ $(document).ready(function(){
                                     $('#select_department').trigger('change');
                                 },
                                 error:  function(response) {
-                                    $('#result_line').html("Ошибка обращения в базу данных. Повторите.");
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                                 }
                             });
                         },
                         error:  function(response) {
-                           $('#result_line').html("Ошибка обращения в базу данных. Повторите.");
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                         }
                     });
                 },
                 error:  function(response) {}
             });
-            if(role.indexOf("ADMIN")==0){
-                document.getElementById("roleId").checked = true;
-            } else {
-                document.getElementById("roleId").checked = false;
-            }
         }
     });
 
-
     let user_name = document.getElementById("user_name");
     user_name.oninput = function(){
+        $('#line_cut_rights').trigger("click");
+        $('#line_cut_table').trigger("click");
         let textValue = $('#user_name').val().trim();
-        if(textValue.length>2 ){
+        if(textValue.length>2 && textValue.length<6){
             $('#user_id').val(0);
+            $('#username').val("");
             $('#user_name').readOnly = true;
             $.ajax({
                 url : 'search-user',
@@ -105,25 +109,26 @@ $(document).ready(function(){
     };
 
     $('#btn_rights').on('click', function(){
-        var role;
-        var userId = $('#user_id').val();
+        let role;
         if($('#roleId').is(':checked')==false){
             role = "USER";
         } else {
             role = "ADMIN";
         }
-        if(userId > 0){
+        let user_rights = $('input[type="radio"][name="rights"]:checked').val();
+        if($('#user_id').val()>0 || $('#username').val().length>1){
             $.ajax({
                 url: 'edit-rights/rights',
                 method: 'POST',
                 dataType: 'text',
-                data: {id: $('#user_id').val(), role: role, departmentId: $('#select_department').val(),
-                    rights: $('#user_rights').val() },
+                data: {id: $('#user_id').val(), username: $('#username').val(), role: role,
+                    departmentId: $('#select_department').val(), rights: user_rights },
                 success: function(message) {
                     $('#result_line').html(message);
                 },
                 error:  function(response) {
-                    $('#result_line').html("Ошибка обращения в базу данных. Повторите.");
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                 }
             });
         } else {
@@ -132,40 +137,126 @@ $(document).ready(function(){
     });
 
     $('#select_department').on('change', function(){
-        if($('#user_id').val()>0){
+        if($('#user_id').val()>0 || $('#username').val().length>1){
             $.ajax({
                 url: '../user/load-data/user-rights',
                 method: 'POST',
                 dataType: 'json',
                 data: {userId: $('#user_id').val(), username: $('#username').val()},
                 success: function(userRightsList) {
-                    var currentDepartmentId = $('#select_department').val();
-                    var userRole = "";
-                    $.each(userRightsList, function(key, userRights){
-                        if(userRights.departmentId == currentDepartmentId){
-                            userRole = userRights.rights;
+                    if(userRightsList!=null && userRightsList.length>0){
+                        let currentDepartmentId = $('#select_department').val();
+                        let userRole = "reset";
+                        let rights_html = "";
+                        let rights_body = $('#rights_table_body');
+                        rights_body.html('');
+                        $('#userLogin').val($('#username').val());
+                        $.each(userRightsList, function(key, userRights){
+                             rights_html += "<tr><td>" + userRights.departmentName + ", " + userRights.branchName +
+                                     "</td><td>" + userRights.rights + "</td></tr>";
+                            if(userRights.departmentId == currentDepartmentId){
+                                userRole = userRights.rights;
+                            }
+                        });
+                        rights_body.prepend(rights_html);
+                        if(userRole==="reader"){
+                            document.getElementById("readerId").checked = true;
+                        } else if(userRole==="courier"){
+                            document.getElementById("courierId").checked = true;
+                        } else if(userRole==="editor"){
+                            document.getElementById("editorId").checked = true;
+                        } else if(userRole==="changer"){
+                            document.getElementById("changerId").checked = true;
+                        } else if(userRole==="righter"){
+                            document.getElementById("righterId").checked = true;
+                        } else if(userRole==="chef"){
+                            document.getElementById("chefId").checked = true;
+                        } else if(userRole==="account"){
+                            document.getElementById("accountId").checked = true;
+                        } else if(userRole==="creator"){
+                            document.getElementById("creatorId").checked = true;
+                        } else {
+                            document.getElementById("resetId").checked = true;
                         }
-                    });
-                    if(userRole==="reader"){
-                        document.getElementById("readerId").checked = true;
-                        $('#readerId').trigger('change');
-                    } else if(userRole==="editor"){
-                        document.getElementById("editorId").checked = true;
-                        $('#editorId').trigger('change');
-                    } else if(userRole==="account"){
-                        document.getElementById("accountId").checked = true;
-                        $('#accountId').trigger('change');
                     } else {
                         document.getElementById("resetId").checked = true;
-                        $('#resetId').trigger('change');
+                        $('#result_line').html("Данный пользователь не найден или у него отсутствуют права по объектам.");
                     }
                 },
                 error:  function(response) {
-                    $('#result_line').html("Ошибка обращения в базу данных. Повторите.");
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                 }
             });
+        } else {
+            $('#result_line').html("Выберите пользователя из списка");
         }
     });
+
+    $('#user_clean').on("click", function(){
+        $('#user_id').val('0');
+        $('#username').val("");
+        $('#user_name').val("");
+        document.getElementById("resetId").checked = true;
+        document.getElementById("show_rights").style.display = "none";
+        document.getElementById("show_table").style.display = "none";
+    });
+    $('#btn_show_dep').on('click', function(){
+        document.getElementById("show_rights").style.display = "block";
+    });
+    $('#line_cut_rights').on("click", function(){
+        document.getElementById("show_rights").style.display = "none";
+    });
+    $('#line_cut_table').on("click", function(){
+        document.getElementById("show_table").style.display = "none";
+    });
+});
+
+window.addEventListener("load", function(){
+    $('#btn_show_users').on('click', function(event){
+        $.ajax({
+            url: '../admin/find-user',
+            method: 'POST',
+            dataType: 'json',
+            data: {branchId: $('#select_branch').val()},
+            success: function(users) {
+                let new_lines_html ='';
+                let body = $('#users_table_body');
+                body.html('');
+                document.getElementById("show_table").style.display = "block";
+                $.each(users, function(key, user){
+                    if(!$.isArray(users) || !users.length){
+                        $('#result_line').html("По филиалу пользователи отсутствуют в базе.");
+                    } else {
+                        new_lines_html+="<tr><td style='color: blue; text-decoration: underline'>"+ user.username + "</td><td>" +
+                            user.userSurname + " " + user.userFirstname + "</td><td>" +
+                            user.position + "</td><td>" + user.email + "</td><td>" +
+                            user.isEnabled + "</td><td>" + user.role + "</td></tr>";
+                    }
+                });
+                body.prepend(new_lines_html);
+            },
+            error:  function(response) {
+                $('#result_line').html("Для получения информации о правах пользователя кликните по ячейке с логином.");
+            }
+        });
+    });
+
+     $('#users_table_body').on('click', function(event){
+         let elem = event.target || event.srcElement;
+         let login = elem.innerHTML;
+         let userName =  elem.nextElementSibling.innerHTML;
+         $('#username').val(login);
+         $('#user_name').val(userName);
+         $('#select_department').trigger("change");
+         let row = elem.closest('tr').innerHTML;
+         if(row.indexOf("ADMIN")>0){
+             document.getElementById("roleId").checked = true;
+         }
+         if(row.indexOf("USER")>0){
+             document.getElementById("roleId").checked = false;
+         }
+     });
 
 
 });

@@ -1,12 +1,12 @@
 $(document).ready(function(){
 
     $('#select_user').on('click', function(){
-        var userId = $('#select_user').val();
+        let userId = $('#select_user').val();
         if(userId>0){
-            var userFullName = $('#select_user option:selected').text();
+            let userFullName = $('#select_user option:selected').text();
             let posName = userFullName.indexOf(";");
-            var userName = userFullName.substring(0, posName);
-            var login = userFullName.substring(posName+1);
+            let userName = userFullName.substring(0, posName);
+            let login = userFullName.substring(posName+1);
             $('#user_id').val(userId);
             $('#user_name').val(userName);
             document.getElementById("show_select").style.display = "none";
@@ -37,7 +37,7 @@ $(document).ready(function(){
     });
 
     $('#btn_reset').on('click', function(){
-        var userId = $('#user_id').val();
+        let userId = $('#user_id').val();
         if(userId > 0){
             $.ajax({
                 url: '../admin/reset-password',
@@ -50,7 +50,8 @@ $(document).ready(function(){
                     $('#password').val("");
                 },
                 error:  function(response) {
-                    alert("Ошибка обращения в базу данных. Повторите.");
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                 }
             });
         } else {
@@ -96,7 +97,7 @@ $(document).ready(function(){
     };
 
     $('#btn_edit_user').on('click', function(){
-        var userId = $('#user_id').val();
+        let userId = $('#user_id').val();
         if(userId > 0){
             $.ajax({
                 url: '../admin/edit-user',
@@ -112,7 +113,8 @@ $(document).ready(function(){
                     $('#password').val("");
                 },
                 error:  function(response) {
-                    alert("Ошибка обращения в базу данных. Повторите.");
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                 }
             });
         } else {
@@ -120,8 +122,8 @@ $(document).ready(function(){
         }
     });
 
-    var checkbox_enabled = document.getElementById("isEnabled");
-    var checkbox_not_enabled = document.getElementById("isNotEnabled");
+    let checkbox_enabled = document.getElementById("isEnabled");
+    let checkbox_not_enabled = document.getElementById("isNotEnabled");
 
     $('#isEnabled').change ( function(){
         if($('#isEnabled').is(':checked')==true){

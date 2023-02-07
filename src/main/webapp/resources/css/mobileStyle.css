@@ -1,6 +1,6 @@
 body {
 	font-family: Arial, sans-serif;
-	font-size: calc(20px + 1vw);
+	font-size: calc(18px + 1vw);
 	color: black;
 	padding: 0;
 	margin: 0;
@@ -49,6 +49,16 @@ input{
 	margin: 0.5em 0.5em 0.5em 0;
 	background-color: cornsilk;
 }
+input[type=button] {
+	height: 2em;
+	padding: 0 0.5em;
+    margin: 1em 0 ;
+	color: black;
+	font-size: 0.8em;
+    font-weight: bold;
+	width: 12em;
+	background-color: cornsilk;
+}
 input[type=date] {
     width: 30%;
 	height: 1.5em;
@@ -63,17 +73,18 @@ input[type=number] {
 	font-size: 0.75em;
 	background-color: cornsilk;
 }
-
 input[type=radio] {
     width: 0.8em;
     height: 0.8em;
+    margin-left: 2em;
+    margin-top: 0.5em;
 }
 input[type=checkbox] {
     width: 0.8em;
     height: 0.8em;
 }
 .checkbox_margin {
-    margin: 0;
+    margin: 0 0 0 3em;
     padding-top: 0.5em;
 }
 select{
@@ -93,7 +104,12 @@ textarea{
     wrap: soft;
 	background-color: cornsilk;
 }
-.main_block{
+img {
+    margin-left: 2em;
+    width: 24px;
+    height: 24px;
+}
+.main_block {
     float: left;
     width: 100%;
 }
@@ -122,6 +138,11 @@ p {clear: both;}
 	flex-direction: row;
     justify-content: flex-end;
     font-size: 0.7em;
+    margin-top: 4px;
+}
+.user_title span{
+	margin-right: 20px;
+    font-weight: bold;
 }
 .title_row{
 	display: flex;
@@ -130,6 +151,14 @@ p {clear: both;}
     vertical-align: bottom;
     width: 100%;
 }
+.title_left{
+	display: flex;
+  	flex-direction: row;
+  	justify-content: left;
+    width: 40%;
+    vertical-align: bottom;
+    margin-right: 0.5em;
+}
 .title_name{
     width: 50%;
     font-size: 0.7em;
@@ -137,14 +166,23 @@ p {clear: both;}
 }
 .reload_line {
     font-size: 0.8em;
+    color: blue;
+    font-weight: bold;
     text-decoration: underline;
     padding-top: 0.2em;
     margin-left: 0.5em;
+    margin-right: 0.5em;
     margin-bottom: 0.6em;
     }
 .cut_line {
     font-size: 0.8em;
     color: red;
+    text-decoration: underline;
+    margin: 0.5em 1em;
+    text-align: center;
+    }
+#clean_courier {
+    font-size: 0.8em;
     text-decoration: underline;
     margin: 0.5em 1em;
     text-align: center;
@@ -189,7 +227,26 @@ p {clear: both;}
     border-right: 1px solid white;
     border-bottom: 1px solid black;
 }
-
+.table_shot {
+    border-bottom: none;
+    width: 100%;
+}
+.table_shot thead th{
+    font-size: 0.8em;
+    font-weight: bold;
+    top: 0;
+    border: 1px solid black;
+    text-align: center;
+}
+.table_shot td{
+    font-size: 0.8em;
+    text-align: left;
+    padding: 3px;
+    vertical-align: top;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    border-bottom: 1px solid black;
+}
 table {
     border: none;
     width: 100%;
@@ -203,6 +260,30 @@ table th{
     width: 35%;
     font-size: 0.8em;
     font-weight: normal;
+}
+#parcels_payment_table td:nth-child(7) {
+    text-align: right;
+    padding-right: 4px;
+}
+#points_payment_table td:nth-child(7) {
+    text-align: right;
+    padding-right: 4px;
+}
+#parcels_table td:nth-child(8) {
+    text-align: right;
+    padding-right: 4px;
+}
+#points_table td:nth-child(7) {
+    text-align: right;
+    padding-right: 4px;
+}
+#payment_table td:nth-child(5) {
+    text-align: right;
+    padding-right: 4px;
+}
+#payment_table td:nth-child(6) {
+    text-align: right;
+    padding-right: 4px;
 }
 .pages{
     font-size: 0.65em;
@@ -239,4 +320,49 @@ table th{
 	height: 1.5em;
 	font-size: 0.7em;
     margin-left: 0.8em;
+}
+.btn_margin { margin-left: 35%;}
+.wrapper{
+    margin: 0 auto;
+    width: 100%;
+}
+.half_page{
+    display: inline-block;
+    width: 49%;
+    vertical-align: top;
+    border: 1px solid black;
+}
+.choice_table th{
+    text-align: center;
+    font-size: 0.85em;
+    font-weight: bold;
+    padding: 3px;
+    border: 1px solid black;
+    position: sticky;
+    top: 0;
+    background: white;
+}
+.name_cell {
+    width: 90%;
+}
+.parameter {
+    width: 90%;
+    text-align: left;
+}
+.box_cell {
+    width: 10%;
+    text-align: center;
+}
+.choice_table td{
+    font-size: 0.8em;
+    padding: 3px;
+    vertical-align: top;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    border-bottom: 1px solid black;
+}
+#other_branches {
+    font-size: 0.6em;
+    color: blue;
+    text-decoration: underline;
 }

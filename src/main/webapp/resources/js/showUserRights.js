@@ -1,10 +1,10 @@
 window.addEventListener("load", function(){
     $('#users_table_body').on('click', function(event){
-        var elem = event.target || event.srcElement;
-        var login = elem.innerHTML;
-        var userName =  elem.nextElementSibling.innerHTML;
-        var show_rights = "";
-        var rights_html = "";
+        let elem = event.target || event.srcElement;
+        let login = elem.innerHTML;
+        let userName =  elem.nextElementSibling.innerHTML;
+        let show_rights = "";
+        let rights_html = "";
         $('#userLogin').html(userName);
         $.ajax({
              url: '../user/load-data/user-rights',
@@ -13,7 +13,7 @@ window.addEventListener("load", function(){
              data: {username: login},
              success: function(userRightsList) {
                  document.getElementById("show_rights").style.display = "block";
-                 var rights_body = $('#rights_table_body');
+                 let rights_body = $('#rights_table_body');
                  rights_body.html('');
                  $.each(userRightsList, function(key, rights){
                      rights_html += "<tr><td>" + rights.departmentName + ", " + rights.branchName +
@@ -23,7 +23,7 @@ window.addEventListener("load", function(){
                  $("thead[tabindex=0]").focus();
              },
              error:  function(response) {
-                 $('#result_line').html("Для получения информации о правах пользователя кликните по ячейке с логином.");
+                 $('#result_line').html("Ошибка обращения в базу данных.");
                  document.getElementById("show_rights").style.display = "none";
              }
         });
@@ -39,8 +39,8 @@ window.addEventListener("load", function(){
             data: {surname: $('#search_surname').val(), firstname: $('#search_firstname').val(),
                     branchId: $('#select_branch').val()},
             success: function(users) {
-                var new_lines_html ='';
-                var body = $('#users_table_body');
+                let new_lines_html ='';
+                let body = $('#users_table_body');
                 body.html('');
                 document.getElementById("show_table").style.display = "block";
                 $.each(users, function(key, user){

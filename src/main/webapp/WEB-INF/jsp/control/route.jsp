@@ -7,6 +7,7 @@
   <meta charset="utf-8">
   <title>Route control page</title>
     <script type="text/javascript" src="../resources/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="../resources/js/showNote.js"></script>
     <script>
         var w = Number(window.innerWidth);
         var h = Number(window.innerHeight);
@@ -16,16 +17,14 @@
           $('head').append('<link rel="stylesheet" type="text/css" href="../resources/css/style.css">');
         }
     </script>
-    <script type="text/javascript" src="../resources/js/controlHelper.js"></script>
-    <script type="text/javascript" src="../resources/js/showNote.js"></script>
 </head>
 
 <body>
   <section>
      <div class="container">
         <div class="user_title">
-            <strong style="margin-top: 4px; margin-right: 20px">Пользователь: ${user.userFirstname} ${user.userSurname}</strong>
-            <a style="margin-top: 4px;" href="../logout">Выйти</a>
+            <span id="user_name"></span>
+            <a href="../logout">Выйти</a>
         </div>
         <hr>
         <h1>Отчет по использованию термоконтейнера</h1>
@@ -33,16 +32,22 @@
         <a href="start-page">Вернуться</a>
         <br>
         <h2><div id="result_line"></div></h2>
-        <div class="title_row">
-            <span class="date_line">Вывести по термоконтейнеру №:</span>
-            <select id="select_container" style="width: 200px; margin-left: 20px;">
-                <c:forEach var="container" items="${containers}">
-                    <option value=${container.id}>${container.containerNumber}</option>
-                </c:forEach>
-            </select>
-        </div>
+        <table>
+            <tr><td class="table_title">№ термоконтейнера</td>
+                <td><input id="container_number" style="width: 160px;"/>
+            </tr>
+            <tr><td class="table_title"><span id="container_clean" class="cut_line">Очистить поле номера</span></td>
+                <td><select id="select_container" style="width: 160px;">
+                        <option value="0">Выберите из списка</option>
+                        <c:forEach var="container" items="${containers}">
+                            <option value=${container.id}>${container.containerNumber}</option>
+                        </c:forEach>
+                    </select>
+                </td>
+            </tr>
+        </table>
         <table style="border: none; width: 100%">
-            <caption><strong>Использование термоконтейнера</strong></caption>
+            <strong>Использование термоконтейнера</strong>
             <tr>
                 <td class="table_title" style="text-decoration: underline;">Термоконтейнер</td>
                 <td id="routeContainerNumber"></td>
@@ -61,23 +66,23 @@
             </tr>
         </table>
         <form id="export_route" action="route/report-exportExcel" method="post">
-            <div class="title_row" style="margin-left: 40px">
+            <div class="title_row" style="margin-left: 20px">
                 <span class="date_line">Вывести за период:</span>
                 <input type="date" id="startDate" name="startDate"/>
                 <input type="date" id="endDate" name="endDate"/>
                 <span class="text_line">по</span>
-                <input type="number" id="routePageSize" min="2" value="10"/>
-                <span class="text_line">записей</span>
-                <input type="hidden" id="totalRouteNotes" value="0"/>
+                <input type="number" id="pageSize" min="5" step="10" value="30"/>
+                <span class="text_line">строк</span>
+                <input type="hidden" id="totalNotes" value="0"/>
                 <input type="hidden" id="container_id" name="containerId" value="0" />
             </div>
         </form>
-        <div class="title_row" style="justify-content: space-between;">
-            <div class="title_row" style="width: 40%; justify-content: space-between; margin-right: 0.5em">
+        <div class="title_row">
+            <div class="title_left">
                 <span id="reload_route" class ="reload_line">Показать</span>
-                <img src="../resources/images/export_excel_48.png" id="btn_export_route" width="24" height="24" alt="">
+                <img src="../resources/images/export_excel_48.png" id="btn_export_route" align = "top" alt="">
             </div>
-            <div id="pages_title" ></div>
+            <div id="route_pages_title" ></div>
         </div>
         <div class = "scroll_table">
            <table>
@@ -126,8 +131,9 @@
         $(document).ready(function(){
             $("h1").css("color", "blue");
             $("h2").css("color", "red");
-            $('#select_container').trigger("change");
-            var resultLineValue;
+            let name = "${user.userFirstname}";
+            document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
+            let resultLineValue;
             window.addEventListener("click", function(){
                 resultLineValue = $('#result_line').text();
                 if(resultLineValue.length>0){

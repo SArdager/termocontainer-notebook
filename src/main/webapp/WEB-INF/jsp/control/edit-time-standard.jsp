@@ -25,55 +25,52 @@
   <section>
      <div class="container">
         <div class="user_title">
-            <strong style="margin-top: 4px; margin-right: 20px">Пользователь: ${user.userFirstname} ${user.userSurname}</strong>
-            <a style="margin-top: 4px;" href="../logout">Выйти</a>
+            <span id="user_name"></span>
+            <a href="../logout">Выйти</a>
         </div>
         <hr>
         <h1>Редактирование времени доставки термоконтейнеров</h1>
         <br>
-        <a class="link_line" href="../admin">Вернуться</a>
+        <a class="link_line" href="../work-starter">Вернуться</a>
         <br>
         <h2><div id="result_line"></div></h2>
         <p>
         <div class="main_block">
+            <input type="hidden" id="role" value="${user.role}"/>
+            <input type="hidden" id="userBranchId" value="${userBranch.id}"/>
+            <input type="hidden" id="userBranchName" value="${userBranch.branchName}"/>
             <div class="field">
-                <label><b>Пункт отправки</b></label>
+                <label><b>Филиал отправки</b></label>
                 <select id="select_first_branch" >
-                        <c:forEach var="branch" items="${branches}">
+                    <c:forEach var="branch" items="${branches}">
                         <option value=${branch.id}>${branch.branchName}</option>
-                        </c:forEach>
+                    </c:forEach>
                 </select>
             </div>
             <div class="field">
                 <label>Выберите объект</label>
-                    <select id="select_first_department" >
-                        <c:forEach var="department" items="${firstDepartments}">
-                        <option value=${department.id}>${department.departmentName}</option>
-                        </c:forEach>
-                    </select>
+                <select id="select_first_department" >
+                </select>
             </div>
             <div class="field">
-                <label><b>Пункт доставки</b></label>
+                <label><b>Филиал доставки</b></label>
                 <select id="select_second_branch" >
-                        <c:forEach var="branch" items="${branches}">
+                    <c:forEach var="branch" items="${branches}">
                         <option value=${branch.id}>${branch.branchName}</option>
-                        </c:forEach>
+                    </c:forEach>
                 </select>
             </div>
             <div class="field">
                 <label>Выберите объект</label>
-                    <select id="select_second_department" >
-                        <c:forEach var="department" items="${secondDepartments}">
-                        <option value=${department.id}>${department.departmentName}</option>
-                        </c:forEach>
-                    </select>
+                <select id="select_second_department" >
+                </select>
             </div>
             <div class="field">
                 <label><b>Время доставки</b> (часов):</label>
                 <input type="number" id="time_standard" size="40" value="0" required/>
             </div>
             <p>
-                <input type="hidden" id="standard_id" />
+                <input type="hidden" id="standard_id" value="0"/>
                 <div class="field">
                     <label></label>
                     <input type="button" id="btn_standard" style="width: 110px; " value="Внести" />
@@ -88,11 +85,31 @@
         $(document).ready(function(){
             $("h1").css("color", "blue");
             $("h2").css("color", "red");
-            $('#select_first_branch').trigger("change");
+            let name = "${user.userFirstname}";
+            document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
+            if($('#role').val()!="ADMIN"){
+                $('#select_first_branch').empty();
+                $('#select_first_branch').append('<option value="' + $('#userBranchId').val() + '">' + $('#userBranchName').val() + '</option>');
+            }
+
+            $.ajax({
+                url: '../user/change-department/select-branch',
+                method: 'POST',
+                dataType: 'json',
+                data: {branchId: $('#select_first_branch').val()},
+                success: function(departments) {
+                    $('#select_first_department').empty();
+                    $.each(departments, function(key, department){
+                        $('#select_first_department').append('<option value="' + department.id + '">' + department.departmentName + '</option>');
+                    });
+                },
+                error:  function(response) {
+                    $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
+                }
+            });
             $('#select_second_branch').trigger("change");
-            $('#standard_id').val("0");
-            var resultLineValue;
-            var clickNumber = 0;
+            let resultLineValue;
+            let clickNumber = 0;
             window.addEventListener("click", function(){
                 clickNumber++;
                 resultLineValue = $('#result_line').text();
@@ -103,6 +120,7 @@
                     clickNumber = -1;
                 }
             });
+
        });
     </script>
 

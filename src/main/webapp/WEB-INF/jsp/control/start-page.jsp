@@ -23,15 +23,17 @@
   <section>
      <div class="container">
         <div class="user_title">
-            <a style="margin-top: 4px;" href="../logout">Выйти</a>
+            <span id="user_name"></span>
+            <a href="../logout">Выйти</a>
         </div>
         <hr>
         <h1>ПОЛУЧЕНИЕ ОТЧЕТОВ</h1>
         <br>
         <h2>Выбор операции</h2>
-        <h4><a href="pay">Отчет по оплатам за перевозку</a></h4>
+        <h4><a href="payment">Отчет по оплатам за перевозку</a></h4>
         <h4><a href="delay">Отчет по задержкам транспортировки</a></h4>
         <h4><a href="route">Отчет по использованию термоконтейнера</a></h4>
+        <h4><a href="../user/check-parcel">Отчет по движению почтовых отправлений</a></h4>
         <br>
         <a href="../work-starter">Главная</a>
 
@@ -42,6 +44,8 @@
     <script>
         $(document).ready(function(){
             $("h1").css("color", "blue");
+            let name = "${user.userFirstname}";
+            document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
        });
     </script>
 

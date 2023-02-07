@@ -48,6 +48,16 @@ input{
 	margin: 2px 0px;
 	background-color: cornsilk;
 }
+input[type=button] {
+	height: 25px;
+	padding: 0px 10px;
+    margin: 10px 0px ;
+	color: black;
+	font-size: 0.8em;
+    font-weight: bold;
+	width: 160px;
+	background-color: cornsilk;
+}
 input[type=date] {
     width: 120px;
 	height: 25px;
@@ -65,13 +75,15 @@ input[type=number] {
 input[type=radio] {
     width: 12px;
     height: 12px;
+    margin-left: 20px;
+    margin-top: 8px;
 }
 input[type=checkbox] {
     width: 12px;
     height: 12px;
 }
 .checkbox_margin {
-    margin: 0;
+    margin: 0 0 0 14px;
     padding-top: 6px;
 }
 select{
@@ -83,7 +95,7 @@ select{
 	background-color: cornsilk;
 }
 textarea{
-    width: 100%;
+    width: 300px;
 	rows: 4;
 	font-size: 0.9em;
 	padding: 0px 8px;
@@ -91,7 +103,12 @@ textarea{
     wrap: soft;
 	background-color: cornsilk;
 }
-.main_block{
+img {
+    margin-left: 30px;
+    width: 24px;
+    height: 24px;
+}
+.main_block {
     float: left;
 }
 .field {
@@ -118,6 +135,11 @@ p {clear: both;}
 	display: flex;
 	flex-direction: row;
     justify-content: flex-end;
+    margin-top: 4px;
+}
+.user_title span{
+	margin-right: 20px;
+    font-weight: bold;
 }
 .title_row{
 	display: flex;
@@ -126,6 +148,14 @@ p {clear: both;}
     width: 100%;
     vertical-align: bottom;
 }
+.title_left{
+	display: flex;
+  	flex-direction: row;
+  	justify-content: left;
+    width: 40%;
+    vertical-align: bottom;
+    margin-left: 6px;
+}
 .title_name{
     width: 200px;
     font-size: 0.9em;
@@ -133,9 +163,12 @@ p {clear: both;}
 }
 .reload_line {
     font-size: 0.9em;
+    color: blue;
+    font-weight: bold;
     text-decoration: underline;
     padding-top: 6px;
     margin-left: 20px;
+    margin-right: 6px;
     margin-bottom: 10px;
 }
 .cut_line {
@@ -155,6 +188,15 @@ p {clear: both;}
     margin-left: 8px;
     font-weight: bold;
 }
+table {
+    border: none;
+    width: 100%;
+}
+table th{
+    text-align: center;
+    font-weight: normal;
+    border: 1px solid black;
+}
 .scroll_table {
     height: 400px;
     overflow-y: auto;
@@ -167,6 +209,7 @@ p {clear: both;}
 .scroll_table thead th{
     text-align: center;
     font-size: 0.85em;
+    font-weight: bold;
     padding: 3px;
     border: 1px solid black;
     position: sticky;
@@ -182,17 +225,50 @@ p {clear: both;}
     border-right: 1px solid white;
     border-bottom: 1px solid black;
 }
-
-table {
-    border: none;
+.table_shot {
+    border-bottom: none;
     width: 100%;
 }
-table th{
+.table_shot thead th{
+    font-size: 0.85em;
+    font-weight: bold;
+    top: 0;
+    border: 1px solid black;
+    text-align: center;
+}
+.table_shot td{
+    font-size: 0.8em;
     text-align: left;
+    padding: 3px;
+    vertical-align: top;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    border-bottom: 1px solid black;
 }
 .table_title{
     width: 180px;
+    text-align: left;
     font-weight: normal;
+}
+#parcels_table td:nth-child(8) {
+    text-align: right;
+    padding-right: 10px;
+}
+#parcels_payment_table td:nth-child(7) {
+    text-align: right;
+    padding-right: 10px;
+}
+#points_table td:nth-child(7) {
+    text-align: right;
+    padding-right: 10px;
+}
+#payment_table td:nth-child(5) {
+    text-align: right;
+    padding-right: 10px;
+}
+#payment_table td:nth-child(6) {
+    text-align: right;
+    padding-right: 10px;
 }
 .pages{
     font-size: 0.75em;
@@ -226,4 +302,49 @@ table th{
 .select_in_line {
     width: 160px;
     margin-left: 10px;
+}
+.btn_margin { margin-left: 190px;}
+.wrapper{
+    margin: 0 auto;
+    width: 100%;
+}
+.half_page{
+    display: inline-block;
+    width: 49%;
+    vertical-align: top;
+    border: 1px solid black;
+}
+.choice_table th{
+    text-align: center;
+    font-size: 0.85em;
+    font-weight: bold;
+    padding: 3px;
+    border: 1px solid black;
+    position: sticky;
+    top: 0;
+    background: white;
+}
+.name_cell {
+    width: 90%;
+}
+.parameter {
+    width: 90%;
+    text-align: left;
+}
+.box_cell {
+    width: 10%;
+    text-align: center;
+}
+.choice_table td{
+    font-size: 0.8em;
+    padding: 3px;
+    vertical-align: top;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    border-bottom: 1px solid black;
+}
+#other_branches {
+    font-size: 0.9em;
+    color: blue;
+    text-decoration: underline;
 }

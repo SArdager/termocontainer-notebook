@@ -15,7 +15,8 @@ $(document).ready(function(){
                 $('#select_branch').trigger("change");
             },
             error:  function(response) {
-               alert("Ошибка обращения в базу данных. Повторите.");
+               window.scrollTo({ top: 0, behavior: 'smooth' });
+               $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
             }
         });
     });
@@ -35,7 +36,8 @@ $(document).ready(function(){
                 $('#clean_input').trigger('click');
             },
             error:  function(response) {
-                alert("Ошибка обращения в базу данных. Повторите.");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
             }
         });
     });
@@ -53,62 +55,67 @@ $(document).ready(function(){
                 });
             },
             error:  function(response) {
-                alert("Ошибка обращения в базу данных. Повторите.");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
             }
         });
     });
 
-    var checkbox_reset = document.getElementById("resetId");
-    var checkbox_reader = document.getElementById("readerId");
-    var checkbox_editor = document.getElementById("editorId");
-    var checkbox_account = document.getElementById("accountId");
-
-    $('#resetId').change ( function(){
-        if($('#resetId').is(':checked')==true){
-            checkbox_reader.checked = false;
-            checkbox_editor.checked = false;
-            checkbox_account.checked = false;
-            $('#user_rights').val("");
-        } else {
-            checkbox_reader.checked = true;
-            $('#user_rights').val("reader");
+    $('#select_out_branch').on('change', function(){
+        let url = '../user/change-department/select-pref';
+        if(document.getElementById("all_company").style.display == 'table-row'){
+            url = '../user/change-department/select-branch';
         }
+        $.ajax({
+            url: url,
+            method: 'POST',
+            dataType: 'json',
+            data: {branchId: $('#select_out_branch').val()},
+            success: function(departments) {
+                let depPrefId = $('#depPrefId').val();
+                let isShowed = false;
+                $('#select_department').empty();
+                $.each(departments, function(key, department){
+                    $('#select_department').append('<option value="' + department.id + '">' + department.departmentName + '</option');
+                    if(department.id == depPrefId){
+                        let isShowed = true;
+                    }
+                });
+                if(isShowed){
+                    $('#select_department').val($('#depPrefId').val());
+                }
+            },
+            error:  function(response) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
+            }
+        });
     });
 
-    $('#readerId').change ( function(){
-        if($('#readerId').is(':checked')==true){
-            checkbox_reset.checked = false;
-            checkbox_editor.checked = false;
-            checkbox_account.checked = false;
-            $('#user_rights').val("reader");
-        } else {
-            checkbox_reset.checked = true;
-            $('#user_rights').val("");
-        }
+    $("#other_branches").on('click', function(){
+        $('#all_company').css("display", "table-row");
+        $('#select_all_company').trigger("change");
+        $("#other_branches").html("");
     });
 
-    $('#editorId').change ( function(){
-        if($('#editorId').is(':checked')==true){
-            checkbox_reset.checked = false;
-            checkbox_reader.checked = false;
-            checkbox_account.checked = false;
-            $('#user_rights').val("editor");
-        } else {
-            checkbox_reset.checked = true;
-            $('#user_rights').val("");
-        }
-    });
-
-    $('#accountId').change ( function(){
-        if($('#accountId').is(':checked')==true){
-            checkbox_reset.checked = false;
-            checkbox_reader.checked = false;
-            checkbox_editor.checked = false;
-            $('#user_rights').val("account");
-        } else {
-            checkbox_reset.checked = true;
-            $('#user_rights').val("");
-        }
+    $('#select_all_company').on('change', function(){
+        $.ajax({
+            url: '../user/change-department/select-company',
+            method: 'POST',
+            dataType: 'json',
+            data: {companyId: $('#select_all_company').val()},
+            success: function(branches) {
+               $('#select_out_branch').empty();
+               $.each(branches, function(key, branch){
+                   $('#select_out_branch').append('<option value="' + branch.id + '">' + branch.branchName + '</option');
+               });
+                $('#select_out_branch').trigger("change");
+            },
+            error:  function(response) {
+               window.scrollTo({ top: 0, behavior: 'smooth' });
+               $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
+            }
+        });
     });
 
 });

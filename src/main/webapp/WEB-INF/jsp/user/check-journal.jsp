@@ -11,10 +11,10 @@
       var w = Number(window.innerWidth);
       var h = Number(window.innerHeight);
       if (h>w) {
-        $('head').append('<link rel="stylesheet" type="text/css" href="../resources/css/mobileStyle.css">');
-        $('head').append('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+         $('head').append('<link rel="stylesheet" type="text/css" href="../resources/css/mobileStyle.css">');
+         $('head').append('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
       } else {
-        $('head').append('<link rel="stylesheet" type="text/css" href="../resources/css/style.css">');
+         $('head').append('<link rel="stylesheet" type="text/css" href="../resources/css/style.css">');
       }
   </script>
   <script type="text/javascript" src="../resources/js/worker.js"></script>
@@ -26,8 +26,8 @@
   <section>
      <div class="container">
         <div class="user_title">
-            <strong style="margin-top: 4px; margin-right: 20px">Пользователь: ${user.userFirstname} ${user.userSurname}</strong>
-            <a style="margin-top: 4px;" href="../logout">Выйти</a>
+            <span id="user_name"></span>
+            <a href="../logout">Выйти</a>
         </div>
         <input type="hidden" id="userId" value="${user.id}" />
         <hr>
@@ -55,15 +55,22 @@
                 <span class="date_line">Вывести за период:</span>
                 <input type="date" id="startDate" name="startDate" />
                 <input type="date" id="endDate" name="endDate" />
+                <span class="text_line" style="margin-left: 10px;">по</span>
+                <input type="number" id="pageSize" min="5" step="10" value="30"/>
+                <span class="text_line">строк</span>
             </div>
-            <div class="title_row" style="justify-content: right;">
-                <span class="text_line" >по</span>
-                <input type="number" id="pageSize" min="2" value="10"/>
-                <span class="text_line">записей</span>
-                <input type="hidden" id="totalNotes" value="0"/>
-                <input type="hidden" id="exportDepartmentId" name="exportDepartmentId" value="1" />
-            </div>
+            <input type="hidden" id="totalNotes" value="0"/>
+            <input type="hidden" id="exportDepartmentId" name="exportDepartmentId" value="1" />
         </form>
+        <div class="title_row" >
+            <span class="date_line">Вывести по термоконтейнерам:</span>
+            <input type="radio" name="sample" value="all" checked="checked"/>
+            <span class="text_line" >- по всем</span>
+            <input type="radio" name="sample" value="route" />
+            <span class="text_line" >- в дороге</span>
+            <input type="radio" name="sample" value="home" />
+            <span class="text_line" >- на объекте</span>
+        </div>
         <div id="chose_department" class="title_row" style="display: none">
             <span class="date_line">Вывести по объекту:</span>
             <input type="checkbox" id="department_checkbox" style="margin-left: 14px; "/>
@@ -77,18 +84,39 @@
             <select id="select_department" class="select_in_line">
             </select>
         </div>
-        <div class="title_row" style="justify-content: space-between;">
-            <div class="title_row" style="width: 40%; justify-content: space-between; margin-right: 0.5em">
-                <span id="reload_journal" class ="reload_line" >Обновить</span>
-                <img src="../resources/images/export_excel_48.png" id="btn_export_excel" width="24" height="24" align = "top" alt="">
+        <div id="show_search_field" class="reload_line">Поиск термоконтейнера по номеру</div>
+        <div id="search_field" style="display: none">
+            <div class="title_row" >
+                <span id="close_search" class="cut_line" style="margin-right: 20px; ">Скрыть таблицу поиска</span>
+                <span class="date_line">Номер термоконтейнера:</span>
+                <input type="text" id="container_number" maxlength="8" style="margin-left: 14px; width: 160px"/>
+                <button id="btn_search" style="margin-top: 2px; margin-left: 16px; ">Найти</button>
             </div>
-            <div id="pages_journal_title"></div>
+            <table border ="1">
+                <caption><strong>Информация по термоконтейнеру</strong></caption>
+                <thead>
+                    <th>Номер термоконтейнера</th>
+                    <th>Место нахождения</th>
+                    <th>Откуда прибыл</th>
+                    <th>Дата прибытия</th>
+                </thead>
+                <tbody class="table_body" id="search_table_body">
+                </tbody>
+            </table>
+        </div>
+        <div class="title_row">
+            <div class="title_left">
+                <span id="reload_journal" class ="reload_line" >Обновить</span>
+                <img style="margin-left: 20px;" src="../resources/images/export_excel_48.png" id="btn_export_excel" align = "top" alt="">
+            </div>
+            <div id="journal_pages_title"></div>
         </div>
         <div class = "scroll_table">
            <table>
              <thead>
                <tr>
                  <th>Номер</th>
+                 <th>Термохрон</th>
                  <th>Дата отправки</th>
                  <th>Дата приемки</th>
                  <th>Отправитель</th>
@@ -97,6 +125,8 @@
                </tr>
              </thead>
              <tbody id = "notes_table_body">
+             </tbody>
+             <tbody id = "containers_table_body">
              </tbody>
            </table>
         </div>
@@ -117,6 +147,10 @@
                 <tr>
                     <td class="table_title" style="text-decoration: underline;">Термоконтейнер</td>
                     <td id="containerNumber"></td>
+                </tr>
+                <tr>
+                    <td class="table_title">Номер термохрона</td>
+                    <td id="thermometer"></td>
                 </tr>
                 <tr>
                     <td class="table_title">Отправитель</td>
@@ -144,7 +178,7 @@
                 </tr>
                 <tr id="changePay" style="display: none;">
                     <td class="table_change_title">Изменить сумму</td>
-                    <td><input type="number" class="pay_input" id="inputPay" value="0"/></td>
+                    <td><input type="number" class="pay_input" id="inputPay" style="width: 8em;" step="500" value="0"/></td>
                 </tr>
                 <tr>
                     <td class="table_title">Получатель</td>
@@ -222,6 +256,8 @@
         $(document).ready(function(){
             $("h1").css("color", "blue");
             $("h2").css("color", "red");
+            let name = "${user.userFirstname}";
+            document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
             $('#select_branch').trigger("change");
             var chose_department = document.getElementById("chose_department");
             if(${department.id}==1){
@@ -230,8 +266,15 @@
             $('#reload_journal').trigger("click");
             var line_cut_note = document.getElementById("line_cut_note");
             var show_note = document.getElementById("show_note");
+            var search_field = document.getElementById("search_field");
             $('#line_cut_note').on('click', function(){
                 show_note.style.display = "none";
+            });
+            $('#search').on('click', function(){
+                search_field.style.display = "block";
+            });
+            $('#close_search').on('click', function(){
+                search_field.style.display = "none";
             });
             var resultLineValue;
             var clickNumber = 0;
@@ -247,6 +290,8 @@
                     clickNumber = -1;
                 }
             });
+
+
        });
     </script>
 

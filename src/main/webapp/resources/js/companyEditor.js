@@ -8,13 +8,14 @@ $(document).ready(function(){
                     url: '../admin/edit-company/company',
                     method: 'POST',
                     dataType: 'text',
-                    data: {id: $('#select_company').val(), companyName: companyName},
+                    data: {id: $('#select_company').val(), companyName: companyName, isLabor: $('#isLabor').is(':checked')},
                     success: function(message) {
                         $('#result_line').html(message);
                         setTimeout(() => { document.location.href = '../admin/edit-company';}, 800);
                     },
                     error:  function(response) {
-                        alert("Ошибка обращения в базу данных. Повторите.");
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
                 });
             } else {
@@ -40,7 +41,8 @@ $(document).ready(function(){
                         $('#result_line').html(message);
                     },
                     error:  function(response) {
-                        alert("Ошибка обращения в базу данных. Повторите.");
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
                 });
             } else {
@@ -66,7 +68,8 @@ $(document).ready(function(){
                         $('#result_line').html(message);
                     },
                     error:  function(response) {
-                        alert("Ошибка обращения в базу данных. Повторите.");
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
                 });
             } else {
@@ -93,7 +96,8 @@ $(document).ready(function(){
                         setTimeout(() => { document.location.href = '../admin/edit-company';}, 800);
                     },
                     error:  function(response) {
-                        alert("Ошибка обращения в базу данных. Повторите.");
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
                 });
             } else{
@@ -119,7 +123,7 @@ $(document).ready(function(){
                         $('#result_line').html(message);
                     },
                     error:  function(response) {
-                        alert("Ошибка обращения в базу данных. Повторите.");
+                        $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
                 });
             } else{
@@ -145,7 +149,7 @@ $(document).ready(function(){
                         $('#result_line').html(message);
                     },
                     error:  function(response) {
-                        alert("Ошибка обращения в базу данных. Повторите.");
+                        $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
                 });
             } else{
@@ -182,7 +186,7 @@ $(document).ready(function(){
                     $('#select_department').append('<option value= -1>Выберите филиал</option');
                 },
                 error:  function(response) {
-                    alert("Ошибка обращения в базу данных. Повторите.");
+                    $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                 }
             });
         } else{
@@ -225,7 +229,7 @@ $(document).ready(function(){
                     });
                 },
                 error:  function(response) {
-                    alert("Ошибка обращения в базу данных. Повторите.");
+                    $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                 }
             });
         } else {

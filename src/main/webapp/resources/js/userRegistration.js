@@ -1,12 +1,13 @@
 $(document).ready(function(){
 
     $('#btn_add_user').on('click', function(){
-        var surname = $('#surname').val();
-        var firstname = $('#firstname').val();
-        var position = $('#position').val();
-        var email = $('#email').val();
-        var username = $('#username').val();
-        var departmentId = $('#select_department').val();
+        let surname = $('#surname').val();
+        let firstname = $('#firstname').val();
+        let position = $('#position').val();
+        let email = $('#email').val();
+        let username = $('#username').val();
+        let departmentId = $('#select_department').val();
+        let user_rights;
         if($('#roleId').is(':checked')==false){
             $('#user_role').val("USER");
         } else {
@@ -18,7 +19,7 @@ $(document).ready(function(){
                 if(position.length > 4 && email.length > 6 && surname.length > 2){
                     return true;
                 } else {
-                    $('#result_line').html("Проверьте заполнение всех полей формы !!! \n Фамилия должна содержать 3 и более символов.\n \n Повторите ввод!!!");
+                    $('#result_line').html("Проверьте заполнение всех полей формы !!! \n Фамилия должна содержать 3 и более символов.\n \n Перегрузите страницу ввод!!!");
                     return false;
                 }
             } else {
@@ -28,11 +29,12 @@ $(document).ready(function(){
         }
 
         function checkRights(){
-            if($("#user_rights").val() == ""){
-                $('#result_line').html("Выберите предоставляемые права пользователя");
-                return false;
-            } else {
+            user_rights = $('input[type="radio"][name="rights"]:checked').val();
+            if(user_rights != "reset"){
                 return true;
+            } else {
+                $('#result_line').html("Выберите предоставляемые права пользователю");
+                return false;
             }
         }
 
@@ -43,7 +45,7 @@ $(document).ready(function(){
                 dataType: 'text',
                 data : {userSurname: $('#surname').val(), userFirstname: $('#firstname').val(), position: $('#position').val(),
                     email: $('#email').val(), username: $('#username').val(), role: $('#user_role').val(),
-                    departmentId: $('#select_department').val(), rights: $('#user_rights').val()},
+                    departmentId: $('#select_department').val(), rights: user_rights},
                 success : function(message) {
                     $('#result_line').html(message);
                     if(message.indexOf("добавлен")>0){
@@ -55,12 +57,10 @@ $(document).ready(function(){
                         $('#password').val("");
                         $('#confirm_password').val("");
                         $('#user_role').val("USER");
-                        $('#user_rights').val("reader");
                         $('#select_company').val(1);
                         $('#select_company').trigger("change");
                         document.getElementById("roleId").checked = false;
-                        document.getElementById("readerId").checked = true;
-                        document.getElementById("editorId").checked = false;
+                        document.getElementById("resetId").checked = true;
                     }
                 },
                 error:  function(response) {

@@ -36,7 +36,7 @@
            </div>
            <div class="field">
                <label>Должность</label>
-               <input type="text" id="position" name="position" size="40" required/>
+               <input type="text" id="position" name="position" size="40" value="Медицинская сестра" required/>
            </div>
            <div class="field">
                <label>Почтовый адрес</label>
@@ -74,21 +74,40 @@
            <u>Права доступа</u>
            <div class="field">
                <label>Убрать права</label>
-               <input type="checkbox" id="resetId" checked />
+               <input type="radio" id="resetId" name="rights" value="reset" checked="checked"/>
            </div>
            <div class="field">
                <label>Просмотр записей</label>
-               <input type="checkbox" id="readerId" />
+               <input type="radio" id="readerId" name="rights" value="reader"/>
            </div>
            <div class="field">
                <label>Внесение записей</label>
-               <input type="checkbox" id="editorId" />
+               <input type="radio" id="editorId" name="rights" value="editor"/>
+           </div>
+           <div class="field">
+               <label>Курьер</label>
+               <input type="radio" id="editorId" name="rights" value="courier"/>
+           </div>
+           <div class="field">
+               <label>Просмотр записей и изменение срока доставки</label>
+               <input type="radio" id="changerId" name="rights" value="changer"/>
+           </div>
+           <div class="field">
+               <label>Просмотр записей и изменение прав</label>
+               <input type="radio" id="righterId" name="rights" value="righter"/>
+           </div>
+           <div class="field">
+               <label>Полные права по лаборатории</label>
+               <input type="radio" id="chefId" name="rights" value="chef"/>
+           </div>
+           <div class="field">
+               <label>Создание и отслеживание посылок</label>
+               <input type="radio" id="creatorId" name="rights" value="creator"/>
            </div>
            <div class="field">
                <label>Учет термоконтейнеров</label>
-               <input type="checkbox" id="accountId" />
+               <input type="radio" id="accountId" name="rights" value="account"/>
            </div>
-           <input type="hidden" id="user_rights" name="rights" value="" />
            <br>
            <div class="field">
                <label>Дать права администратора</label>
@@ -100,9 +119,9 @@
                <label></label>
                <button id="btn_add_user">Зарегистрировать</button>
            </div>
-
         </div>
      </div>
+     <div class="buffer" style = "height: 5em;"></div>
   </section>
 
     <script>
@@ -125,6 +144,5 @@
        });
     </script>
 
-    <div class="buffer" style = "height: 5em;"></div>
 </body>
 </html>

@@ -25,8 +25,8 @@
   <section>
      <div class="container">
         <div class="user_title">
-            <strong style="margin-top: 4px; margin-right: 20px; ">Пользователь: ${user.userFirstname} ${user.userSurname}</strong>
-            <a style="margin-top: 4px; " href="../logout">Выйти</a>
+            <span id="user_name"></span>
+            <a href="../logout">Выйти</a>
         </div>
         <hr>
         <h1>Приемка термоконтейнера</h1>
@@ -47,8 +47,8 @@
                 <div id="userRights" class="color_text">${userRights.rights}</div>
             </div>
         </p>
-        <div id="reload_input" class ="reload_line;">Обновить</div>
-        <table border ="1">
+        <div id="reload_input" class ="cut_line">Обновить</div>
+        <table class="table_shot">
             <caption><strong>Журнал ожидания термоконтейнеров</strong></caption>
             <thead>
                 <th>№ отправления</th>
@@ -60,36 +60,52 @@
             </tbody>
         </table>
         <br>
+        <div id="parcels_table" style="display: none">
+            <table class="table_shot">
+                <caption><strong>Журнал ожидания посылок</strong></caption>
+                <thead>
+                    <th>Номер посылки</th>
+                    <th>Пункт назначения</th>
+                    <th>Вложена в термоконтейнер (посылку)</th>
+                    <th>Содержание</th>
+                    <th>Габариты</th>
+                </thead>
+                <tbody class="table_body" id="parcels_table_body">
+                </tbody>
+            </table>
+        </div>
+        <br>
         <hr>
         <h3>Приемка термоконтейнера</h3>
         <h2><div id="check_line"></div></h2>
-        <table id="checking_view" style="display: none">
-            <tr>
-                <td class="table_title">Сканирование номера</td>
-                <td><input type="text" id="number_income" maxlength="12"/><br></td>
-            </tr>
-            <tr>
-                <td class="table_title"></td>
-                <td id="clean_input" class="cut_line">Очистить поле ввода</td>
-            </tr>
-            <tr>
-                <td class="table_title">Запись о приеме</td>
-                <td><br><textarea id="textarea_in"></textarea></td>
-            </tr>
-            <tr>
-                <td class="table_title"></td>
-                <td><button id="btn_income" >Зарегистрировать</button></td>
-            </tr>
-            <tr>
-                <td class="table_title">Время регистрации</td>
-                <td id="time_income">Прибытие не зарегистрировано</td>
-            </tr>
-            <tr>
-                <td class="table_title">Статус доставки</td>
-                <td id="status_income"></td>
-            </tr>
-        </table>
-
+        <div id="checking_view" style="display: none">
+            <table>
+                <tr>
+                    <td class="table_title">Сканирование номера</td>
+                    <td><input type="text" id="number_income" maxlength="8"/><br></td>
+                </tr>
+                <tr>
+                    <td class="table_title"></td>
+                    <td id="clean_input" class="cut_line">Очистить поле ввода</td>
+                </tr>
+                <tr>
+                    <td class="table_title">Запись о приеме</td>
+                    <td><br><textarea id="textarea_in"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="table_title"></td>
+                    <td><button id="btn_income">Зарегистрировать</button></td>
+                </tr>
+                <tr>
+                    <td class="table_title">Время регистрации</td>
+                    <td id="time_income">Прибытие не зарегистрировано</td>
+                </tr>
+                <tr>
+                    <td class="table_title">Статус доставки</td>
+                    <td id="status_income"></td>
+                </tr>
+            </table>
+        </div>
      </div>
   </section>
 
@@ -97,10 +113,16 @@
         $(document).ready(function(){
             $("h1").css("color", "blue");
             $("h2").css("color", "red");
-            var rights = $('#userRights').html();
-            var checking_view = document.getElementById("checking_view");
+            let name = "${user.userFirstname}";
+            document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
+            let rights = $('#userRights').html();
+            let checking_view = document.getElementById("checking_view");
 
             if(rights.indexOf("ВНЕСЕНИЕ")>-1){
+                checking_view.style.display = "block";
+            } else if(rights.indexOf("УЧЕТ")>-1){
+                checking_view.style.display = "block";
+            } else if(rights.indexOf("ЛАБОР")>-1){
                 checking_view.style.display = "block";
             } else {
                 $('#check_line').html("Права на регистрацию термоконтейнеров отсутствуют");
@@ -121,8 +143,8 @@
                 }
             });
             $('#clean_input').click(function(){
-                $('#time_outcome').html("");
-                $('#status_outcome').html("");
+                $('#time_income').html("");
+                $('#status_income').html("");
                 $('#number_income').val("");
                 $('#number_income').focus();
             });
