@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <title>Create parcel page</title>
   <script type="text/javascript" src="../resources/js/jquery-3.6.0.min.js"></script>
-  <script type="text/javascript" src="../resources/js/worker.js"></script>
+  <script type="text/javascript" src="../resources/js/parcelCreator.js"></script>
   <script type="text/javascript" src="../resources/js/selectDepartment.js"></script>
   <script>
       var w = Number(window.innerWidth);
@@ -46,7 +46,7 @@
             </div>
         </p>
         <hr>
-        <h2><div id="result_line"></div></h2>
+        <h3><div id="result_line"></div></h3>
         <input type="hidden" id="departmentId" value="${department.id}" />
 
         <table>
@@ -116,12 +116,12 @@
         <table>
             <tr>
                 <td class="table_title">Номер посылки</td>
-                <td><input type="text" id="parcel_number" value="" />
+                <td><input type="text" id="parcel_number" value="" maxlength="8"/>
                 </td>
             </tr>
             <tr>
                 <td class="table_title"></td>
-                <td><button id="btn_prt">Получить штрих-код</button></td>
+                <td><button id="btn_prt">Штрих-код</button></td>
             </tr>
             <tr>
                 <td class="table_title">Отправитель</td>
@@ -133,12 +133,24 @@
                 </td>
             </tr>
             <tr>
-                <td class="table_title"><span id="memory_department" class="cut_line">Запомнить</span></td>
+                <td class="table_title"><span id="memory_department" class="float_line">Запомнить</span></td>
                 <td><select id="select_change_department">
                     </select><br>
                 </td>
             </tr>
             <tr>
+                <td class="table_title"></td>
+                <td><button id="btn_send" style="display: block;">Отгрузить</button></td>
+            </tr>
+            <tr>
+                <td id="show_assembly" colspan='2' class ="cut_line">Комплектовать (разукомплектовать) посылку</td>
+            </tr>
+            <tr id="parcel_tr" style="display: none;">
+                <td class="table_title">Номер посылки</td>
+                <td><input type="text" id="add_number" value="" maxlength="8"/>
+                </td>
+            </tr>
+            <tr id="add_tr" style="display: none;">
                 <td class="table_title">Вложить в посылку</td>
                 <td><input type="text" id="parent_number" maxlength="8" />
                 </td>
@@ -153,11 +165,7 @@
             </tr>
             <tr>
                 <td class="table_title"></td>
-                <td><button id="btn_send" style="display: block;">Отгрузить</button></td>
-            </tr>
-            <tr>
-                <td class="table_title"></td>
-                <td><button id="btn_remove" style="display: block;">Выложить</button></td>
+                <td><button id="btn_remove" style="display: none;">Выложить</button></td>
             </tr>
         </table>
      </div>
@@ -166,63 +174,33 @@
   <script>
       $(document).ready(function(){
           $("h1").css("color", "blue");
-          $("h2").css("color", "red");
           let name = "${user.userFirstname}";
           document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
+          $('#select_company').trigger("change");
+          let mem_department_id = "${memoryDepartmentId}";
+          if(mem_department_id>1){
+              $('#select_change_branch').val("${memoryBranchId}");
+              $.ajax({
+                  url: '../user/change-department/select-branch',
+                  method: 'POST',
+                  dataType: 'json',
+                  data: {branchId: "${memoryBranchId}"},
+                  success: function(departments) {
+                      $('#select_change_department').empty();
+                      $.each(departments, function(key, department){
+                          $('#select_change_department').append('<option value="' + department.id + '">' + department.departmentName + '</option');
+                      });
+                      $('#select_change_department').val(mem_department_id);
+                  },
+                  error:  function(response) {
+                      $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
+                  }
+              });
+          } else {
+              $('#select_change_branch').trigger("change");
+          }
           let resultLineValue;
           let clickNumber = 0;
-          let mem_departmentId = "${memoryDepartmentId}";
-          $('#select_company').trigger("change");
-          $('#select_parcel').on('change', function(){
-             $('#dimensions').val("");
-             $('#note').val("");
-             $('#information').prop('checked', false);
-          });
-          $('#select_branch').on('change', function(){
-             $('#dimensions').val("");
-             $('#note').val("");
-             $('#information').prop('checked', false);
-          });
-          if(mem_departmentId>1){
-             $('#select_change_branch').val("${memoryBranchId}");
-             $.ajax({
-                 url: '../user/change-department/select-branch',
-                 method: 'POST',
-                 dataType: 'json',
-                 data: {branchId: "${memoryBranchId}"},
-                 success: function(departments) {
-                     $('#select_change_department').empty();
-                     $.each(departments, function(key, department){
-                         $('#select_change_department').append('<option value="' + department.id + '">' + department.departmentName + '</option');
-                     });
-                     $('#select_change_department').val(mem_departmentId);
-                 },
-                 error:  function(response) {
-                     $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
-                 }
-             });
-          } else {
-             $('#select_change_branch').trigger("change");
-          }
-          let parentNumber = document.getElementById("parent_number");
-          parentNumber.oninput = function(){
-              let costs_tr = document.getElementById("costs_tr");
-              let btn_add = document.getElementById("btn_add");
-              let btn_send = document.getElementById("btn_send");
-              let btn_remove = document.getElementById("btn_remove");
-              let parent_number = $('#parent_number').val();
-              if(parent_number.length>0){
-                  costs_tr.style.display = "table-row";
-                  btn_add.style.display = "block";
-                  btn_send.style.display = "none";
-                  btn_remove.style.display = "none";
-              } else {
-                  costs_tr.style.display = "none";
-                  btn_add.style.display = "none";
-                  btn_send.style.display = "block";
-                  btn_remove.style.display = "block";
-              }
-          };
           window.addEventListener("click", function(){
               clickNumber++;
               resultLineValue = $('#result_line').text();

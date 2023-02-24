@@ -30,8 +30,9 @@ window.addEventListener("load", function(){
     });
 
     $('#btn_find_user').on('click', function(event){
-        document.getElementById("show_rights").style.display = "none";
-        document.getElementById("show_table").style.display = "none";
+        $('#show_rights').css("display", "none");
+        $('#show_table').css("display", "none");
+        $('#btn_find_user').css("display", "none");
         $.ajax({
             url: '../admin/find-user',
             method: 'POST',
@@ -39,10 +40,11 @@ window.addEventListener("load", function(){
             data: {surname: $('#search_surname').val(), firstname: $('#search_firstname').val(),
                     branchId: $('#select_branch').val()},
             success: function(users) {
+                $('#btn_find_user').css("display", "block");
                 let new_lines_html ='';
                 let body = $('#users_table_body');
                 body.html('');
-                document.getElementById("show_table").style.display = "block";
+                $('#show_table').css("display", "block");
                 $.each(users, function(key, user){
                     if(!$.isArray(users)|| !users.length){
                         $('#result_line').html("Указанный в запросе пользователь отсутствует в базе.");
@@ -56,6 +58,7 @@ window.addEventListener("load", function(){
                 body.prepend(new_lines_html);
             },
             error:  function(response) {
+                $('#btn_find_user').css("display", "block");
                 $('#result_line').html("Для получения информации о правах пользователя кликните по ячейке с логином.");
             }
         });

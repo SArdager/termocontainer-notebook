@@ -4,16 +4,19 @@ $(document).ready(function(){
         var companyName = $('#companyName').val();
         if(companyName.length>1){
             if($('#select_company').val()!=1){
+                $('#btn_company').css("display", "none");
                 $.ajax({
                     url: '../admin/edit-company/company',
                     method: 'POST',
                     dataType: 'text',
                     data: {id: $('#select_company').val(), companyName: companyName, isLabor: $('#isLabor').is(':checked')},
                     success: function(message) {
+                        $('#btn_company').css("display", "block");
                         $('#result_line').html(message);
                         setTimeout(() => { document.location.href = '../admin/edit-company';}, 800);
                     },
                     error:  function(response) {
+                        $('#btn_company').css("display", "block");
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
@@ -30,17 +33,20 @@ $(document).ready(function(){
         var branchName = $('#branchName').val();
         if(branchName.length>1){
             if($('#select_branch').val()!=1){
+                $('#btn_branch').css("display", "none");
                 $.ajax({
                     url: '../admin/edit-company/branch',
                     method: 'POST',
                     dataType: 'text',
                     data: {id: $('#select_branch').val(), branchName: branchName, companyId: $('#select_company').val()},
                     success: function(message) {
+                        $('#btn_branch').css("display", "block");
                         $('#branchName').val("");
                         $('#select_company').trigger("change");
                         $('#result_line').html(message);
                     },
                     error:  function(response) {
+                        $('#btn_branch').css("display", "block");
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
@@ -57,17 +63,20 @@ $(document).ready(function(){
         var departmentName = $('#departmentName').val();
         if(departmentName.length>1){
             if($('#select_department').val()!=1){
+                $('#btn_department').css("display", "none");
                 $.ajax({
                     url: '../admin/edit-company/department',
                     method: 'POST',
                     dataType: 'text',
                     data: {id: $('#select_department').val(), departmentName: departmentName, branchId: $('#select_branch').val()},
                     success: function(message) {
+                        $('#btn_department').css("display", "block");
                         $('#departmentName').val("");
                         $('#select_branch').trigger("change");
                         $('#result_line').html(message);
                     },
                     error:  function(response) {
+                        $('#btn_department').css("display", "block");
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
@@ -82,20 +91,23 @@ $(document).ready(function(){
 
     $('#btn_del_company').on('click', function(){
         var companyName = $('#select_company option:selected').text();
-        var x = confirm("ВНИМАНИЕ!!!\nИз базы данных будет удалено предприятие `" + companyName + "` с соответствующими филиалами и объектами.\n" +
-                          "ЭТА ОПЕРАЦИЯ НЕ ВОССТАНОВИМА!!!\n\nПродолжить операцию удаления?");
+        var x = confirm("ВНИМАНИЕ!!! \nИз базы данных будет удалено предприятие `" + companyName + "` с соответствующими филиалами и объектами. \n" +
+                          "ЭТА ОПЕРАЦИЯ НЕ ВОССТАНОВИМА!!! \n\nПродолжить операцию удаления?");
         if(x){
             if($('#select_company').val()>1){
+                $('#btn_del_company').css("display", "none");
                 $.ajax({
                     url: '../admin/edit-company/delete-company',
                     method: 'POST',
                     dataType: 'text',
                     data: {id: $('#select_company').val()},
                     success: function(message) {
+                        $('#btn_del_company').css("display", "block");
                         $('#result_line').html(message);
                         setTimeout(() => { document.location.href = '../admin/edit-company';}, 800);
                     },
                     error:  function(response) {
+                        $('#btn_del_company').css("display", "block");
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
@@ -112,17 +124,20 @@ $(document).ready(function(){
                           "ЭТА ОПЕРАЦИЯ НЕ ВОССТАНОВИМА!!!\n\nПродолжить операцию удаления?");
         if(x){
             if($('#select_branch').val()>1){
+                $('#btn_del_branch').css("display", "none");
                 $.ajax({
                     url: '../admin/edit-company/delete-branch',
                     method: 'POST',
                     dataType: 'text',
                     data: {id: $('#select_branch').val()},
                     success: function(message) {
+                        $('#btn_del_branch').css("display", "block");
                         $('#branchName').val("");
                         $('#select_company').trigger("change");
                         $('#result_line').html(message);
                     },
                     error:  function(response) {
+                        $('#btn_del_branch').css("display", "block");
                         $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
                 });
@@ -134,21 +149,24 @@ $(document).ready(function(){
 
     $('#btn_del_department').on('click', function(){
         var departmentName = $('#select_department option:selected').text();
-        var x = confirm("ВНИМАНИЕ!!!\nИз базы данных будет удален объект `" + departmentName + "`.\n" +
-                          "ЭТА ОПЕРАЦИЯ НЕ ВОССТАНОВИМА!!!\n\nПродолжить операцию удаления?");
+        var x = confirm("ВНИМАНИЕ!!! \nИз базы данных будет удален объект `" + departmentName + "`. \n" +
+                          "ЭТА ОПЕРАЦИЯ НЕ ВОССТАНОВИМА!!! \n\nПродолжить операцию удаления?");
         if(x){
             if($('#select_department').val()>1){
+                $('#btn_del_department').css("display", "none");
                 $.ajax({
                     url: '../admin/edit-company/delete-department',
                     method: 'POST',
                     dataType: 'text',
                     data: {id: $('#select_department').val()},
                     success: function(message) {
+                        $('#btn_del_department').css("display", "block");
                         $('#departmentName').val("");
                         $('#select_branch').trigger("change");
                         $('#result_line').html(message);
                     },
                     error:  function(response) {
+                        $('#btn_del_department').css("display", "block");
                         $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
                 });

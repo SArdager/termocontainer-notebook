@@ -132,16 +132,19 @@ $(document).ready(function(){
     $('#btn_alarm').on('click', function(){
         var alarmGroupName = $('#alarmGroupName').val();
         if(alarmGroupName.length>1 && alarmGroupName.indexOf("лабор")<0){
+            $('#btn_alarm').css("display", "none");
             $.ajax({
                 url: 'edit-alarm-group/change-group',
                 method: 'POST',
                 dataType: 'text',
                 data: {id: $('#select_alarm_group').val(), branchId: $('#alarm_branch').val(), alarmGroupName: alarmGroupName},
                 success: function(message) {
+                    $('#btn_alarm').css("display", "block");
                     $('#result_line').html(message);
                     setTimeout(() => { document.location.href = '../admin/alarm-groups';}, 800);
                 },
                 error:  function(response) {
+                    $('#btn_alarm').css("display", "block");
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                 }
@@ -152,16 +155,19 @@ $(document).ready(function(){
     });
 
     $('#btn_del_alarm').on('click', function(){
+        $('#btn_del_alarm').css("display", "none");
         $.ajax({
             url: 'edit-alarm-group/delete-group',
             method: 'POST',
             dataType: 'text',
             data: {id: $('#select_alarm_group').val()},
             success: function(message) {
+                $('#btn_del_alarm').css("display", "block");
                 $('#result_line').html(message);
                 setTimeout(() => { document.location.href = 'alarm-groups';}, 800);
             },
             error:  function(response) {
+                $('#btn_del_alarm').css("display", "block");
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
             }
@@ -171,16 +177,19 @@ $(document).ready(function(){
     $('#btn_add_user').on('click', function(){
         if($('#select_alarm_group').val()>0){
             if($('#user_id').val()>0){
+               $('#btn_add_user').css("display", "none");
                $.ajax({
                     url: '../admin/edit-alarm-group/add-user',
                     method: 'POST',
                     dataType: 'text',
                     data: {userId: $('#user_id').val(), alarmGroupId: $('#select_alarm_group').val()},
                     success: function(message) {
+                        $('#btn_add_user').css("display", "block");
                         $('#result_line').html(message);
                         $('#select_user').val(-1);
                     },
                     error:  function(response) {
+                        $('#btn_add_user').css("display", "block");
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
@@ -197,15 +206,18 @@ $(document).ready(function(){
     $('#btn_remove_user').on('click', function(){
         if($('#select_alarm_group').val()>0){
             if($('#user_id').val()>0){
+                $('#btn_remove_user').css("display", "none");
                 $.ajax({
                     url: 'edit-alarm-group/remove-user',
                     method: 'POST',
                     dataType: 'text',
                     data: {userId: $('#user_id').val(), alarmGroupId: $('#select_alarm_group').val()},
                     success: function(message) {
+                        $('#btn_remove_user').css("display", "block");
                         $('#result_line').html(message);
                     },
                     error:  function(response) {
+                        $('#btn_remove_user').css("display", "block");
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }
@@ -222,12 +234,14 @@ $(document).ready(function(){
     var show_alarm_table = document.getElementById("show_alarm_table");
 
     $('#btn_alarm_users').on('click', function(){
+        $('#btn_alarm_users').css("display", "none");
         $.ajax({
             url: 'edit-alarm-group/get-user-group',
             method: 'POST',
             dataType: 'json',
             data: {alarmGroupId: $('#select_alarm_group').val()},
             success: function(users) {
+                $('#btn_alarm_users').css("display", "block");
                 var alarm_html = "";
                 var alarm_users_body = $('#alarm_users_body');
                 show_alarm_table.style.display = "block";
@@ -243,6 +257,7 @@ $(document).ready(function(){
                 alarm_users_body.prepend(alarm_html);
             },
             error:  function(response) {
+                $('#btn_alarm_users').css("display", "block");
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
             }

@@ -38,7 +38,7 @@
         <a class="link_line" href="check-in">Приемка термоконтейнера</a>
         <a class="link_line" href="check-out">Отгрузка термоконтейнера</a>
         <br>
-        <h2><div id="result_line"></div></h2>
+        <h3><div id="result_line"></div></h3>
         <p>
             <div class="title_row">
                 <div class="title_name">Наименование объекта:</div>
@@ -87,60 +87,21 @@
         <div id="show_search_field" class="reload_line">Поиск термоконтейнера по номеру</div>
         <div id="search_field" style="display: none">
             <div class="title_row" >
-                <span id="close_search" class="cut_line" style="margin-right: 20px; ">Скрыть таблицу поиска</span>
                 <span class="date_line">Номер термоконтейнера:</span>
                 <input type="text" id="container_number" maxlength="8" style="margin-left: 14px; width: 160px"/>
                 <button id="btn_search" style="margin-top: 2px; margin-left: 16px; ">Найти</button>
             </div>
-            <table border ="1">
-                <caption><strong>Информация по термоконтейнеру</strong></caption>
-                <thead>
-                    <th>Номер термоконтейнера</th>
-                    <th>Место нахождения</th>
-                    <th>Откуда прибыл</th>
-                    <th>Дата прибытия</th>
-                </thead>
-                <tbody class="table_body" id="search_table_body">
-                </tbody>
-            </table>
         </div>
-        <div class="title_row">
-            <div class="title_left">
-                <span id="reload_journal" class ="reload_line" >Обновить</span>
-                <img style="margin-left: 20px;" src="../resources/images/export_excel_48.png" id="btn_export_excel" align = "top" alt="">
-            </div>
-            <div id="journal_pages_title"></div>
-        </div>
-        <div class = "scroll_table">
-           <table>
-             <thead>
-               <tr>
-                 <th>Номер</th>
-                 <th>Термохрон</th>
-                 <th>Дата отправки</th>
-                 <th>Дата приемки</th>
-                 <th>Отправитель</th>
-                 <th>Получатель</th>
-                 <th>Статус</th>
-               </tr>
-             </thead>
-             <tbody id = "notes_table_body">
-             </tbody>
-             <tbody id = "containers_table_body">
-             </tbody>
-           </table>
-        </div>
-        <br>
         <div id="show_note" style="display: none">
             <div class="cut_line" id="line_cut_note" >Скрыть данные по термоконтейнеру</div>
-            <h3>Данные по перемещению термоконтейнера</h3>
+            <h2>Данные по перемещению термоконтейнера</h2>
             <input type="hidden" id="outDepartmentId" />
             <input type="hidden" id="toDepartmentId" />
             <input type="hidden" id="outUserId" />
             <input type="hidden" id="toUserId" />
             <input type="hidden" id="passUserId" />
             <table>
-                <tr>
+                <tr tabindex="0">
                     <td class="table_title">Номер отправления</td>
                     <td id="containerNoteId"></td>
                 </tr>
@@ -206,7 +167,7 @@
                     <td class="table_title">Получил</td>
                     <td id="toUser"></td>
                 </tr>
-                <tr tabindex="0">
+                <tr>
                     <td class="table_title">Статус</td>
                     <td id="status"></td>
                 </tr>
@@ -248,6 +209,33 @@
                 </tbody>
             </table>
         </div>
+        <br>
+        <div class="title_row">
+            <div class="title_left">
+                <span id="reload_journal" class ="reload_line" >Обновить</span>
+                <img style="margin-left: 20px;" src="../resources/images/export_excel_48.png" id="btn_export_excel" align = "top" alt="">
+            </div>
+            <div id="journal_pages_title"></div>
+        </div>
+        <div class = "scroll_table">
+           <table>
+             <thead>
+               <tr>
+                 <th>Номер</th>
+                 <th>Термохрон</th>
+                 <th>Дата отправки</th>
+                 <th>Дата приемки</th>
+                 <th>Отправитель</th>
+                 <th>Получатель</th>
+                 <th>Статус</th>
+               </tr>
+             </thead>
+             <tbody id = "notes_table_body">
+             </tbody>
+             <tbody id = "containers_table_body">
+             </tbody>
+           </table>
+        </div>
      </div>
     <div class="buffer" style = "height: 5em;"></div>
   </section>
@@ -255,7 +243,6 @@
     <script>
         $(document).ready(function(){
             $("h1").css("color", "blue");
-            $("h2").css("color", "red");
             let name = "${user.userFirstname}";
             document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
             $('#select_branch').trigger("change");
@@ -264,20 +251,23 @@
                 chose_department.style.display = "block";
             }
             $('#reload_journal').trigger("click");
-            var line_cut_note = document.getElementById("line_cut_note");
-            var show_note = document.getElementById("show_note");
-            var search_field = document.getElementById("search_field");
+
+            $('#show_search_field').on('click', function(){
+                if($('#search_field').css("display") == "none"){
+                    $('#search_field').css("display", "block");
+                    $('#show_search_field').html("Скрыть поле поиска");
+                } else {
+                    $('#search_field').css("display", "none");
+                    $('#show_search_field').html("Поиск термоконтейнера по номеру");
+                }
+            });
+
             $('#line_cut_note').on('click', function(){
-                show_note.style.display = "none";
+                 $('#show_note').css("display", "none");
             });
-            $('#search').on('click', function(){
-                search_field.style.display = "block";
-            });
-            $('#close_search').on('click', function(){
-                search_field.style.display = "none";
-            });
-            var resultLineValue;
-            var clickNumber = 0;
+
+            let resultLineValue;
+            let clickNumber = 0;
             window.addEventListener("click", function(){
                 clickNumber++;
                 resultLineValue = $('#result_line').text();

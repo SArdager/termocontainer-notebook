@@ -2,14 +2,14 @@ $(document).ready(function(){
 
     $('#btn_check_new').on('click', function(){
         var new_number = $('#new_number').val();
-        var dateValue = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().slice(0, -3);
         if(new_number.length > 0){
+            $('#btn_check_new').css("display", "none");
             $.ajax({
                 url: '../user/check-container/new-container',
                 method: 'POST',
                 dataType: 'text',
                 data: {containerNumber: $('#new_number').val(),
-                    valueId: $('#select_value').val(),  date: dateValue},
+                    valueId: $('#select_value').val()},
                 success: function(message) {
                     if(message.indexOf("зарегистрирован")>0){
                         var x = confirm(message);
@@ -35,10 +35,12 @@ $(document).ready(function(){
                         $('#new_number').val("");
                         $('#new_number').focus();
                     }
+                    $('#btn_check_new').css("display", "block");
                 },
                 error:  function(response) {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Ошибка регистрации термоконтейнера. Перегрузите страницу.");
+                    $('#btn_check_new').css("display", "block");
                     $('#new_number').val("");
                     $('#new_number').focus();
                 }
@@ -52,16 +54,19 @@ $(document).ready(function(){
     $('#btn_value').on('click', function(){
         var valueName = $('#value_name').val();
         if(valueName.length>1){
+            $('#btn_value').css("display", "none");
             $.ajax({
                 url: '../user/edit-container/edit-values',
                 method: 'POST',
                 dataType: 'text',
                 data: {id: $('#select_container_value').val(), valueName: valueName},
                 success: function(message) {
+                    $('#btn_value').css("display", "block");
                     $('#result_line').html(message);
                     setTimeout(() => { document.location.href = '../user/check-container';}, 800);
                },
                 error:  function(response) {
+                    $('#btn_value').css("display", "block");
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                 }
@@ -73,16 +78,19 @@ $(document).ready(function(){
 
     $('#btn_del_value').on('click', function(){
         var valueName = $('#select_container_value option:selected').text();
+        $('#btn_del_value').css("display", "none");
         $.ajax({
             url: '../user/edit-container/delete-value',
             method: 'POST',
             dataType: 'text',
             data: {id: $('#select_container_value').val()},
             success: function(message) {
+                $('#btn_del_value').css("display", "block");
                 $('#result_line').html(message);
                 setTimeout(() => { document.location.href = '../user/check-container';}, 1000);
             },
             error:  function(response) {
+                $('#btn_del_value').css("display", "block");
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
             }
@@ -104,20 +112,22 @@ $(document).ready(function(){
 
     $('#btn_write_off').on('click', function(){
         var write_off_number = $('#write_off_number').val();
-        var dateValue = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().slice(0, -3);
         if(write_off_number.length > 0){
+            $('#btn_write_off').css("display", "block");
             $.ajax({
                 url: '../user/check-container/write-off-container',
                 method: 'POST',
                 dataType: 'text',
-                data: {containerNumber: $('#write_off_number').val(), date: dateValue},
+                data: {containerNumber: $('#write_off_number').val()},
                 success: function(message) {
+                    $('#btn_write_off').css("display", "block");
                     $('#result_line').html(message);
                     $('#write_off_number').val("");
                     $('#write_off_number').focus();
                 },
                 error:  function(response) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                    $('#btn_write_off').css("display", "block");
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Ошибка списания термоконтейнера. Перегрузите страницу.");
                     $('#write_off_number').val("");
                     $('#write_off_number').focus();
@@ -131,17 +141,17 @@ $(document).ready(function(){
 
     $('#btn_send').on('click', function(){
         var send_number = $('#send_number').val();
-        var dateValue = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().slice(0, -3);
 
         if(send_number.length > 0){
             var validTime = /^[0-9]+$/;
             if(validTime.test($('#time_standard').val()) && $('#time_standard').val()>0){
+                $('#btn_send').css("display", "none");
                 $.ajax({
                     url: '../user/check-container/send-container',
                     method: 'POST',
                     dataType: 'text',
                     data: {containerNumber: $('#send_number').val(), departmentId: $('#select_department').val(),
-                         timeStandard: $('#time_standard').val(), date: dateValue},
+                         timeStandard: $('#time_standard').val()},
                     success: function(message) {
                         if(message.indexOf("уже")>0){
                             var x = confirm(message);
@@ -151,7 +161,7 @@ $(document).ready(function(){
                                     method: 'POST',
                                     dataType: 'text',
                                     data: {containerNumber: $('#send_number').val(), departmentId: $('#select_department').val(),
-                                         timeStandard: $('#time_standard').val(), date: dateValue},
+                                         timeStandard: $('#time_standard').val()},
                                     success: function(message) {
                                         $('#result_line').html(message);
                                         $('#send_number').val("");
@@ -170,8 +180,10 @@ $(document).ready(function(){
                          $('#send_number').val("");
                          $('#send_number').focus();
                         }
+                        $('#btn_send').css("display", "block");
                     },
                     error:  function(response) {
+                        $('#btn_send').css("display", "block");
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         $('#result_line').html("Ошибка регистрации отгрузки термоконтейнера. Перегрузите страницу.");
                         $('#send_number').val("");
@@ -192,8 +204,9 @@ $(document).ready(function(){
         var find_html = "";
         $('#find_table_body').html("");
         if(validFindNumber.test($('#find_number').val())){
+            $('#btn_find').css("display", "none");
             $.ajax({
-                url: '../user/check-container/find-container',
+                url: '../user/check-container/find-container-place',
                 method: 'POST',
                 dataType: 'json',
                 data: {findNumber: $('#find_number').val()},
@@ -212,8 +225,10 @@ $(document).ready(function(){
                     find_html+= "<tr></tbody></table>";
                     $('#find_table_body').prepend(find_html);
                     $("tr[tabindex=2]").focus();
+                    $('#btn_find').css("display", "block");
                 },
                 error:  function(response) {
+                    $('#btn_find').css("display", "block");
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Ошибка поиска по базе. Перегрузите страницу.");
                 }
@@ -227,6 +242,7 @@ $(document).ready(function(){
         var search_html = "";
         $('#search_table_body').html("");
         var selectedBranchId = $('#select_branch_search').val();
+        $('#btn_search').css("display", "none");
         $.ajax({
             url: '../user/check-container/search-container',
             method: 'POST',
@@ -273,8 +289,10 @@ $(document).ready(function(){
                 }
                 $('#search_table_body').prepend(search_html);
                 $("tr[tabindex=3]").focus();
+                $('#btn_search').css("display", "block");
             },
             error:  function(response) {
+                $('#btn_search').css("display", "block");
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 $('#result_line').html("Ошибка поиска по базе. Перегрузите страницу.");
             }
@@ -285,15 +303,18 @@ $(document).ready(function(){
         var validNumber = /^[0-9]+$/;
         if(validNumber.test($('#start_number').val()) && validNumber.test($('#end_number').val())){
             if($('#end_number').val()>=$('#start_number').val()){
+                $('#btn_print').css("display", "none");
                 $.ajax({
                     url: '../user/check-container/print-code',
                     method: 'POST',
                     dataType: 'text',
                     data: {startNumber: $('#start_number').val(), endNumber: $('#end_number').val()},
                     success: function(message) {
+                        $('#btn_print').css("display", "block");
                         $('#result_line').html(message);
                     },
                     error:  function(response) {
+                        $('#btn_print').css("display", "block");
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         $('#result_line').html("Ошибка формирования штрих-кода термоконтейнера. Перегрузите страницу.");
                     }

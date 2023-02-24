@@ -54,9 +54,10 @@ public class ParcelPointService {
         if(points!=null && points.size()>0) {
             try {
                 point = manager.createQuery("SELECT pp FROM ParcelPoint pp WHERE pp.parcelNumber = :paramParcel AND " +
-                                "pp.department.id = :paramDep", ParcelPoint.class).setParameter("paramParcel", parcelNumber)
-                        .setParameter("paramDep", departmentId).getSingleResult();
+                                "pp.department.id = :paramDep AND pp.sendTime IS NULL", ParcelPoint.class).setParameter("paramParcel", parcelNumber)
+                                .setParameter("paramDep", departmentId).setMaxResults(1).getSingleResult();
             } catch (NoResultException ex) {
+                point = null;
             }
         }
         return  point;
@@ -66,7 +67,7 @@ public class ParcelPointService {
         ParcelPoint point = new ParcelPoint();
         try {
             point = manager.createQuery("SELECT pp FROM ParcelPoint pp WHERE pp.parcelNumber = :paramParcel AND " +
-                            "pp.arriveTime IS NULL", ParcelPoint.class).setParameter("paramParcel", parcelNumber).getSingleResult();
+                            "pp.arriveTime IS NULL", ParcelPoint.class).setParameter("paramParcel", parcelNumber).setMaxResults(1).getSingleResult();
         } catch (NoResultException ex){}
         return  point;
     }

@@ -63,17 +63,20 @@ $(document).ready(function(){
         var login = $('#login').val();
         if(login.length>0){
             $('#result_line').html("Направлен запрос на сброс пароля. Ожидайте ответа.");
+            $('#btn_forget_password').css("display", "none");
             $.ajax({
                 url: 'forget-password',
                 method: 'POST',
                 dataType: 'text',
                 data: {username: login},
                 success: function(message) {
+                    $('#btn_forget_password').css("display", "block");
                     if(message.length>0){
                         $('#result_line').html(message);
                     }
                 },
                 error:  function(response) {
+                    $('#btn_forget_password').css("display", "block");
                 }
             });
         } else {

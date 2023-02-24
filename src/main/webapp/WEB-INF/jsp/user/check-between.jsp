@@ -36,7 +36,7 @@
         <a class="link_line" href="check-out">Отгрузка термоконтейнера</a>
         <a class="link_line" href="check-journal">Журнал движения термоконтейнеров</a>
         <br>
-        <h2><div id="result_line"></div></h2>
+        <h3><div id="result_line"></div></h3>
         <p>
             <div class="title_row">
                 <div class="title_name">Наименование объекта:</div>
@@ -47,7 +47,7 @@
                 <div id="userRights" class="color_text">${userRights.rights}</div>
             </div>
         </p>
-        <h2><div id="check_line"></div></h2>
+        <h3><div id="check_line"></div></h3>
         <table id="checking_view" style="display: none">
             <tr>
                 <td class="table_title">Сканирование номера</td>
@@ -80,7 +80,6 @@
     <script>
         $(document).ready(function(){
             $("h1").css("color", "blue");
-            $("h2").css("color", "red");
             let name = "${user.userFirstname}";
             document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
             var rights = $('#userRights').html();

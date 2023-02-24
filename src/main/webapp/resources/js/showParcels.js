@@ -236,28 +236,29 @@ $(document).ready(function(){
     }
 
     $('#show_search_field').on('click', function(){
-        document.getElementById('search_field').style.display = "block";
+        $('#search_field').css("display", "block");
         $('#show_search_field').html("");
         $('#parcel_number').val("");
     });
 
     $('#close_search').on('click', function(){
         $('#show_search_field').html("Поиск посылки по номеру");
-        document.getElementById('search_field').style.display = "none";
-        document.getElementById('parcel_points_field').style.display = "none";
-        document.getElementById('reload_table_line').style.display = "block";
+        $('#search_field').css("display", "none");
+        $('#parcel_points_field').css("display", "none");
+        $('#reload_table_line').css("display", "block");
         $('#parcels_pages_title').html('');
         $('#parcels_table_body').html('');
     });
 
     $('#btn_search_parcel').on('click', function(){
+        $('#btn_search_parcel').css("display", "none");
         $.ajax({
             url: '../user/load-data/search-parcel',
             method: 'POST',
             dataType: 'json',
             data: {findNumber: $('#parcel_number').val()},
             success: function(parcel) {
-
+                $('#btn_search_parcel').css("display", "block");
                 $('#parcels_table').attr("class", "table_shot");
                 document.getElementById('parcel_points_field').style.display = "block";
                 document.getElementById('reload_table_line').style.display = "none";
@@ -289,6 +290,7 @@ $(document).ready(function(){
                 }
             },
             error:  function(response) {
+                $('#btn_search_parcel').css("display", "block");
                 $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
             }
         });
@@ -319,6 +321,86 @@ $(document).ready(function(){
         $('#exportDepartmentId').val(departmentId);
         $('#export_excel').submit();
     });
+
+    $('#show_check_in').on('click', function(){
+        $('#check_in_field').css("display", "block");
+        $('#check_parcels_field').css("display", "none");
+        $('#reload_input_parcels').trigger("click");
+    });
+
+    $('#close_check_in').on('click', function(){
+        $('#check_in_field').css("display", "none");
+    });
+
+    $('#show_check_parcels').on('click', function(){
+        $('#check_parcels_field').css("display", "block");
+        $('#check_in_field').css("display", "none");
+    });
+
+    $('#close_check_parcels').on('click', function(){
+        $('#check_parcels_field').css("display", "none");
+    });
+
+    $('#clean_input_parcel').on('click', function(){
+        $('#parcel_number_income').val("");
+        $('#parcel_textarea_in').val("");
+    });
+
+    $('#reload_input_parcels').on('click', function(){
+        $('#reload_input_parcels').css("display", "none");
+        $.ajax({
+            url: '../user/load-data/parcels',
+            method: 'POST',
+            dataType: 'json',
+            success: function(parcels) {
+                let parcels_table_body = $('#input_parcels_table_body');
+                parcels_table_body.html('');
+                if(parcels!=null && parcels.length>0){
+                    let parcels_html = "";
+                    parcels_table_body.html('');
+                    $.each(parcels, function(key, parcel){
+                        parcels_html += "<tr><td>" + parcel.parcelNumber + "</td><td>" + parcel.parcelType + "</td><td>" +
+                               parcel.outDepartment  + "</td><td>" + parcel.sendDateTime + "</td><td>" + parcel.dimensions + "</td></tr>";
+                    });
+                    parcels_table_body.prepend(parcels_html);
+                } else {
+                    parcels_table_body.prepend("<tr><td colspan='5'><b>Прибытие почтового отправления не ожидается</b></td></tr>");
+                }
+                $('#reload_input_parcels').css("display", "block");
+            },
+            error:  function(response) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
+                $('#reload_input_parcels').css("display", "block");
+            }
+        });
+
+    });
+
+    $('#btn_income_parcel').on('click', function(){
+        $('#btn_income_parcel').css("display", "none");
+        $.ajax({
+            url: '../user/check-in/parcel',
+            method: 'POST',
+            dataType: 'text',
+            data: {parcelNumber: $('#parcel_number_income').val(), text: $('#parcel_textarea_in').val()},
+            success: function(message) {
+                $('#btn_income_parcel').css("display", "block");
+                if(message.indexOf("Нельзя")<0 && message.indexOf("не найдена")<0){
+                    $('#reload_input_parcels').trigger("click");
+                    $('#clean_input_parcel').trigger("click");
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('#result_line').html(message);
+            },
+            error:  function(response) {
+                $('#btn_income_parcel').css("display", "block");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                $('#result_line').html("Ошибка регистрации прибытия. Перегрузите страницу.");
+            }
+        });
+    });
+
 
 
 });

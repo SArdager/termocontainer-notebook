@@ -5,6 +5,7 @@ $(document).ready(function(){
         $('#journal_pages_title').html('');
         $('#notes_table_body').html('');
         $('#containers_table_body').html('');
+        $('#close_search').trigger('click');
         if(departmentId==1){
             if($('#department_checkbox').is(':checked')==false && $('#select_department').val()!=null){
                 departmentId = $('#select_department').val();
@@ -13,6 +14,7 @@ $(document).ready(function(){
         let sample = $('input[type="radio"][name="sample"]:checked').val();
         $('#line_cut_note').click();
         if(departmentId>0){
+            $('#reload_journal').css("display", "none");
             if(sample=="all"){
                 $.ajax({
                     url: '../user/load-data/journal-totalNotes',
@@ -27,8 +29,9 @@ $(document).ready(function(){
                         }
                     },
                     error:  function(response) {
-                       window.scrollTo({ top: 0, behavior: 'smooth' });
-                       $('#result_line').html("Ошибка обращения в базу даннных. Перегрузите страницу.");
+                        $('#reload_journal').css("display", "block");
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('#result_line').html("Ошибка обращения в базу даннных. Перегрузите страницу.");
                     }
                 });
             } else if(sample == "route"){
@@ -38,6 +41,7 @@ $(document).ready(function(){
                     dataType: 'json',
                     data: {departmentId: departmentId},
                     success: function(notes) {
+                        $('#reload_journal').css("display", "block");
                         let notes_html = "";
                         let containers_table_body = $('#containers_table_body');
                         if(notes.length>0){
@@ -47,11 +51,12 @@ $(document).ready(function(){
                                 note.toDepartment  + "</td><td>" + note.status + "</td></tr>";
                             });
                         } else{
-                            notes_html += "<tr><td colspan=6>Все отправленные термоконтейнеры доставлены</td></tr>";
+                            notes_html += "<tr><td colspan='6'>Все отправленные термоконтейнеры доставлены</td></tr>";
                         }
                         containers_table_body.prepend(notes_html);
                     },
                     error:  function(response) {
+                        $('#reload_journal').css("display", "block");
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         $('#result_line').html("Ошибка обращения в базу даннных. Перегрузите страницу.");
                     }
@@ -64,6 +69,7 @@ $(document).ready(function(){
                         dataType: 'json',
                         data: {departmentId: departmentId},
                         success: function(notes) {
+                            $('#reload_journal').css("display", "block");
                             let notes_html = "";
                             let containers_table_body = $('#containers_table_body');
                             if(notes.length>0){
@@ -73,17 +79,19 @@ $(document).ready(function(){
                                     note.toDepartment  + "</td><td>" + note.status + "</td></tr>";
                                 });
                             } else{
-                                notes_html += "<tr><td colspan=6>Отсутствуют термоконтейнеры, зарегистрированные (находящиеся) на объекте</td></tr>";
+                                notes_html += "<tr><td colspan='6'>Отсутствуют термоконтейнеры, зарегистрированные (находящиеся) на объекте</td></tr>";
                             }
                             containers_table_body.prepend(notes_html);
-
                         },
                         error:  function(response) {
+                            $('#reload_journal').css("display", "block");
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                             $('#result_line').html("Ошибка обращения в базу даннных. Перегрузите страницу.");
                         }
                     });
                 } else {
+                    $('#reload_journal').css("display", "block");
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Выберите объект, по которому следует вывести результат запроса.");
                 }
             }
@@ -161,7 +169,7 @@ $(document).ready(function(){
                     }
                 } else {
                     let table_body = $('#parcels_table_body');
-                    table_body.prepend("<tr><td colspan=8>Оплата почтовых отправлений не зарегистрирована</td></tr>");
+                    table_body.prepend("<tr><td colspan='8'>Оплата почтовых отправлений не зарегистрирована</td></tr>");
                 }
             },
             error:  function(response) {
@@ -243,6 +251,7 @@ $(document).ready(function(){
             data: {startDate: $('#startDate').val(), endDate: $('#endDate').val(),
                     departmentId: departmentId, pageNumber: pageNumber, pageSize: pageSize},
             success: function(notes) {
+                $('#reload_journal').css("display", "block");
                 let notes_html = "";
                 let pages_title = $('#journal_pages_title');
                 let table_body = $('#notes_table_body');
@@ -258,6 +267,7 @@ $(document).ready(function(){
                 }
             },
             error:  function(response) {
+                $('#reload_journal').css("display", "block");
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 $('#result_line').html("Ошибка обращения в базу даннных. Перегрузите страницу.");
             }
@@ -470,25 +480,15 @@ $(document).ready(function(){
         if(pos>0){
             let noteId = noteLine.substring(0, pos-1);
             let validNumber = /^[0-9]+$/;
-            let show_note = document.getElementById("show_note");
-            let changePay = document.getElementById("changePay");
-            let changeToBranch = document.getElementById("changeToBranch");
-            let changeToDepartment = document.getElementById("changeToDepartment");
-            let changeNote = document.getElementById("changeNote");
-            let changeArriveNote = document.getElementById("changeArriveNote");
-            let changeBetweenNote = document.getElementById("changeBetweenNote");
-            let changeButton = document.getElementById("changeButton");
-            let changeArriveButton = document.getElementById("changeArriveButton");
-            let changeBetweenButton = document.getElementById("changeBetweenButton");
-            changePay.style.display = 'none';
-            changeToBranch.style.display = 'none';
-            changeToDepartment.style.display = 'none';
-            changeNote.style.display = 'none';
-            changeArriveNote.style.display = 'none';
-            changeBetweenNote.style.display = 'none';
-            changeButton.style.display = 'none';
-            changeArriveButton.style.display = 'none';
-            changeBetweenButton.style.display = 'none';
+            $('#changePay').css("display", "none");
+            $('#changeToBranch').css("display", "none");
+            $('#changeToDepartment').css("display", "none");
+            $('#changeNote').css("display", "none");
+            $('#changeArriveNote').css("display", "none");
+            $('#changeBetweenNote').css("display", "none");
+            $('#changeButton').css("display", "none");
+            $('#changeArriveButton').css("display", "none");
+            $('#changeBetweenButton').css("display", "none");
             $('#inputSendNote').val("");
             $('#inputPay').val("0");
             $('#inputArriveNote').val("");
@@ -500,7 +500,7 @@ $(document).ready(function(){
                     dataType: 'json',
                     data: {noteId: noteId},
                     success: function(containerNote) {
-                        show_note.style.display = "block";
+                        $('#show_note').css("display", "block");
                         $('#outDepartmentId').val(containerNote.outDepartmentId);
                         $('#toDepartmentId').val(containerNote.toDepartmentId);
                         $('#outUserId').val(containerNote.outUserId);
@@ -523,11 +523,11 @@ $(document).ready(function(){
                         var status = containerNote.status;
                         if(status.indexOf("В дороге")==0){
                             if($('#department_id').val() == $('#outDepartmentId').val()){
-                                changeNote.style.display = 'table-row';
-                                changePay.style.display = 'table-row';
-                                changeToBranch.style.display = 'table-row';
-                                changeToDepartment.style.display = 'table-row';
-                                changeButton.style.display = 'table-row';
+                                $('#changePay').css("display", "table-row");
+                                $('#changeToBranch').css("display", "table-row");
+                                $('#changeToDepartment').css("display", "table-row");
+                                $('#changeNote').css("display", "table-row");
+                                $('#changeButton').css("display", "table-row");
                                 $('#select_change_branch').trigger("change");
                             }
                         }
@@ -542,9 +542,9 @@ $(document).ready(function(){
                                 points_html += "<tr><td>" + point.departmentName + "</td><td>" + point.passTime +
                                         "</td><td>" + point.passUser + "</td><td>" + point.passNote + "</td></tr>";
                                 betweenDepartmentId = point.departmentId;
-                                if(betweenDepartmentId == departmentId){
-                                    changeBetweenNote.style.display = 'table-row';
-                                    changeBetweenButton.style.display = 'table-row';
+                                if(status.indexOf("В дороге")==0 && betweenDepartmentId == departmentId){
+                                    $('#changeBetweenNote').css("display", "table-row");
+                                    $('#changeBetweenButton').css("display", "table-row");
                                     $('#passUserId').val(point.passUserId);
                                 }
                             });
@@ -556,7 +556,7 @@ $(document).ready(function(){
                    },
                     error:  function(response) {
                         $('#result_line').html("Ошибка обращения в базу даннных. \nДля получения информации о движении термоконтейнера кликните по ячейке с номером.");
-                        show_note.style.display = "none";
+                        $('#show_note').css("display", "none");
                     }
                 });
             }
@@ -581,8 +581,8 @@ $(document).ready(function(){
         let currentValue = new Date().getTime();
         if(arriveValue>currentValue){
             if($('#department_id').val() == $('#toDepartmentId').val()){
-                changeArriveNote.style.display = 'table-row';
-                changeArriveButton.style.display = 'table-row';
+                $('#changeArriveNote').css("display", "table-row");
+                $('#changeArriveButton').css("display", "table-row");
             }
         }
     };
@@ -590,24 +590,32 @@ $(document).ready(function(){
     $('#btn_search').on('click', function(){
         let validNumber = /^[0-9]+$/;
         let containerNumber = $('#container_number').val();
-        let search_html = "";
-        $('#search_table_body').html("");
+        $('#journal_pages_title').html('');
+        $('#notes_table_body').html('');
         if(containerNumber.length>0 && validNumber.test(containerNumber)){
+            $('#btn_search').css("display", "none");
             $.ajax({
                 url: '../user/check-container/find-container',
                 method: 'POST',
                 dataType: 'json',
-                data: {findNumber: containerNumber},
-                success: function(note) {
-                    if(note!=null && note.containerNumber!=null){
-                        search_html += "<tr><td>" + note.containerNumber + "</td><td>" + note.toDepartment +
-                              "</td><td>" + note.outDepartment  + "</td><td>" + note.arriveTime + "</td></tr>";
+                data: {findNumber: containerNumber, endDate: $('#endDate').val()},
+                success: function(notes) {
+                    $('#btn_search').css("display", "block");
+                    let notes_html = "";
+                    let table_body = $('#notes_table_body');
+                    if(notes!=null && notes.length>0){
+                        $.each(notes, function(key, note){
+                            notes_html += "<tr><td style='color: blue; text-decoration: underline'>" + note.id + " / " + note.containerNumber +
+                            "</td><td>" + note.thermometer + "</td><td>" + note.sendTime + "</td><td>" + note.arriveTime + "</td><td>" +
+                            note.outDepartment  + "</td><td>" + note.toDepartment  + "</td><td>" + note.status + "</td></tr>";
+                        });
+                        table_body.prepend(notes_html);
                     } else {
-                        search_html+= "<tr tabindex='3'><td colspan='4' '><b>Информация о термоконтенере не найдена. Проверьте правильность ввода номера</b></td></tr>";
+                        search_html+= "<tr><td colspan='7'><b>Информация о термоконтейнере не найдена. Проверьте правильность ввода номера</b></td></tr>";
                     }
-                    $('#search_table_body').prepend(search_html);
                 },
                 error:  function(response) {
+                    $('#btn_search').css("display", "block");
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Ошибка поиска по базе. Перегрузите страницу.");
                 }
@@ -1015,8 +1023,6 @@ $(document).ready(function(){
         $('#export_payment').attr('action', 'payment/containers-exportExcel');
         window.scrollTo({ top: 0, behavior: 'smooth' });
         $('#result_line').html("Ожидайте завершение выборки и скачивания данных.");
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        $('#result_line').html("Ожидайте завершение выборки и скачивания данных.");
         $('#export_payment').submit();
     });
 
@@ -1056,10 +1062,6 @@ $(document).ready(function(){
         window.scrollTo({ top: 0, behavior: 'smooth' });
         $('#result_line').html("Ожидайте завершение выборки и скачивания данных.");
         $('#export_route').submit();
-    });
-
-    $('#show_search_field').on('click', function(){
-        document.getElementById('search_field').style.display = "block";
     });
 
     $('#container_clean').on('click', function(){

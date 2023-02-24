@@ -36,7 +36,7 @@
         <a class="link_line" href="check-out">Отгрузка термоконтейнера</a>
         <a class="link_line" href="check-journal">Журнал движения термоконтейнеров</a>
         <br>
-        <h2><div id="result_line"></div></h2>
+        <h3><div id="result_line"></div></h3>
         <p>
             <div class="title_row">
                 <div class="title_name">Наименование объекта:</div>
@@ -76,8 +76,8 @@
         </div>
         <br>
         <hr>
-        <h3>Приемка термоконтейнера</h3>
-        <h2><div id="check_line"></div></h2>
+        <h2>Приемка термоконтейнера</h2>
+        <h3><div id="check_line"></div></h3>
         <div id="checking_view" style="display: none">
             <table>
                 <tr>
@@ -112,18 +112,16 @@
     <script>
         $(document).ready(function(){
             $("h1").css("color", "blue");
-            $("h2").css("color", "red");
             let name = "${user.userFirstname}";
-            document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
+                document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
             let rights = $('#userRights').html();
-            let checking_view = document.getElementById("checking_view");
 
             if(rights.indexOf("ВНЕСЕНИЕ")>-1){
-                checking_view.style.display = "block";
-            } else if(rights.indexOf("УЧЕТ")>-1){
-                checking_view.style.display = "block";
-            } else if(rights.indexOf("ЛАБОР")>-1){
-                checking_view.style.display = "block";
+                $('#checking_view').css("display", "block");
+            } else if(rights.indexOf("ТЕРМОКОНТЕЙНЕР")>0){
+                $('#checking_view').css("display", "block");
+            } else if(rights.indexOf("ЛАБОРАТОРИИ")>0){
+                $('#checking_view').css("display", "block");
             } else {
                 $('#check_line').html("Права на регистрацию термоконтейнеров отсутствуют");
             }

@@ -24,7 +24,7 @@
         <br>
         <a class="link_line" href="../work-starter">Вернуться</a>
         <br>
-        <h2><div id="result_line"></div></h2>
+        <h3><div id="result_line"></div></h3>
         <p>
             <div class="title_row">
                 <div class="title_name">Наименование объекта:</div>
@@ -111,7 +111,6 @@
     <script>
         $(document).ready(function(){
             $("h1").css("color", "blue");
-            $("h2").css("color", "red");
             let name = "${user.userFirstname}";
             document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
             $('#select_company').trigger("change");

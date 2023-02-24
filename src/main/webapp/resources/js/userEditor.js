@@ -39,17 +39,20 @@ $(document).ready(function(){
     $('#btn_reset').on('click', function(){
         let userId = $('#user_id').val();
         if(userId > 0){
+            $('#btn_reset').css("display", "none");
             $.ajax({
                 url: '../admin/reset-password',
                 method: 'POST',
                 dataType: 'text',
                 data: {id: $('#user_id').val()},
                 success: function(message) {
+                    $('#btn_reset').css("display", "block");
                     $('#result_line').html(message);
                     $('#user_name').val("");
                     $('#password').val("");
                 },
                 error:  function(response) {
+                    $('#btn_reset').css("display", "block");
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                 }
@@ -99,6 +102,7 @@ $(document).ready(function(){
     $('#btn_edit_user').on('click', function(){
         let userId = $('#user_id').val();
         if(userId > 0){
+            $('#btn_edit_user').css("display", "none");
             $.ajax({
                 url: '../admin/edit-user',
                 method: 'POST',
@@ -108,11 +112,13 @@ $(document).ready(function(){
                     email: $('#email').val(), username: $('#username').val(),
                     isEnabled: $('#is_enabled').val()},
                 success: function(message) {
+                    $('#btn_edit_user').css("display", "block");
                     $('#result_line').html(message);
                     $('#user_name').val("");
                     $('#password').val("");
                 },
                 error:  function(response) {
+                    $('#btn_edit_user').css("display", "block");
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                 }
