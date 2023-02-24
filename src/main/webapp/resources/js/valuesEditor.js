@@ -4,6 +4,7 @@ $(document).ready(function(){
         if($('#select_first_department').val()>0 && $('#select_second_department').val()>0 ){
             var validTime = /^[0-9]+$/;
             if(validTime.test($('#time_standard').val()) && $('#time_standard').val()>0){
+                $('#btn_standard').css("display", "none");
                 $.ajax({
                     url: '../user/load-data/edit-standard',
                     method: 'POST',
@@ -11,9 +12,12 @@ $(document).ready(function(){
                     data: {standardId: $('#standard_id').val(), firstPointId: $('#select_first_department').val(),
                         secondPointId: $('#select_second_department').val(), timeStandard: $('#time_standard').val()},
                     success: function(message) {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
                         $('#result_line').html(message);
+                        $('#btn_standard').css("display", "block");
                     },
                     error:  function(response) {
+                        $('#btn_standard').css("display", "block");
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                     }

@@ -51,7 +51,7 @@
         <br>
         <br>
         <p >
-            <h3 id="forget_password" style="margin-left: 16px;">Забыли пароль?</h3>
+            <h4 id="forget_password" style="margin-left: 16px;">Забыли пароль?</h4>
             <div id="show_forget" style="display: none; margin-left: 16px;">
                 <b>Пароль не восстанавливается!</b> <br>Если Вы забыли пароль, то потребуется его сбросить. <br>
                 Временный пароль будет отправлен на Ваш адрес корпоративной электронной почты.<br>
@@ -65,8 +65,7 @@
     <script>
         $(document).ready(function(){
             $("h1").css("color", "blue");
-            $("h3").css("color", "blue");
-            $("h3").css("text-decoration", "underline");
+            $("h4").css("color", "blue");
             var forgetNumber = 0;
             var show_forget = document.getElementById("show_forget");
             $('#forget_password').on('click', function(){

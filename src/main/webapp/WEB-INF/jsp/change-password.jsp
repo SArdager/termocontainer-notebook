@@ -25,7 +25,7 @@
   <section>
      <div class="container">
         <h1>Смена пароля</h1>
-        <h2><div id="result_line"></div></h2>
+        <h3><div id="result_line"></div></h3>
         <br>
         <form:form id="change_password" action="change-password/change" method="post">
         <table>
@@ -34,7 +34,7 @@
                 <td><input type="password" id="password" name="password" size="40" autofocus="true" required/></td>
             </tr>
             <tr>
-                <td class="table_title">Перегрузите страницу пароль</td>
+                <td class="table_title">Подтвердите пароль</td>
                 <td><input type="password" id="confirm_password" size="40" autofocus="true" required/></td>
             </tr>
             <tr>
@@ -51,7 +51,6 @@
     <script>
         $(document).ready(function(){
             $("h1").css("color", "blue");
-            $("h2").css("color", "red");
             var resultLineValue;
             var clickNumber = 0;
             window.addEventListener("click", function(){

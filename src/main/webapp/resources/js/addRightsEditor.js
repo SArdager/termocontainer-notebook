@@ -95,6 +95,7 @@ $(document).ready(function(){
         let user_rights = $('input[type="radio"][name="rights"]:checked').val();
 
         if($('#user_id').val() > 0){
+            $('#btn_rights').css("display", "none");
             $.ajax({
                 url: '../user/change-rights',
                 method: 'POST',
@@ -102,11 +103,14 @@ $(document).ready(function(){
                 data: {userId: $('#user_id').val(), departmentId: $('#select_department').val(),
                     rights: user_rights },
                 success: function(message) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html(message);
+                    $('#btn_rights').css("display", "block");
                 },
                 error:  function(response) {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
+                    $('#btn_rights').css("display", "block");
                 }
             });
         } else {
@@ -117,17 +121,21 @@ $(document).ready(function(){
     $('#btn_del').on('click', function(){
 
         if($('#user_id').val() > 0){
+            $('#btn_del').css("display", "none");
             $.ajax({
                 url: '../user/del-user',
                 method: 'POST',
                 dataType: 'text',
                 data: {id: $('#user_id').val()},
                 success: function(message) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html(message);
+                    $('#btn_del').css("display", "block");
                 },
                 error:  function(response) {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
+                    $('#btn_del').css("display", "block");
                 }
             });
         } else {

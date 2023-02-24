@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 @Table(name="event_logs")
 public class EventLog  implements Serializable {
     @Id
+    @Column(columnDefinition = "serial", name = "log_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "log_id")
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)

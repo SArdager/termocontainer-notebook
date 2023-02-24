@@ -33,7 +33,7 @@
         <br>
         <a href="start-page">Вернуться</a>
         <br>
-        <h2><div id="result_line"></div></h2>
+        <h3><div id="result_line"></div></h3>
         <p>
             <div class="title_row">
                 <div class="title_name">Наименование объекта:</div>
@@ -78,8 +78,10 @@
                 <span class="text_line">- по филиалу</span>
             </div>
         </div>
-        <div id="show_payment" style="margin-left: 40px;"><b><u>Оплата за транспортировку термоконтейнеров</u></b></div>
+        <h4 id="show_payment">Оплата за транспортировку термоконтейнеров</h4>
+        <h4 id="show_parcels">Оплата за транспортировку посылок</h4>
         <div id="payment_field" style="display: none">
+            <div id="close_containers" class="cut_line">Скрыть поле оплаты за транспортировку термоконтейнеров</div>
             <div class="title_row">
                <div class="title_left">
                    <span id="reload_payment" class ="reload_line">Показать</span>
@@ -89,6 +91,7 @@
             </div>
             <div id="payment_table" class = "scroll_table">
                <table>
+                 <caption><strong>Информация по транспортировке термоконтейнеров</strong></caption>
                  <thead>
                    <tr>
                      <th>Номер</th>
@@ -106,8 +109,8 @@
             </div>
         </div>
         <br>
-        <div id="show_parcels" style="margin-left: 40px;"><b><u>Оплата за транспортировку посылок</u></b></div>
         <div id="parcels_field" style="display: none">
+            <div id="close_parcels" class="cut_line">Скрыть поле оплаты за транспортировку посылок</div>
             <div class="title_row">
                <div class="title_left">
                    <span id="reload_parcels" class ="reload_line">Показать</span>
@@ -117,6 +120,7 @@
             </div>
             <div id="parcels_payment_table" class = "scroll_table">
                <table>
+                 <caption><strong>Информация по транспортировке посылок</strong></caption>
                  <thead>
                    <tr>
                      <th>Номер</th>
@@ -189,7 +193,6 @@
     <script>
         $(document).ready(function(){
             $("h1").css("color", "blue");
-            $("h2").css("color", "red");
             let name = "${user.userFirstname}";
             document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
             if(${department.id}==1){
@@ -198,28 +201,21 @@
             } else {
                 $('#select_branch').val(${department.branch.id});
             }
-            let payment_field = document.getElementById("payment_field");
             $('#show_payment').on('click', function(){
-                if(payment_field.style.display == 'block'){
-                    payment_field.style.display = 'none';
-                    $('#show_payment').html("<b><u>Оплата за транспортировку термоконтейнеров</u></b>");
-                    $('#show_payment').css("align", "left");
-                } else {
-                    payment_field.style.display = 'block';
-                    $('#show_payment').html("<b><u>Скрыть поле оплаты за транспортировку термоконтейнеров</u></b>");
-                    $('#show_payment').css("align", "right");
-                }
+                $('#payment_field').css("display", "block");
+                $('#parcels_field').css("display", "none");
             });
-            let parcels_field = document.getElementById("parcels_field");
             $('#show_parcels').on('click', function(){
-                if(parcels_field.style.display == 'block'){
-                    parcels_field.style.display = 'none';
-                    $('#show_parcels').html("<b><u>Оплата за транспортировку посылок</u></b>");
-                } else {
-                    parcels_field.style.display = 'block';
-                    $('#show_parcels').html("<b><u>Скрыть поле оплаты за транспортировку посылок</u></b>");
-                }
+                $('#payment_field').css("display", "none");
+                $('#parcels_field').css("display", "block");
             });
+            $('#close_containers').on('click', function(){
+                $('#payment_field').css("display", "none");
+            });
+            $('#close_parcels').on('click', function(){
+                $('#parcels_field').css("display", "none");
+            });
+
             $('#select_branch').trigger("change");
             $('#department_checkbox').on('click', function(){
                 if($('#department_checkbox').is(':checked')){

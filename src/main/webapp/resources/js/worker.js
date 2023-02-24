@@ -15,7 +15,6 @@ $(document).ready(function(){
     });
 
     function registerOut(){
-        let btn_outcome = document.getElementById("btn_outcome");
         let number_outcome = $('#number_outcome').val();
         let firstLetter = number_outcome.substring(0, 1);
         let dateValue = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().slice(0, -3);
@@ -24,13 +23,13 @@ $(document).ready(function(){
         if(number_outcome.length > 0){
             if(validNumber.test($('#payment').val())){
                 if(validNumber.test(firstLetter)){
-                    btn_outcome.style.display = "none";
+                    $('#btn_outcome').css("display", "none");
                     $.ajax({
                         url: 'check-out/send',
                         method: 'POST',
                         dataType: 'text',
                         data: {toId: $('#select_department').val(), containerNumber: $('#number_outcome').val(), text: $('#textarea_out').val(),
-                            payment: $('#payment').val(), amount: $('#amount').val(), thermometer: $('#thermometer').val(), date: dateValue},
+                            payment: $('#payment').val(), amount: $('#amount').val(), thermometer: $('#thermometer').val()},
                         success: function(message) {
                             if(message.indexOf("уже оформлен")>0){
                                 let x = confirm(message);
@@ -40,9 +39,8 @@ $(document).ready(function(){
                                         method: 'POST',
                                         dataType: 'text',
                                         data: {toId: $('#select_department').val(), containerNumber: $('#number_outcome').val(), text: $('#textarea_out').val(),
-                                            payment: $('#payment').val(), amount: $('#amount').val(), thermometer: $('#thermometer').val(), date: dateValue},
+                                            payment: $('#payment').val(), amount: $('#amount').val(), thermometer: $('#thermometer').val()},
                                         success: function(message) {
-                                            $('#result_line').html(message);
                                             $('#number_outcome').val("");
                                             $('#container_number').val("");
                                             $('#costs_part').val("0");
@@ -53,17 +51,16 @@ $(document).ready(function(){
                                             $('#status_outcome').html("Переоформлена отгрузка термоконтейнера");
                                             window.scrollTo({ top: 0, behavior: 'smooth' });
                                             $('#result_line').html("Отгрузка термоконтейнера переоформлена на другой объект");
+                                            $('#btn_outcome').css("display", "block");
                                         },
                                         error:  function(response) {
                                             window.scrollTo({ top: 0, behavior: 'smooth' });
                                             $('#result_line').html("Ошибка регистрации отгрузки термоконтейнера. Перегрузите страницу.");
-                                            btn_outcome.style.display = "block";
+                                            $('#btn_outcome').css("display", "block");
                                         }
                                     });
                                 }
                             } else if(message.indexOf("пользователь")>0){
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                                $('#result_line').html(message);
                                 $('#number_outcome').val("");
                                 $('#container_number').val("");
                                 $('#costs_part').val("0");
@@ -71,9 +68,9 @@ $(document).ready(function(){
                                 $('#amount').val("1");
                                 $('#number_outcome').focus();
                                 $('#status_outcome').html("Нельзя оформить отправку термоконтейнера");
-                            } else {
                                 window.scrollTo({ top: 0, behavior: 'smooth' });
                                 $('#result_line').html(message);
+                            } else {
                                 $('#number_outcome').val("");
                                 $('#container_number').val("");
                                 $('#costs_part').val("0");
@@ -82,13 +79,15 @@ $(document).ready(function(){
                                 $('#number_outcome').focus();
                                 $('#time_outcome').html(dateValue);
                                 $('#status_outcome').html("Регистрация отправки термоконтейнера");
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                $('#result_line').html(message);
                             }
-                            btn_outcome.style.display = "block";
+                            $('#btn_outcome').css("display", "block");
                         },
                         error:  function(response) {
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                             $('#result_line').html("Ошибка регистрации отгрузки. Перегрузите страницу.");
-                            btn_outcome.style.display = "block";
+                            $('#btn_outcome').css("display", "block");
                         }
                     });
                     document.getElementById("payment_tr").style.display = "table-row";
@@ -97,16 +96,14 @@ $(document).ready(function(){
                     document.getElementById("container_tr").style.display = "none";
                     document.getElementById("amount_tr").style.display = "table-row";
                 } else {
-                    btn_outcome.style.display = "none";
+                    $('#btn_outcome').css("display", "none");
                     $.ajax({
                         url: 'check-out/send-parcel',
                         method: 'POST',
                         dataType: 'text',
                         data: {toId: $('#select_department').val(), parcelNumber: $('#number_outcome').val(),
-                            text: $('#textarea_out').val(), payment: $('#payment').val(), date: dateValue},
+                            text: $('#textarea_out').val(), payment: $('#payment').val()},
                         success: function(message) {
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                            $('#result_line').html(message);
                             $('#number_outcome').val("");
                             $('#container_number').val("");
                             $('#costs_part').val("0");
@@ -115,17 +112,19 @@ $(document).ready(function(){
                             $('#number_outcome').focus();
                             $('#status_outcome').html("Отгрузка посылки оформлена.");
                             $('#reload_output').trigger("click");
-                            btn_outcome.style.display = "block";
-                            document.getElementById("payment_tr").style.display = "table-row";
-                            document.getElementById("btn_add_parcel").style.display = "none";
-                            document.getElementById("costs_part_tr").style.display = "none";
-                            document.getElementById("container_tr").style.display = "none";
-                            document.getElementById("amount_tr").style.display = "table-row";
+                            $('#btn_outcome').css("display", "block");
+                            $('#payment_tr').css("display", "table-row");
+                            $('#btn_add_parcel').css("display", "none");
+                            $('#costs_part_tr').css("display", "none");
+                            $('#container_tr').css("display", "none");
+                            $('#amount_tr').css("display", "table-row");
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            $('#result_line').html(message);
                         },
                         error:  function(response) {
+                            $('#btn_outcome').css("display", "block");
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                             $('#result_line').html("Ошибка регистрации отгрузки. Перегрузите страницу.");
-                            btn_outcome.style.display = "block";
                         }
                     });
                 }
@@ -140,20 +139,19 @@ $(document).ready(function(){
     }
 
     $('#btn_income').on('click', function(){
-        let btn_income = document.getElementById('btn_income');
         let number_income = $('#number_income').val();
         let dateValue = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().slice(0, -3);
         $('#time_income').html("");
         $('#status_income').html("");
         if(number_income.length > 0){
-            btn_income.style.display = "none";
+            $('#btn_income').css("display", "none");
             let firstLetter = number_income.substring(0, 1);
             if(validNumber.test(firstLetter)){
                 $.ajax({
                     url: '../user/check-in/check',
                     method: 'POST',
                     dataType: 'text',
-                    data: {containerNumber: $('#number_income').val(), date: dateValue, text: $('#textarea_in').val()},
+                    data: {containerNumber: $('#number_income').val(), text: $('#textarea_in').val()},
                     success: function(message) {
                         if(message.indexOf("ЖЕЛАЕТЕ")>0){
                             let x = confirm(message);
@@ -162,35 +160,41 @@ $(document).ready(function(){
                                     url: '../user/check-in/check-route-off',
                                     method: 'POST',
                                     dataType: 'text',
-                                    data: {containerNumber: $('#number_income').val(), date: dateValue, text: $('#textarea_in').val()},
+                                    data: {containerNumber: $('#number_income').val(), text: $('#textarea_in').val()},
                                     success: function(message) {
+                                        $('#btn_income').css("display", "block");
+                                        $('#number_income').val("");
+                                        $('#textarea_in').val("");
+                                        $('#status_income').html("Зарегистрировано прибытие");
+                                        $('#time_income').html(dateValue);
                                         window.scrollTo({ top: 0, behavior: 'smooth' });
                                         $('#result_line').html(message);
-                                        $('#time_income').html(dateValue);
-                                        $('#status_income').html("Зарегистрировано прибытие");
                                     },
                                     error:  function(response) {
+                                        $('#btn_income').css("display", "block");
                                         window.scrollTo({ top: 0, behavior: 'smooth' });
                                         $('#result_line').html("Ошибка регистрации термоконтейнера. Перегрузите страницу.");
                                     }
                                 });
                             }
                         } else if(message.indexOf("внесено")>0){
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                            $('#result_line').html(message);
                             $('#time_income').html(dateValue);
                             $('#status_income').html(message.substring(41));
+                            $('#number_income').val("");
+                            $('#textarea_in').val("");
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            $('#result_line').html(message);
                         } else {
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                             $('#result_line').html(message);
                         }
                         $('#reload_input').trigger("click");
-                        btn_income.style.display = "block";
+                        $('#btn_income').css("display", "block");
                     },
                     error:  function(response) {
+                        $('#btn_income').css("display", "block");
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         $('#result_line').html("Ошибка регистрации прибытия. Перегрузите страницу.");
-                        btn_income.style.display = "block";
                     }
                 });
             } else {
@@ -198,21 +202,21 @@ $(document).ready(function(){
                     url: '../user/check-in/parcel',
                     method: 'POST',
                     dataType: 'text',
-                    data: {parcelNumber: $('#number_income').val(), date: dateValue, text: $('#textarea_in').val()},
+                    data: {parcelNumber: $('#number_income').val(), text: $('#textarea_in').val()},
                     success: function(message) {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                        $('#result_line').html(message);
-                        if(message.indexOf("Нельзя")<0){
+                        $('#btn_income').css("display", "block");
+                        if(message.indexOf("Нельзя")<0 && message.indexOf("не найдена")<0){
                             $('#time_income').html(dateValue);
-                            $('#status_income').html(message.substring(17));
+                            $('#status_income').html("Прибытие посылки зарегистрировано");
                             $('#reload_input').trigger("click");
                         }
-                        btn_income.style.display = "block";
-                    },
+                         window.scrollTo({ top: 0, behavior: 'smooth' });
+                         $('#result_line').html(message);
+                   },
                     error:  function(response) {
+                        $('#btn_income').css("display", "block");
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                         $('#result_line').html("Ошибка регистрации прибытия. Перегрузите страницу.");
-                        btn_income.style.display = "block";
                     }
                 });
             }
@@ -220,62 +224,86 @@ $(document).ready(function(){
     });
 
     $('#btn_check').on('click', function(){
-        let btn_check = document.getElementById('btn_check');
         let number_check = $('#number_check').val();
         let dateValue = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().slice(0, -3);
         $('#time_check').html("");
         $('#status_check').html("");
         if(number_check.length > 0){
-            btn_check.style.display = "none";;
+            $('#btn_check').css("display", "none");
             $.ajax({
                 url: '../user/check-between/check',
                 method: 'POST',
                 dataType: 'text',
-                data: {containerNumber: $('#number_check').val(), date: dateValue, text: $('#textarea_between').val()},
+                data: {containerNumber: $('#number_check').val(), text: $('#textarea_between').val()},
                 success: function(message) {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    $('#result_line').html(message);
-                    $('#time_check').html(dateValue);
-                    $('#status_check').html("Прохождение термоконтейнера зарегистрировано");
-                    btn_check.style.display = "block";
+                    if(message.indexOf("ДРУГОГО")>0){
+                        let x = confirm(message);
+                        if(x){
+                            $.ajax({
+                                url: '../user/check-between/check-again',
+                                method: 'POST',
+                                dataType: 'text',
+                                data: {containerNumber: $('#number_check').val(), text: $('#textarea_between').val()},
+                                success: function(message) {
+                                    $('#btn_check').css("display", "block");
+                                    $('#time_income').html(dateValue);
+                                    $('#status_income').html("Прохождение термоконтейнера зарегистрировано");
+                                    $('#number_check').val("");
+                                    $('#textarea_between').val("");
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    $('#result_line').html(message);
+                                },
+                                error:  function(response) {
+                                    $('#btn_check').css("display", "block");
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    $('#result_line').html("Ошибка регистрации термоконтейнера. Перегрузите страницу.");
+                                }
+                            });
+                        }
+                    } else {
+                        $('#number_check').val("");
+                        $('#textarea_between').val("");
+                        $('#time_check').html(dateValue);
+                        $('#status_check').html("Прохождение термоконтейнера зарегистрировано");
+                        $('#btn_check').css("display", "block");
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        $('#result_line').html(message);
+                    }
                 },
                 error:  function(response) {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Ошибка регистрации термоконтейнера. Перегрузите страницу.");
-                    btn_check.style.display = "block";
+                    $('#btn_check').css("display", "block");
                 }
             });
         }
     });
 
     $('#btn_courier').on('click', function(){
-        let btn_courier = document.getElementById('btn_courier');
-        let number_check = $('#number_check').val();
-        let dateValue = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().slice(0, -3);
-        if(number_check.length > 0){
-            btn_courier.style.display = "none";;
+        let number_courier = $('#number_courier').val();
+        if(number_courier.length > 0){
+        $('#btn_courier').css("display", "none");
             $.ajax({
-                url: '../user/check-between/check',
+                url: '../user/check-between/check-courier',
                 method: 'POST',
                 dataType: 'text',
-                data: {containerNumber: $('#number_check').val(), date: dateValue, text: $('#textarea_courier').val()},
+                data: {containerNumber: $('#number_courier').val(), text: $('#textarea_courier').val()},
                 success: function(message) {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html(message);
-                    btn_courier.style.display = "block";
+                    $('#btn_courier').css("display", "block");
                 },
                 error:  function(response) {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Ошибка регистрации термоконтейнера. Перегрузите страницу.");
-                    btn_courier.style.display = "block";
+                    $('#btn_courier').css("display", "block");
                 }
             });
         }
     });
 
     $('#reload_input').on('click', function(){
-        document.getElementById('parcels_table').style.display = "none";
-
+        $('#parcels_table').css("display", "none");
         $.ajax({
             url: '../user/load-data/container-notes',
             method: 'POST',
@@ -299,7 +327,7 @@ $(document).ready(function(){
                     dataType: 'json',
                     success: function(parcels) {
                         if(parcels!=null && parcels.length>0){
-                            document.getElementById('parcels_table').style.display = "block";
+                            $('#parcels_table').css("display", "block");
                             let parcels_html = "";
                             let parcels_table_body = $('#parcels_table_body');
                             parcels_table_body.html('');
@@ -324,7 +352,7 @@ $(document).ready(function(){
     });
 
     $('#reload_output').on('click', function(){
-        document.getElementById("parcels_field").style.display = "block";
+        $('#parcels_field').css("display", "block");
         $('#show_parcels').html("Скрыть поле просмотра посылок");
         $.ajax({
             url: '../user/load-data/ready_parcels',
@@ -349,17 +377,6 @@ $(document).ready(function(){
                 $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
             }
         });
-    });
-
-    let parcels_field = document.getElementById("parcels_field");
-    $('#show_parcels').on('click', function(){
-        if(parcels_field.style.display == 'block'){
-            parcels_field.style.display = "none";
-            $('#show_parcels').html("Поле просмотра посылок");
-        } else {
-            parcels_field.style.display = "block";
-            $('#show_parcels').html("Скрыть поле просмотра посылок");
-        }
     });
 
     $('#btn_change').on('click', function(){
@@ -403,6 +420,9 @@ $(document).ready(function(){
 
     function saveChanges(isOutChange){
         $('#line_cut_parcel').click();
+        $('#btn_change').css("display", "none");
+        $('#btn_arrive_change').css("display", "none");
+        $('#btn_between_change').css("display", "none");
         $.ajax({
             url: '../user/check-out/save-changes',
             method: 'POST',
@@ -410,10 +430,16 @@ $(document).ready(function(){
             data: {noteId: $('#containerNoteId').text(), changeNote: $('#inputSendNote').val(), changeArriveNote: $('#inputArriveNote').val(), changeBetweenNote: $('#inputBetweenNote').val(),
                     changePay: $('#inputPay').val(), toDepartment: $('#select_change_department').val(), departmentId: $('#department_id').val(), isOutChange: isOutChange},
             success: function(message) {
+                $('#btn_change').css("display", "block");
+                $('#btn_arrive_change').css("display", "block");
+                $('#btn_between_change').css("display", "block");
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 $('#result_line').html(message);
             },
             error:  function(response) {
+                $('#btn_change').css("display", "block");
+                $('#btn_arrive_change').css("display", "block");
+                $('#btn_between_change').css("display", "block");
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 $('#result_line').html("Ошибка записи изменений в маршрутный лист. Перегрузите страницу.");
             }
@@ -433,210 +459,43 @@ $(document).ready(function(){
         }
     });
 
-    $('#btn_parcel').on('click', function(){
-        let btn_parcel = document.getElementById("btn_parcel");
-        let type_parcel = $('#select_parcel').val();
-        let dimensions = $('#dimensions').val();
-        if(type_parcel>0){
-            if(dimensions.length<2 && type_parcel>1){
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                $('#result_line').html("Внесите габариты почтового отправления.");
-            } else {
-                let dateValue = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().slice(0, -3);
-                btn_parcel.style.display = "none";
-                $.ajax({
-                    url: '../user/check-parcel/create',
-                    method: 'POST',
-                    dataType: 'text',
-                    data: {parcelType: type_parcel, destinationId: $('#select_department').val(), outDepartmentId: $('#departmentId').val(),
-                        note: $('#note').val(), date: dateValue, dimensions: dimensions, information: $('#information').is(':checked')},
-                    success: function(parcelNumber) {
-                        if(parcelNumber!= null && parcelNumber.length == 8){
-                            $('#parcel_number').val(parcelNumber);
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                            $('#result_line').html("Номер почтового отправления: " + parcelNumber);
-                            $('#reload_parcel').trigger("click");
-                        } else {
-                            $('#parcelNumber').val("");
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                            $('#result_line').html("Ошибка создания почтового отправления. Перегрузите страницу.");
-                        }
-                        btn_parcel.style.display = "block";
-                    },
-                    error:  function(response) {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                        $('#result_line').html("Ошибка создания почтового отправления. Перегрузите страницу.");
-                        btn_parcel.style.display = "block";
-                    }
-                });
-            }
-        } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            $('#result_line').html("Выберите вид почтового отправления.");
-        }
-    });
-
-    $('#reload_parcel').on('click', function(){
-        $.ajax({
-            url: '../user/check-parcel/load-results',
-            method: 'POST',
-            dataType: 'json',
-            data: {departmentId: $('#departmentId').val()},
-            success: function(parcels) {
-                let parcels_html = "";
-                let parcels_table_body = $('#parcels_table_body');
-                parcels_table_body.html('');
-                if(parcels!=null && parcels.length>0){
-                    $.each(parcels, function(key, parcel){
-                        parcels_html += "<tr><td>" + parcel.parcelNumber + "</td><td>" + parcel.destinationName +
-                               "</td><td>" + parcel.dimensions  + "</td><td>" + parcel.parentNumber + "</td></tr>";
-                    });
-                } else {
-                    parcels_html = "<tr><td colspan='4'>Отсутствуют подготовленные к отгрузке посылки</td></tr>";
-                }
-                parcels_table_body.prepend(parcels_html);
-                $('#parcel_number').val("");
-                document.getElementById("btn_send").style.display = "block";
-                document.getElementById("btn_remove").style.display = "block";
-                document.getElementById("btn_add").style.display = "none";
-            },
-            error:  function(response) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
-            }
-        });
-    });
-
-    $('#memory_department').on('click', function(){
-        $.ajax({
-            url: '../user/check-parcel/memory-department',
-            method: 'POST',
-            dataType: 'text',
-            data: {departmentId: $('#select_change_department').val()},
-            success: function(message) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                $('#result_line').html(message);
-            },
-            error:  function(response) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
-            }
-        });
-    });
-
-    $('#btn_send').on('click', function(){
-        let btn_send = document.getElementById("btn_send");
-        let parcel_number = $('#parcel_number').val();
-        if(parcel_number.length>0){
-            let dateValue = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().slice(0, -3);
-            btn_send.style.display = "none";
-            $.ajax({
-                url: '../user/check-parcel/send',
-                method: 'POST',
-                dataType: 'text',
-                data: {parcelNumber: parcel_number, toDepartmentId: $('#select_change_department').val(), date: dateValue},
-                success: function(message) {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    $('#result_line').html(message);
-                    $('#reload_parcel').trigger("click");
-                    if(document.getElementById("parent_number")!=null){
-                        $('#parent_number').val("");
-                    }
-                    if(document.getElementById("parcel_number")!=null){
-                        $('#parcel_number').val("");
-                    }
-                    btn_send.style.display = "block";
-                },
-                error:  function(response) {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    $('#result_line').html("Ошибка отгрузки почтового отправления. Перегрузите страницу.");
-                    btn_send.style.display = "block";
-                }
-            });
-        } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            $('#result_line').html("Внесите номер почтового отправления.");
-        }
-    });
-
-    $('#btn_add').on('click', function(){
-        let btn_add = document.getElementById("btn_add");
-        let parcel_number = $('#parcel_number').val();
-        if(parcel_number.length>0){
-            if(validNumber.test($('#costs_part').val())){
-                btn_add.style.display = "none";
-                $.ajax({
-                    url: '../user/check-parcel/add-to-parent',
-                    method: 'POST',
-                    dataType: 'text',
-                    data: {parcelNumber: parcel_number,  parentNumber: $('#parent_number').val(),
-                        toDepartmentId: $('#select_change_department').val(), costsPart: $('#costs_part').val()},
-                    success: function(message) {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                        $('#result_line').html(message);
-                        $('#reload_parcel').trigger("click");
-                        $('#parcel_number').val("");
-                        $('#parent_number').val("");
-                        document.getElementById("costs_tr").style.display = "none";
-                        btn_add.style.display = "block";
-                    },
-                    error:  function(response) {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                        $('#result_line').html("Ошибка оформления почтового отправления. Перегрузите страницу.");
-                        btn_add.style.display = "block";
-                    }
-                });
-            } else {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                $('#result_line').html("В строке доли оплаты доставки должна указана стоимость в числах (при отсутствии оплаты - ноль)");
-            }
-        } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            $('#result_line').html("Внесите номер почтового отправления.");
-        }
-    });
-
     $('#btn_add_parcel').on('click', function(){
-        let btn_add_parcel = document.getElementById("btn_add_parcel");
-        btn_add_parcel.style.display = "none";
-        let dateValue = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().slice(0, -3);
+        $('#btn_add_parcel').css("display", "none");
         $.ajax({
             url: '../user/check-parcel/add-to-parent',
             method: 'POST',
             dataType: 'text',
             data: {parcelNumber: $('#number_outcome').val(),  parentNumber: $('#container_number').val(),
-                toDepartmentId: $('#select_department').val(), costsPart: $('#costs_part').val(), date: dateValue},
+                costsPart: $('#costs_part').val()},
             success: function(message) {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 $('#result_line').html(message);
-                btn_add_parcel.style.display = "block";
+                $('#btn_add_parcel').css("display", "block");
                 $('#number_outcome').val("");
                 $('#container_number').val("");
                 $('#costs_part').val("0");
                 $('#payment').val("0");
                 $('#amount').val("1");
                 $('#reload_output').trigger("click");
-                document.getElementById("btn_outcome").style.display = "block";
-                document.getElementById("payment_tr").style.display = "table-row";
-                document.getElementById("btn_add_parcel").style.display = "none";
-                document.getElementById("costs_part_tr").style.display = "none";
-                document.getElementById("container_tr").style.display = "none";
-                document.getElementById("amount_tr").style.display = "table-row";
+                $('#btn_outcome').css("display", "block");
+                $('#payment_tr').css("display", "table-row");
+                $('#btn_add_parcel').css("display", "none");
+                $('#costs_part_tr').css("display", "none");
+                $('#container_tr').css("display", "none");
+                $('#amount_tr').css("display", "table-row");
             },
             error:  function(response) {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 $('#result_line').html("Ошибка оформления почтового отправления. Перегрузите страницу.");
-                btn_add_parcel.style.display = "block";
+                $('#btn_add_parcel').css("display", "block");
             }
         });
     });
 
     $('#btn_remove').on('click', function(){
-        let btn_remove = document.getElementById("btn_remove");
         let parcel_number = $('#parcel_number').val();
         if(parcel_number.length>0){
-            btn_remove.style.display = "none";
-            let dateValue = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().slice(0, -3);
+            $('#btn_remove').css("display", "none");
             $.ajax({
                 url: '../user/check-parcel/remove-from-parent',
                 method: 'POST',
@@ -645,7 +504,7 @@ $(document).ready(function(){
                 success: function(message) {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html(message);
-                    btn_remove.style.display = "block";
+                    $('#btn_remove').css("display", "block");
                     $('#parcel_number').val("");
                     if(document.getElementById("parent_number")!=null){
                         $('#parent_number').val("");
@@ -660,7 +519,7 @@ $(document).ready(function(){
                 error:  function(response) {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
-                    btn_remove.style.display = "block";
+                    $('#btn_remove').css("display", "block");
                 }
             });
         } else {
@@ -693,21 +552,5 @@ $(document).ready(function(){
         }
     };
 
-    $('#btn_prt').on('click', function(){
-        $.ajax({
-            url: '../user/check-container/print-code',
-            method: 'POST',
-            dataType: 'text',
-            data: {startNumber: $('#parcel_number').val()},
-            success: function(message) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                $('#result_line').html(message);
-            },
-            error:  function(response) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                $('#result_line').html("Ошибка создания штрих-кода. Перегрузите страницу.");
-            }
-        });
-    });
 
 });

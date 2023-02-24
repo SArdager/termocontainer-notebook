@@ -41,65 +41,65 @@
             </div>
         </p>
         <h2>Выбор операции</h2>
-        <h4><a href="user/change-department">Поменять объект</a></h4>
+        <h5><a href="user/change-department">Поменять объект</a></h5>
         <div id="container_field" style="display: block">
-            <h4><a href="user/check-between">Промежуточный объект регистрации</a></h4>
-            <h4><a href="user/check-in">Приемка термоконтейнера</a></h4>
-            <h4><a href="user/check-out">Отгрузка термоконтейнера</a></h4>
-            <h4><a href="user/check-journal">Журнал движения термоконтейнеров</a></h4>
-        </div>
-        <h4><a href="user/check-courier" id="courier_line" style="display: none">Учет термоконтейнеров</a></h4>
-        <div id="parcel_field" style="display: none">
-            <h4><a href="user/create-parcel">Создать почтовое отправление</a></h4>
-            <h4><a href="user/check-parcel">Отслеживание посылки</a></h4>
+            <h5><a href="user/check-between">Промежуточный объект регистрации</a></h5>
+            <h5><a href="user/check-in">Приемка термоконтейнера</a></h5>
+            <h5><a href="user/check-out">Отгрузка термоконтейнера</a></h5>
         </div>
         <br>
-        <h4><a href="user/check-container" id="account_line" style="display: none">Учет термоконтейнеров</a></h4>
-        <h4><a href="control/start-page" id="control_line" style="display: none">Отчеты по термоконтейнерам и посылкам</a></h4>
-        <h4><a href="control/edit-time-standard" id="time_line" style="display: none">Установить срок доставки</a></h4>
-        <h4><a href="control/add-rights" id="rights_line" style="display: none">Изменить права</a></h4>
+        <div id="parcel_field" style="display: none">
+            <h5><a href="user/create-parcel">Создать и отправить почтовое отправление</a></h5>
+            <h5><a href="user/check-parcel">Приемка и отслеживание посылки</a></h5>
+        </div>
+        <h5><a href="user/check-journal" id="journal_line" style="display: block">Журнал движения термоконтейнеров</a></h5>
+        <h5><a href="user/check-container" id="account_line" style="display: none">Учет термоконтейнеров</a></h5>
+        <h5><a href="control/start-page" id="control_line" style="display: none">Отчеты по термоконтейнерам и посылкам</a></h5>
+        <h5><a href="control/edit-time-standard" id="time_line" style="display: none">Установить срок доставки</a></h5>
+        <h5><a href="control/add-rights" id="rights_line" style="display: none">Изменить права</a></h5>
         <br>
         <sec:authorize access="hasRole('ADMIN')">
-            <h4><a href="admin">Администрирование системы</a></h4>
+            <h5><a href="admin">Администрирование системы</a></h5>
         </sec:authorize>
 
      </div>
   </section>
 
-    <script>
+     <script>
         $(document).ready(function(){
             $("h1").css("color", "blue");
             let name = "${user.userFirstname}";
             document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
             let rights = $('#userRights').html();
-
             if(rights.indexOf("ПОСЫЛОК")>0){
-                document.getElementById("parcel_field").style.display = "block";
-                document.getElementById("container_field").style.display = "none";
+                $('#parcel_field').css("display", "block");
+                $('#journal_line').css("display", "none");
+                $('#container_field').css("display", "none");
             }
             if(rights.indexOf("УЧЕТ")>-1){
-                document.getElementById("account_line").style.display = "block";
-            }
-            if(rights.indexOf("ДОСТАВКА")>-1){
-                document.getElementById("courier_line").style.display = "block";
-                document.getElementById("container_field").style.display = "none";
+                $('#account_line').css("display", "block");
+                $('#control_line').css("display", "block");
+                $('#journal_line').css("display", "none");
+                $('#container_field').css("display", "none");
             }
             if(rights.indexOf("СМОТР")>0){
-                document.getElementById("control_line").style.display = "block";
+                $('#control_line').css("display", "block");
+                $('#container_field').css("display", "none");
             }
             if(rights.indexOf("СРОК")>0){
-                document.getElementById("time_line").style.display = "block";
+                $('#time_line').css("display", "block");
             }
             if(rights.indexOf("ПРАВ")>0){
-                document.getElementById("rights_line").style.display = "block";
+                $('#rights_line').css("display", "block");
             }
             if(rights.indexOf("ЛАБОР")>0){
-                document.getElementById("control_line").style.display = "block";
-                document.getElementById("time_line").style.display = "block";
-                document.getElementById("parcel_field").style.display = "block";
+                $('#control_line').css("display", "block");
+                $('#time_line').css("display", "block");
+                $('#rights_line').css("display", "block");
+                $('#parcel_field').css("display", "block");
             }
        });
-    </script>
+     </script>
 
     <div class="buffer" style = "height: 5em;"></div>
 </body>

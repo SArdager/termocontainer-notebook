@@ -37,7 +37,7 @@
         <a class="link_line" href="check-in">Приемка термоконтейнера</a>
         <a class="link_line" href="check-journal">Журнал движения термоконтейнеров</a>
         <br>
-        <h2><div id="result_line"></div></h2>
+        <h3><div id="result_line"></div></h3>
         <p>
             <div class="title_row">
                 <div class="title_name">Наименование объекта:</div>
@@ -49,7 +49,7 @@
             </div>
         </p>
         <hr>
-        <h2><div id="check_line"></div></h2>
+        <h3><div id="check_line"></div></h3>
         <input type="hidden" id="departmentId" value="${department.id}" />
         <input type="hidden" id="depPrefId" value="${depPreferences.id}" />
         <div id="checking_view" style="display: none">
@@ -73,8 +73,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="table_title"><a class="link_line" href="setup">Настроить</a>
-                    <span id="other_branches">Показать все</span></td>
+                    <td class="table_title"><img src="../resources/images/icon_settings.png" id="setup" alt="">
+                    <span id="other_branches" class="float_line">Показать все</span></td>
                     <td><select id="select_department">
                         </select><br>
                     </td>
@@ -119,7 +119,7 @@
                 </tr>
                 <tr>
                     <td class="table_title"></td>
-                    <td><button id="btn_add_parcel" style="display: block">Вложить</button></td>
+                    <td><button id="btn_add_parcel" style="display: none">Вложить</button></td>
                 </tr>
                 <tr>
                     <td class="table_title">Время отгрузки</td>
@@ -145,8 +145,8 @@
                     <tbody class="table_body" id="outcome_parcels_body">
                     </tbody>
                 </table>
-                <div id="get_parcel" class ="cut_line">Выложить посылку</div>
-                <div id="get_parcel_table" style="display: none">
+                <div id="get_out_parcel" class ="cut_line" style="color: blue;">Выложить посылку</div>
+                <div id="remove_parcel_field" style="display: none">
                     <table >
                         <tr>
                             <td class="table_title">Сканирование номера</td>
@@ -167,7 +167,6 @@
     <script>
         $(document).ready(function(){
             $("h1").css("color", "blue");
-            $("h2").css("color", "red");
             let name = "${user.userFirstname}";
             document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
             let scan_field = document.getElementById("scan_field");
@@ -187,6 +186,9 @@
                 $('#check_line').html("Права на регистрацию термоконтейнеров отсутствуют");
             }
             $('#number_outcome').focus();
+            $('#setup').click(function(){
+                window.location.href = 'setup';
+            });
             $('#clean_input').click(function(){
                 $('#number_outcome').val("");
                 $('#thermometer').val("");
@@ -196,9 +198,30 @@
                 $('#amount').val("1");
                 $('#time_outcome').html("");
                 $('#status_outcome').html("");
-                document.getElementById("btn_add_parcel").style.display = "none";
-                document.getElementById("costs_part_tr").style.display = "none";
+                $('#btn_add_parcel').css("display", "none");
+                $('#costs_part_tr').css("display", "none");
             });
+            let parcels_field = document.getElementById("parcels_field");
+            $('#show_parcels').on('click', function(){
+                if(parcels_field.style.display == 'block'){
+                    parcels_field.style.display = "none";
+                    $('#show_parcels').html("Поле просмотра посылок");
+                } else {
+                    parcels_field.style.display = "block";
+                    $('#show_parcels').html("Скрыть поле просмотра посылок");
+                    $('#reload_output').trigger("click");
+                }
+            });
+            $('#get_out_parcel').on("click", function(){
+                if($('#remove_parcel_field').css("display") == 'block'){
+                    $('#remove_parcel_field').css("display", "none");
+                    $('#get_out_parcel').html("Выложить посылку");
+                } else {
+                    $('#remove_parcel_field').css("display", "block");
+                    $('#get_out_parcel').html("Скрыть поле разукомлектования посылок");
+                }
+            });
+
             let resultLineValue;
             let clickNumber = 0;
             window.addEventListener("click", function(){
@@ -211,33 +234,24 @@
                     clickNumber = -1;
                 }
             });
-            let clickGetParcel = 1;
-            $('#get_parcel').on("click", function(){
-                clickGetParcel++;
-                if(clickGetParcel%2==0){
-                    document.getElementById('get_parcel_table').style.display = "block";
-                } else {
-                    document.getElementById('get_parcel_table').style.display = "none";
-                }
-            });
             let intoContainer = document.getElementById("container_number");
             intoContainer.oninput = function(){
                 if($('#container_number').val().length>0){
-                    document.getElementById("payment_tr").style.display = "none";
-                    document.getElementById("btn_outcome").style.display = "none";
-                    document.getElementById("btn_add_parcel").style.display = "block";
+                    $('#payment_tr').css("display", "none");
+                    $('#btn_outcome').css("display", "none");
+                    $('#btn_add_parcel').css("display", "block");
                     let firstChar = $('#container_number').val().substring(0, 1);
                     if(/^\d$/.test(firstChar)){
-                        document.getElementById("costs_part_tr").style.display = "none";
+                        $('#costs_part_tr').css("display", "none");
                         $('#costs_part').val(0);
                     } else {
-                        document.getElementById("costs_part_tr").style.display = "table-row";
+                        $('#costs_part_tr').css("display", "table-row");
                     }
                 } else {
-                    document.getElementById("payment_tr").style.display = "table-row";
-                    document.getElementById("btn_outcome").style.display = "block";
-                    document.getElementById("btn_add_parcel").style.display = "none";
-                    document.getElementById("costs_part_tr").style.display = "none";
+                    $('#payment_tr').css("display", "table-row");
+                    $('#btn_outcome').css("display", "block");
+                    $('#btn_add_parcel').css("display", "none");
+                    $('#costs_part_tr').css("display", "none");
                     $('#costs_part').val(0);
                 }
             };

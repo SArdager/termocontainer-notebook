@@ -24,7 +24,7 @@
         <br>
         <a href="../admin">Вернуться</a>
         <br>
-        <h2><div id="result_line"></div></h2>
+        <h3><div id="result_line"></div></h3>
         <div class="main_block">
            <div class="field">
                <label>Фамилия</label>
@@ -127,7 +127,6 @@
     <script>
         $(document).ready(function(){
             $("h1").css("color", "blue");
-            $("h2").css("color", "red");
             $('#select_company').trigger("change");
             var resultLineValue;
             var clickNumber = 0;

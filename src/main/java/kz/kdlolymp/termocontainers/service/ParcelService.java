@@ -201,7 +201,7 @@ public class ParcelService {
             if(departmentId>1) {
                 query = manager.createQuery("SELECT DISTINCT p FROM Parcel p LEFT JOIN ParcelPoint pp ON p.id = pp.parcelId " +
                         "WHERE p.outDepartment.id = :paramDepartment AND p.isDelivered = false OR p.destination.id = :paramDepartment AND " +
-                        "p.isDelivered = true ORDER BY p.sendDate DESC", Parcel.class).setParameter("paramDepartment", departmentId);
+                        "p.isDelivered = false ORDER BY p.sendDate DESC", Parcel.class).setParameter("paramDepartment", departmentId);
             } else {
                 query = manager.createQuery("SELECT DISTINCT p FROM Parcel p LEFT JOIN ParcelPoint pp ON p.id = pp.parcelId " +
                                 "WHERE p.isDelivered = false ORDER BY p.sendDate DESC",Parcel.class);
@@ -216,7 +216,7 @@ public class ParcelService {
         Parcel parcel = new Parcel();
         try {
             parcel = manager.createQuery("SELECT p FROM Parcel p LEFT JOIN ParcelPoint pp ON p.id = pp.parcelId WHERE " +
-                            "p.parcelNumber = :paramNumber", Parcel.class).setParameter("paramNumber", parcelNumber).getSingleResult();
+                            "p.parcelNumber = :paramNumber", Parcel.class).setParameter("paramNumber", parcelNumber).setMaxResults(1).getSingleResult();
         } catch (NoResultException ex){}
         return parcel;
     }
@@ -271,7 +271,7 @@ public class ParcelService {
         try {
             parcel = manager.createQuery("SELECT p FROM Parcel p WHERE p.parcelNumber = :paramNumber AND p.isWaited = true " +
                     "AND p.currentDepartmentId = :paramDep", Parcel.class).setParameter("paramNumber", parentNumber)
-                    .setParameter("paramDep", departmentId).getSingleResult();
+                    .setParameter("paramDep", departmentId).setMaxResults(1).getSingleResult();
         } catch (NoResultException ex){}
         return parcel;
     }

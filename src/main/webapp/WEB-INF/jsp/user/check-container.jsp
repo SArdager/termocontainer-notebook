@@ -33,7 +33,7 @@
         <br>
         <a href="../work-starter">Вернуться</a>
         <br>
-        <h2><div id="result_line"></div></h2>
+        <h3><div id="result_line"></div></h3>
         <p>
             <div class="title_row">
                 <div class="title_name">Наименование объекта:</div>
@@ -47,7 +47,7 @@
         </p>
         <br>
         <p>
-        <h3 id="check_new"><u>Регистрация (редактирование) термоконтейнеров</u></h3>
+        <h4 id="check_new">Регистрация (редактирование) термоконтейнеров</h4>
         <table id="check_new_area" style="display: none">
             <tr>
                 <td colspan='2' class="cut_line" id="clean_check_new">Скрыть поле регистрации (редактирования) термоконтейнеров</td>
@@ -76,7 +76,7 @@
         </table>
         </p>
         <p>
-        <h3 id="send_container"><u>Передача термоконтейнера в филиал</u></h3>
+        <h4 id="send_container">Передача термоконтейнера в филиал</h4>
         <table id="send_area" style="display: none">
             <tr>
                 <td colspan='2' class="cut_line" id="clean_send">Скрыть поле передачи термоконтейнеров</td>
@@ -116,7 +116,7 @@
         </table>
         </p>
         <p>
-        <h3 id="check_value"><u>Редактирование характеристик термоконтейнеров</u></h3>
+        <h4 id="check_value">Редактирование характеристик термоконтейнеров</h4>
         <table id="check_value_area" style="display: none">
             <tr>
                 <td colspan='2' class="cut_line" id="clean_check_value">Скрыть редактирования характеристик термоконтейнеров</td>
@@ -145,7 +145,7 @@
         </table>
         </p>
         <p>
-        <h3 id="write_off_container"><u>Списание термоконтейнера</u></h3>
+        <h4 id="write_off_container">Списание термоконтейнера</h4>
         <table id="write_off_area" style="display: none">
             <tr>
                 <td colspan='2' class="cut_line" id="clean_write_off">Скрыть поле списания термоконтейнера</td>
@@ -166,7 +166,7 @@
         </table>
         </p>
         <p>
-        <h3 id="find_container"><u>Поиск термоконтейнера по номеру</u></h3>
+        <h4 id="find_container">Поиск термоконтейнера по номеру</h4>
         <table id="find_area" style="display: none">
             <tr>
                 <td colspan='2' class="cut_line" id="clean_find">Скрыть поле поиска термоконтейнера</td>
@@ -190,7 +190,7 @@
         </table>
         </p>
         <p>
-        <h3 id="search_containers"><u>Наличие термоконтейнеров по филиалам</u></h3>
+        <h4 id="search_containers">Наличие термоконтейнеров по филиалам</h4>
         <table id="search_area" style="display: none">
             <tr>
                 <td colspan='2' class="cut_line" id="clean_search">Скрыть поле поиска термоконтейнера</td>
@@ -229,7 +229,7 @@
         </div>
         </p>
         <p>
-        <h3 id="print_container"><u>Создание штрих-кодов термоконтейнеров</u></h3>
+        <h4 id="print_container">Создание штрих-кодов термоконтейнеров</h4>
         <table id="print_area" style="display: none">
             <tr>
                 <td colspan='2' class="cut_line" id="clean_print">Скрыть поле печати штрих-кодов</td>
@@ -257,7 +257,6 @@
     <script>
         $(document).ready(function(){
             $("h1").css("color", "blue");
-            $("h2").css("color", "red");
             let name = "${user.userFirstname}";
             document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
             $('#select_branch').trigger("change");

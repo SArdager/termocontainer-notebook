@@ -23,7 +23,7 @@
         <br>
         <a href="../admin">Вернуться</a>
         <br>
-        <h2><div id="result_line"></div></h2>
+        <h3><div id="result_line"></div></h3>
         <form id="export_logs" action="../admin/load-data/logs-exportExcel" method="post">
             <div class="main_block">
                 <div class="field">
@@ -89,7 +89,6 @@
     <script>
         $(document).ready(function(){
             $("h1").css("color", "blue");
-            $("h2").css("color", "red");
             var result_line = document.getElementById('result_line');
             var resultLineValue;
             var clickNumber = 0;

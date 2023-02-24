@@ -117,6 +117,7 @@ $(document).ready(function(){
         }
         let user_rights = $('input[type="radio"][name="rights"]:checked').val();
         if($('#user_id').val()>0 || $('#username').val().length>1){
+            $('#btn_rights').css("display", "none");
             $.ajax({
                 url: 'edit-rights/rights',
                 method: 'POST',
@@ -124,9 +125,11 @@ $(document).ready(function(){
                 data: {id: $('#user_id').val(), username: $('#username').val(), role: role,
                     departmentId: $('#select_department').val(), rights: user_rights },
                 success: function(message) {
+                    $('#btn_rights').css("display", "block");
                     $('#result_line').html(message);
                 },
                 error:  function(response) {
+                    $('#btn_rights').css("display", "block");
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     $('#result_line').html("Ошибка обращения в базу данных. Перегрузите страницу.");
                 }
@@ -214,12 +217,14 @@ $(document).ready(function(){
 
 window.addEventListener("load", function(){
     $('#btn_show_users').on('click', function(event){
+        $('#btn_show_users').css("display", "none");
         $.ajax({
             url: '../admin/find-user',
             method: 'POST',
             dataType: 'json',
             data: {branchId: $('#select_branch').val()},
             success: function(users) {
+                $('#btn_show_users').css("display", "block");
                 let new_lines_html ='';
                 let body = $('#users_table_body');
                 body.html('');
@@ -237,6 +242,7 @@ window.addEventListener("load", function(){
                 body.prepend(new_lines_html);
             },
             error:  function(response) {
+                $('#btn_show_users').css("display", "block");
                 $('#result_line').html("Для получения информации о правах пользователя кликните по ячейке с логином.");
             }
         });

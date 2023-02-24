@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 
@@ -35,16 +36,16 @@
             </div>
         </p>
         <hr>
-        <h3>Регистрация термоконтейнера</h3>
-        <h2><div id="result_line"></div></h2>
+        <h2>Регистрация термоконтейнера</h2>
+        <h3><div id="result_line"></div></h3>
             <table>
                 <tr>
                     <td class="table_title">Сканирование номера</td>
-                    <td><input type="text" id="number_check" maxlength="8"/><br></td>
+                    <td><input type="text" id="number_courier" maxlength="8"/><br></td>
                 </tr>
                 <tr>
                     <td class="table_title"><span id="clean_courier">Очистить номер</span></td>
-                    <td><button id="btn_scan">Сканировать</button></td>
+                    <td><span>Откройте стандартное приложение сканирования штрих-кодов, отсканируйте номер, сохраните и внесите его в поле ввода <br>или внесите номер вручную</span></td>
                 </tr>
                 <tr>
                     <td class="table_title">Запись о приеме</td>
@@ -55,13 +56,16 @@
                     <td><button id="btn_courier">Зарегистрировать</button></td>
                 </tr>
             </table>
+
+        <sec:authorize access="hasRole('ADMIN')">
+        <h5><a href="change-department">Поменять объект</a></h5>
+        </sec:authorize>
      </div>
   </section>
 
     <script>
         $(document).ready(function(){
             $("h1").css("color", "blue");
-            $("h2").css("color", "red");
             let name = "${user.userFirstname}";
             document.getElementById("user_name").textContent = name.substring(0, 1) + ". ${user.userSurname}";
 

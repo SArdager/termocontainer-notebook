@@ -39,6 +39,7 @@ $(document).ready(function(){
         }
 
         if(checkLogin() && checkRights()){
+            $('#btn_add_user').css("display", "none");
             $.ajax({
                 url : 'add-user/save-user',
                 method: 'POST',
@@ -47,6 +48,7 @@ $(document).ready(function(){
                     email: $('#email').val(), username: $('#username').val(), role: $('#user_role').val(),
                     departmentId: $('#select_department').val(), rights: user_rights},
                 success : function(message) {
+                    $('#btn_add_user').css("display", "block");
                     $('#result_line').html(message);
                     if(message.indexOf("добавлен")>0){
                         $('#surname').val("");
@@ -64,6 +66,7 @@ $(document).ready(function(){
                     }
                 },
                 error:  function(response) {
+                    $('#btn_add_user').css("display", "block");
                     $('#result_line').html(response);
                 }
             });

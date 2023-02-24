@@ -18,10 +18,16 @@ h2 {
     line-height: 1.0;
 }
 h3 {
-	font-size: 1.0em;
-    line-height: 0.8;
+	font-size: 1.1em;
+    line-height: 0.9;
+	color: red;
 }
 h4 {
+	font-size: 1.0em;
+    line-height: 0.8;
+    text-decoration: underline;
+}
+h5 {
 	font-size: 0.9em;
     line-height: 1.0;
 }
@@ -107,6 +113,13 @@ img {
     margin-left: 30px;
     width: 24px;
     height: 24px;
+    object-fit: contain;
+}
+#setup {
+    margin-left: 10px;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
 }
 .main_block {
     float: left;
@@ -176,6 +189,11 @@ p {clear: both;}
     color: red;
     text-decoration: underline;
     margin: 8px 20px 6px 20px;
+}
+.float_line {
+    font-size: 0.85em;
+    color: red;
+    text-decoration: underline;
 }
 .table_body td{
     text-align: left;
@@ -249,6 +267,11 @@ table th{
     width: 180px;
     text-align: left;
     font-weight: normal;
+}
+.table_title .float_line{
+    float: right;
+    margin-right: 10px;
+    margin-top: 6px;
 }
 #parcels_table td:nth-child(8) {
     text-align: right;
@@ -342,9 +365,4 @@ table th{
     border-left: 1px solid white;
     border-right: 1px solid white;
     border-bottom: 1px solid black;
-}
-#other_branches {
-    font-size: 0.9em;
-    color: blue;
-    text-decoration: underline;
 }

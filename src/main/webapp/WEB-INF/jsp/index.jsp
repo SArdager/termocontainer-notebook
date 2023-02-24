@@ -28,15 +28,15 @@
     <section>
     <div class="container">
         <h1>ЖУРНАЛЫ УЧЕТА ТЕРМОКОНТЕЙНЕРОВ</h1>
-        <h3 style="margin-left: 10%;">${pageContext.request.userPrincipal.name}</h3>
+        <h4 style="margin-left: 10%;">${pageContext.request.userPrincipal.name}</h4>
         <sec:authorize access="!isAuthenticated()">
             <p>Вход только для авторизованных пользователей</p>
-            <h4><a href="login">Войти</a></h4>
+            <h5><a href="login">Войти</a></h5>
         </sec:authorize>
         <sec:authorize access="isAuthenticated()">
-            <h4><a href="work-starter">На главную</a></h4>
-            <h4><a href="change-password">Сменить пароль</a></h4>
-            <h4><a href="logout">Выйти</a></h4>
+            <h5><a href="work-starter">На главную</a></h5>
+            <h5><a href="change-password">Сменить пароль</a></h5>
+            <h5><a href="logout">Выйти</a></h5>
         </sec:authorize>
         <sec:authorize access="hasRole('ADMIN')">
             <h4><a href="admin">Редактирование (только админ)</a></h4>
